@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+ 	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+  	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+
+<tiles-definitions>
+	
+	<!-- 초기화면  -->
+	<definition name="index.tiles" template="index.jsp">
+	</definition>
+	
+ 	<definition name="login.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/login/login.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+	</definition>
+	
+	<definition name="SelectRegi.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/login/SelectRegi.jsp"/>
+	</definition>
+	
+	<definition name="companyJoin.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/login/companyJoin.jsp"/>
+	</definition>
+	
+	
+	<definition name="memberJoin.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/login/memberJoin.jsp"/>
+	</definition>
+	
+	<definition name="company.tiles" template="/WEB-INF/views/wcompany-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common1/header.jsp"/>
+		<put-attribute name="left_main" value="/WEB-INF/views/common1/leftmain.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/main.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common1/footer.jsp"/>
+	</definition>
+	
+	<definition name="dressMain.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressMain.jsp"/>
+	</definition>
+	
+	<definition name="muMain.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/makeup/main.jsp"/>
+	</definition>
+	
+	<definition name="dressWrite.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressWrite.jsp"/>
+	</definition>
+	
+	<definition name="dressDetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressDetail.jsp"/>
+	</definition>
+	
+	<definition name="dressUpdate.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressUpdate.jsp"/>
+	</definition>
+	
+	<definition name="addMu.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/makeup/addMu.jsp"/>
+	</definition>
+	
+	<definition name="muDetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/makeup/detail.jsp"/>
+	</definition>
+	
+	<definition name="muMod.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/makeup/mod.jsp"/>
+	</definition>
+	
+	<definition name="reservationDress.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDress.jsp"/>
+	</definition>
+	
+	<definition name="reservationDressList.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDressList.jsp"/>
+	</definition>
+	
+	<definition name="basketList.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/basketList.jsp"/>
+	</definition>
+	
+	 <!-- 신혼여행 -->
+	
+	<definition name="compareHoney.tiles" template="/WEB-INF/views/honeymoon/compareHoney.jsp">
+	</definition> 
+	 
+	 <definition name="hm_bbslist.tiles" template="/WEB-INF/views/honeymoon/hm-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/honeymoon/hm_header.jsp"/>
+		<put-attribute name="left_main" value="/WEB-INF/views/honeymoon/hm_leftmain.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/honeymoon/hm_bbslist.jsp"/>
+	</definition>
+	 
+	 <definition name="honeybbswrite.tiles" extends="hm_bbslist.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/honeymoon/honeybbswrite.jsp"/>
+	</definition>
+	 
+	  <definition name="honeyBbsDetail.tiles" extends="hm_bbslist.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/honeymoon/honeybbsdetail.jsp"/>
+	</definition>
+	 
+	 <definition name="hm_upbbs.tiles" extends="hm_bbslist.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/honeymoon/hm_upbbs.jsp"/>
+	</definition>
+	 
+	<definition name="findhoney.tiles" extends="hm_bbslist.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/honeymoon/findhoney.jsp"/>
+	</definition>
+	 <definition name="compareHoney.tiles" extends="hm_bbslist.tiles">
+	 	<put-attribute name="main" value="/WEB-INF/views/honeymoon/compareHoney.jsp"/>
+	</definition> 
+	 <definition name="hmStyle.tiles" extends="hm_bbslist.tiles">
+	 	<put-attribute name="main" value="/WEB-INF/views/honeymoon/hmStyle.jsp"/>
+	</definition> 
+	 
+	 <definition name="hmareaselect.tiles" extends="hm_bbslist.tiles">
+	 	<put-attribute name="main" value="/WEB-INF/views/honeymoon/areaselect.jsp"/>
+	</definition> 
+	 
+	 <!-- /신혼여행 -->
+	 
+	 <!-- 스튜디오 -->
+	 
+	 <definition name="studioWrite.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioWrite.jsp"/>
+	</definition>
+	
+	<definition name="studioDetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioDetail.jsp"/>
+	</definition>
+	
+	<definition name="sdMod.tiles" extends="company.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioMod.jsp"/>
+	</definition>
+	
+	<!-- /스튜디오 -->
+	
+	<!-- 웨딩홀 -->
+	
+	<!-- main -->
+	<definition name="weddinghall.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/wedding/weddinghall1.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+	</definition>
+	
+	<!-- 웨딩 업체 추가 -->
+	<definition name="weddingwrite.tiles" extends="weddinghall.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/weddingwrite.jsp"/>
+	</definition>
+	
+	<!-- 홀 뷰 -->
+	<definition name="hallView.tiles" extends="weddinghall.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/hallview.jsp"/>
+	</definition>
+	
+	<!-- /웨딩홀 -->
+	
+<!-- 	청첩장 -->
+
+<definition name="cardlist.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cardlist.jsp"/>
+	</definition>
+	
+	<definition name="cdlist.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cdetaillist.jsp"/>
+	</definition>
+	
+	<definition name="carddetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/card.jsp"/>
+	</definition>
+	
+	<definition name="cardwrite.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cardwrite.jsp"/>
+	</definition>
+	
+	<definition name="cdwrite.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cdetailwrite.jsp"/>
+	</definition>
+	
+		<definition name="clupdate.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/clupdate.jsp"/>
+	</definition>
+	
+	<definition name="cadmin.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cadmin.jsp"/>
+	</definition>
+	
+	<definition name="ccdetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/ccdetail.jsp"/>
+	</definition>
+	
+	<definition name="cccdetail.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/cccdetail.jsp"/>
+	</definition>
+	
+	<definition name="ccupdate.tiles" extends="login.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/weddingcard/ccupdate.jsp"/>
+	</definition>
+	
+</tiles-definitions>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Reservation">
+	<insert id="dressReserv" parameterType="kh.com.a.model.ReservationDto">
+	INSERT INTO WD_RESERVATION(RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT)
+	VALUES(RV_SEQ.NEXTVAL, #{mid}, #{redate}, #{retime}, #{pdseq}, '승인중', '없음')
+	</insert>
+	
+	<select id="dressResrvList" resultType="kh.com.a.model.ReservationDto">
+	SELECT RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+	FROM WD_RESERVATION
+	ORDER BY RVSEQ DESC
+	</select>
+	
+	<select id="dressReservComList" parameterType="java.lang.String" resultType="kh.com.a.model.ReservationDto">
+	SELECT RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+	FROM WD_RESERVATION
+	WHERE PDSEQ=(SELECT DSSEQ FROM DRESS WHERE CID=#{id})
+	ORDER BY RVSEQ DESC
+	</select>
+	
+	<select id="getDSReservListByPdseqRedate" parameterType="kh.com.a.model.ReservationDto" resultType="kh.com.a.model.ReservationDto">
+	SELECT RE.RVSEQ, RE.MID, RE.REDATE, RE.RETIME, RE.PDSEQ, RE.STATUS, RE.CONTENT
+	FROM WD_RESERVATION RE, DRESS DS
+	WHERE RE.PDSEQ=DS.DSSEQ AND RE.REDATE=#{redate} AND DS.DSSEQ=#{pdseq} AND (RE.STATUS='승인완료' OR RE.STATUS='승인중')
+	</select>
+	
+	<update id="DressReserveAdmit" parameterType="java.lang.Integer">
+	 UPDATE WD_RESERVATION
+	 SET STATUS='승인완료'
+	 WHERE RVSEQ=#{rvseq}
+	</update>
+
+	<select id="getMuReservListByPdseqRedate" parameterType="kh.com.a.model.ReservationDto" resultType="kh.com.a.model.ReservationDto">
+	SELECT * FROM WD_RESERVATION
+	WHERE REDATE=#{redate} AND PDSEQ=#{pdseq} AND STATUS='결제완료'
+	</select>
+	
+	<select id="getNextRvseq" resultType="java.lang.Integer">
+		SELECT RV_SEQ.NEXTVAL FROM DUAL 
+	</select>
+	
+	<insert id="addMuReservation" parameterType="kh.com.a.model.ReservationDto">
+		INSERT INTO WD_RESERVATION (RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS)
+		VALUES(#{rvseq}, #{mid}, #{redate}, #{retime}, #{pdseq}, '장바구니')
+	</insert>
+	
+	<select id="getReservByRvseq" parameterType="java.lang.Integer" resultType="kh.com.a.model.ReservationDto">
+		SELECT * FROM WD_RESERVATION WHERE RVSEQ=#{rvseq}
+	</select>
+	
+	<select id="checkMuBskByMidReserv" parameterType="kh.com.a.model.ReservationDto" resultType="java.lang.Integer">
+		SELECT COUNT(B.BKSEQ)
+		FROM WD_BASKET B, WD_RESERVATION R
+		WHERE B.PDSEQ=R.PDSEQ
+			AND R.MID=#{mid} AND R.PDSEQ=#{pdseq}<!--  AND R.REDATE=#{redate} AND R.RETIME=#{retime} -->
+	</select>
+	
+</mapper>
