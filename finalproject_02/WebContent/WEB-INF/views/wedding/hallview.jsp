@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- 정환 -->
+<!-- 구글 맵 api  -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIZ4hkMflbjiUrfDA_2S-AAyUvyKJxdc0&callback=initMap"></script>
+
 <!-- <div class="container"  style="margin:10px 1px 0px 60px; padding-left:10px; width: 1000px"> -->
 <!-- 
 <style type="text/css">	
@@ -17,10 +21,15 @@
 </style>
  -->
  
+ 
 <style>
 #map1{
 	height: 400px;
-	width: 100%
+	width: 100%;
+	visibility: visible;
+	opacity: 1;
+	border: 2px solid #ff9c00;
+	display: block;
 }
 </style>
  
@@ -141,14 +150,14 @@
 		<tr style="height:20px;">
 			<th><a href="#hallstory">홀 설명</a></th>
 			<th><a href="#hallpic">홀 사진</a></th>
-			<th><a href="#halllocation" onclick="initMap()"><font style="color: red">홀 위치</font></a></th>
+			<th><a href="#halllocation" onclick="initMap(${wd.latitude},${wd.longitude })"><font style="color: red">홀 위치</font></a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
 			<th><a href="#hallregi">홀 예약</a></th>
 		</tr>		
 	</table>
 	</div>
 	
-	<div id="map1"></div>
+	<div id="map1" class="showMap"></div>
 </div>	
 
 
@@ -189,22 +198,26 @@
 	
 <!--  구글맵에 대한 스크립트 -->
 <script type="text/javascript">
-var x = ${wd.latitude};
-x = Number(x);
-var y = ${wd.longitude};
-y = Number(y);
+//var x = ${wd.latitude};
 
+//var y = ${wd.longitude};
+
+/* 
 alert(typeof x);
 alert(typeof y);
-
-function initMap() {
+alert(x);
+alert(y);
+ */
+function initMap(x,y) {
+	x = Number(x);
+	y = Number(y);
 	alert(x);
 	alert(y);
 	var uluru = {lat: x, lng: y};					// 위도 경도
-  	var map = new google.maps.Map(document.getElementById('map1'), {	// wedmap에 뿌려줄거임
-    	zoom: 16,								// 숫자가 올라갈수록 지도 확대
-    	center: uluru						
-  	});
+ 	var map = new google.maps.Map($("#map1"), {	// wedmap에 뿌려줄거임
+   	zoom: 16,								// 숫자가 올라갈수록 지도 확대
+   	center: uluru						
+ 	});
 	var marker = new google.maps.Marker({		
 	    position: uluru,
 	    map: map
