@@ -104,4 +104,20 @@ public class WeddingHallCtrl {
 		return "hallView.tiles";
 	}
 	
+	@RequestMapping(value="Hallwrite.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String Hallwrite(Model model, int whseq) {
+		logger.info("WeddingHallCtrl Hallwrite" + new Date());
+		
+		WeddingDto wd = weddingHallServ.getWedding(whseq);
+		model.addAttribute("wd", wd);
+		return "hallwrite.tiles";
+	}
+	
+	/*테스트*/
+	/*
+	@RequestMapping(value="calendarView.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String hallDetailView() {
+		return "NewFile.tiles";
+	}
+	*/
 }

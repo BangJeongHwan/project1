@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery.min.js"></script>
+    
 <style type="text/css">
 table {
 	border: 1px solid #EBEBEB;
@@ -27,7 +30,7 @@ td:nth-child(even) {
 <div class="container">
 	<h2 class="nino-sectionHeading">
 	<span class="nino-subHeading">wedding Hall</span>
-		63컨벤션센터(구.63city웨딩홀)
+		${wd.cname }
 	</h2>
 	<p class="nino-sectionDesc">
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -38,56 +41,54 @@ td:nth-child(even) {
 			<!-- action = "weddingwriteAf.do" -->
 			<form name="frmForm" id="_frmForm" action="#none" method="post" 
 			enctype="multipart/form-data">
-			
-			<!-- 위도, 경도 받아오기 -->
-			<input type="hidden" name="latitude" id="_latitude">
-			<input type="hidden" name="longitude" id="_longitude">
 					
+			<input type="hidden" name="whseq" value="${wd.whseq }">		
+			
 			<table class="list_table" style="width:85%;">
 				<colgroup>
 					<col width="20%"><col width="30%">
 				</colgroup>
 				<tr>
-					<td>회사 아이디</td>
-					<td colspan="3">
-						<input type="text" name="cid" id="_cid" size="20"><font id="_cidCheckFld"></font>
-						<button type='button' id='_upGradeBtn' style="display: none;">등급올리기</button>
+					<td>홀 이름</td>
+					<td>
+						<input type="text" name="hallname" id="_hallname" size="20"><font id="_hallnameCheckFld"></font>
 					</td>
 				</tr>
 				<tr>
-					<td>회사명</td>
-					<td colspan="3">
-						<input type="text" name="cname" id="_cname" size="20" readonly>
-					</td>
-				</tr>
-				<tr>
-					<td>회사 주소</td>
-					<td colspan="3">
-						<input type="text" name="address" id="_address" size="40" readonly>
+					<td>층</td>
+					<td>
+						<input type="text" name="cname" id="_cname" size="20">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>홀 타입</td>
+					<td>시설 구분</td>
 					<td>
-						<select id="_htype" name="htype">
-							<option value="컨벤션" selected="selected">컨벤션</option>
-							<option value="호텔">호텔</option>
-							<option value="채플">채플</option>
-							<option value="전통">전통</option>
-							<option value="야외">야외</option>
-							<option value="종교">종교</option>
-							<option value="기타">기타</option>
+						<input type="hidden" name="facility" id="_facility">
+						<input type="checkbox" name="faci" value=컨벤션>컨벤션&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="호텔">호텔&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="채플">채플&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="전통">전통&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="야외">야외&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="종교">종교&nbsp;&nbsp;
+						<input type="checkbox" name="faci" value="기타">기타
+					</td>
+				</tr>
+				
+				<tr>
+					<td>이용시간</td>
+					<td>
+						<select id="_regtime" name="regtime">
+							<%-- <c:forEach ></c:forEach> --%>
+							<option value="50분" selected="selected">50분</option>
+							<option value="60분">60분</option>
+							<option value="70분">70분</option>
+							<option value="80분">80분</option>
+							<option value="90분">90분</option>
+							<option value="100분">100분</option>
+							<option value="110분">110분</option>
 						</select>
 					</td>
-				</tr>
-				
-				<tr>
-					<td>식대 가격대</td>
-					<td><input type="text" name="mincook" id="_mincook" size="10">원
-					 ~ <input type="text" name="maxcook" id="_maxcook" size="10">원
-					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_cookCheckFld">※ 최소 가격 ~ 최대 가격 순으로 입력해주세요!</font>
-					 </td>
 				</tr>
 				
 				<tr>
@@ -104,13 +105,38 @@ td:nth-child(even) {
 				</tr>
 				
 				<tr>
+					<td>식대 가격대</td>
+					<td><input type="text" name="mincook" id="_mincook" size="10" value="${wd.mincook }">원
+					 ~ <input type="text" name="maxcook" id="_maxcook" size="10" value="${wd.maxcook }">원
+					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_cookCheckFld">※ 최소 가격 ~ 최대 가격 순으로 입력해주세요!</font>
+					 </td>
+				</tr>
+				
+				<tr>
+					<td>식사 동시 가능 여부</td>
+					<td>
+						<select id="_format" name="format">
+							<option value="분리" selected="selected">분리</option>
+							<option value="동시">동시</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
 					<td>수용 인원 범위</td>
-					<td><input type="text" name="minpeople" id="_minpeople" size="10">명
-					 ~ <input type="text" name="maxpeople" id="_maxpeople" size="10">명
+					<td><input type="text" name="minpeople" id="_minpeople" size="10" value="${wd.minpeople }">명
+					 ~ <input type="text" name="maxpeople" id="_maxpeople" size="10" value="${wd.maxpeople }">명
 					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_peopleCheckFld">※ 최소 인원 ~ 최대인원 순으로 입력해주세요!</font>
 					 </td>
 				</tr>
 				<tr>
+					<td>수용 인원 범위, 착석 인원</td>
+					<td>
+						<input type="text" name="setpeople" id="_setpeople" size="10">
+					 </td>
+				</tr>
+				 
+				<tr style="height: 500px">
 					<td>사진 업로드</td>
 					<td style="text-align: left">
 						<!-- 사진 추가를 누를 때 추가 할 수 있도록 할 예정 -->
@@ -119,25 +145,30 @@ td:nth-child(even) {
 					</td>
 				</tr>
 				<tr>
-					<td>소개 내용</td>
-					<td colspan="3">
-						<textarea rows="10" cols="60" name="content" id="_content" ></textarea>
+					<td>웨딩 간격</td>
+					<td>
+						 <input type="text" name="wstep" id="_wstep" size="10">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>주차 정보</td>
-					<td colspan="3">
-						<textarea rows="5" cols="60" name="parking" id="_parking" ></textarea>
+					<td>사용료</td>
+					<td>
+						 <input type="text" name="wstep" id="_wstep" size="10">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>교통 정보</td>
-					<td colspan="3">
-						<textarea rows="5" cols="60" name="transpo" id="_transpo" ></textarea>
+					<td>음주류 포함 여부</td>
+					<td>
+						<select id="_drink" name="drink">
+							<option value="포함" selected="selected">포함</option>
+							<option value="미포함">미포함</option>
+						</select>
 					</td>
 				</tr>
+				
+				
 				
 				<tr>
 					<td colspan="2" style="height:50px; text-align:center;">

@@ -65,7 +65,9 @@
 
 
 <!-- javascript -->
+<%-- 
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery.min.js"></script>
+ --%>
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/isotope.pkgd.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery.prettyPhoto.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/bootstrap.min.js"></script>

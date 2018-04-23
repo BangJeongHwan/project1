@@ -137,9 +137,9 @@
 	<!-- 웨딩홀 -->
 	
 	<!-- main -->
-	<definition name="weddinghall.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
-		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
-		<put-attribute name="main" value="/WEB-INF/views/wedding/weddinghall1.jsp"/>
+	<definition name="weddinghall.tiles" template="/WEB-INF/views/wh-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/wh_header.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/wedding/weddinghall.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
 	</definition>
 	
@@ -153,6 +153,17 @@
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallview.jsp"/>
 	</definition>
 	
+	<!-- 홀 추가 -->
+	<definition name="hallwrite.tiles" extends="weddinghall.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/hallwrite.jsp"/>
+	</definition>
+	
+	
+	<!-- 테스트 
+	<definition name="NewFile.tiles" template="/WEB-INF/views/Test.jsp">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/NewFile.jsp"/>
+	</definition>
+	 -->
 	<!-- /웨딩홀 -->
 	
 <!-- 	청첩장 -->

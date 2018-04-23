@@ -2,55 +2,41 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <!-- fullcalender -->
-<link rel='stylesheet' href='../assets/js/fullCalendar/fullcalendar.css' />
-<link rel='stylesheet' media="print" href='../assets/js/fullCalendar/fullcalendar.print.min.css' />
-<script src='../assets/js/fullCalendar/lib/jquery.min.js'></script>
-<script src='../assets/js/fullCalendar/lib/moment.min.js'></script>
-<script src='../assets/js/fullCalendar/lib/jquery-ui.min.js'></script>
-<script src='../assets/js/fullCalendar/fullcalendar.min.js'></script>
-<script src='../assets/js/fullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
+<link rel='stylesheet' href='FullCalendar/fullcalendar.css' />
+<link rel='stylesheet' media="print" href='FullCalendar/fullcalendar.print.min.css' />
+<script src='FullCalendar/lib/jquery.min.js'></script>
+<script src='FullCalendar/lib/moment.min.js'></script>
+<script src='FullCalendar/lib/jquery-ui.min.js'></script>
+<script src='FullCalendar/fullcalendar.min.js'></script>
+<script src='FullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
 
 
-<!-- <div class="container"  style="margin:10px 1px 0px 60px; padding-left:10px; width: 1000px"> -->
-<!-- 
-<style type="text/css">	
-.selectTB table{
-	width: 100%;
-	border:1px solid black;
+<style>
+.tb2 table{
+	width: 100%;	
+	border: 1px solid #F5F5F5;
 }
-.selectTB tr{
+.tb2 tr{
+	padding: 20px 20px;
 }
-.selectTB th{	
+.tb2 th,td{
 	align-content: center;
 }
 </style>
- -->
- 
- 
-<style>
-/* 
-#map1 {
-	padding: 40px 0;
-	background: url(../images/map/bg-map.jpg) no-repeat center center / cover;
-}
-#map1.showMap .map2 {
-	visibility: visible;
-	opacity: 1;
-	height: auto !important;
-	border: 2px solid #ff9c00;
-	display: block;
-}
- */
-</style>
- 
+
+ <!-- 
  <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+  -->
 <div class="container" style="padding-top: 10px">
 	<h2 class="nino-sectionHeading">
 	<!-- <span class="nino-subHeading"></span> -->
 		${wd.cname }
 	</h2>
+	
+	<div align="right">
+		<button onclick="addhall()">홀 추가</button>
+	</div>
 	
 	<div class="sectionContent" style="border-top: 6px solid black; padding-left: 30px">
 		<div class="row" style="padding-top: 30px">				
@@ -118,6 +104,46 @@
 		</tr>
 	</table>
 	</div>
+	
+	<div>	
+		<br><br>
+		<p style="color: red">※ 아래 정보는 웨딩홀에서 제공한 정보를 기준으로 하며, 웨딩홀의 사정에 따라 메뉴, 가격 등이 변경될 수 있습니다. </p>
+		<b>주소 : ${wd.address }</b><br>
+		<b>교통 : ${wd.transpo }</b>
+		<br><br>
+		
+		<div class="tb2">
+		<table>
+			<colgroup>
+				<col width="10%"> <!-- 요일 -->
+				<col width="15%"> <!-- 형태/시설구분 -->	
+				<col width="15%"> <!-- 인원 -->
+				<col width="10%"> <!-- 간격 -->
+				<col width="15%"> <!-- 사용료 -->
+				<col width="5%"> <!-- 메뉴 -->
+				<col width="15%"> <!-- 식대 -->
+				<col width="15%"> <!-- 음주류 -->
+			</colgroup>
+			
+			<tr>
+				<th>요일</th><th>형태/시설구분</th><th>인원</th><th>간격</th><th>사용료</th><th>메뉴</th><th>식대</th><th>음주류</th>
+			
+			<tr>
+				<td colspan="8" style="background-color: #F5F5F5;">홀명/층수</td>
+			</tr>
+			<tr>
+				<td>월~일</td>
+				<td>형태<br>/<br>시설구분</td>
+				<td>최소 : 300명<br>착석 : 300명<br>최대 : 300명</td>
+				<td>간격</td>
+				<td>사용료<br>최소요금<br>최대요금</td>
+				<td>메뉴</td>
+				<td>식대최소<br>식대최대</td>
+				<td>음주류(포함)</td>
+			</tr>
+		</table>
+		</div>
+	</div>
 </div>
 	
 <!-- 홀 사진 -->
@@ -132,15 +158,12 @@
 			<th><a href="#hallreview">홀 리뷰</a></th>
 			<th><a href="#hallregi">홀 예약</a></th>
 		</tr>
-	</table>
+	</table>	
 	</div>
 	
 	
 	
-	<div align="center">	
-		<br><br>
-		<!-- 메인 이미지 -->
-		<img src="assets/images/wedding/63img1_b.jpg">
+	<div align="center" style="width: 100%; background-color: #F5F5F5;">	
 		<br><br>
 		<!-- 여러 이미지 추가 -->
 		<img alt="이미지 없음" src="assets/images/wedding/63img1_s.jpg" onclick="imgChange(1)" id="simg1">
@@ -149,8 +172,10 @@
 		<img alt="이미지 없음" src="assets/images/wedding/63img4_s.jpg" onclick="imgChange(4)" id="simg4">
 		<img alt="이미지 없음" src="assets/images/wedding/63img5_s.jpg" onclick="imgChange(5)" id="simg5">
 		<img alt="이미지 없음" src="assets/images/wedding/63img6_s.jpg" onclick="imgChange(6)" id="simg6">
+		<br><br>
+		<!-- 메인 이미지 -->
+		<img src="assets/images/wedding/63img1_b.jpg" style="width: 70%; height: 50%">
 	</div>
-	
 </div>	
 
 
@@ -169,17 +194,20 @@
 	</table>
 	</div>
 
-
-	<div onload="initMap()">
-		<div id="map1" style="width:100%; height: 500px; margin-top:20px; border: 1px solid black;"></div>
-	</div>
-	<!-- 
-	<section id="map1">
-		<div class="map2">
-			<div id="map3" style="width: 100%; height: 200px; border: 0;" ></div>
+	<div style="width: 100%; background-color: #F5F5F5; ">
+		<br><br>
+		<div onload="initMap()" align="center">
+			<div id="map1" style="width:90%; height: 500px; border: 1px solid black;"></div>
 		</div>
-	</section>
-	 -->
+		<br>
+		
+		<div style="margin-left: 60px">
+			<b>주소 : ${wd.address }</b><br>
+			<b>교통 : ${wd.transpo }</b>
+			<br><br>
+			<p style="color: red">※ 본 지도는 참고 정보로만 활용하시기 바라며 정확한 위치는 홈페이지를 통해 확인하시기 바랍니다.</p>
+		</div>
+	</div>
 </div>	
 
 
@@ -211,17 +239,18 @@
 			<th><a href="#hallpic">홀 사진</a></th>
 			<th><a href="#halllocation">홀 위치</a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
-			<th><a href="#hallregi" onclick="cal()"><font style="color: red">홀 예약</font></a></th>
+			<th><a href="#hallregi"><font style="color: red">홀 예약</font></a></th>
 		</tr>
 	</table>
 	</div>	
-	
-	<div id='calendar' style="width:100%; height: 500px; margin-top:20px; border: 1px solid black;"></div>
+	<div align="center">
+		<div id='calendar' style="width:90%; height: 895px; margin-top:20px;" ></div>
+	</div>
 </div>
 
 <script>
 function cal(){
-	location.href="NewFile.html";
+	location.href="calendarView.do";
 }
 </script>
 
@@ -242,6 +271,7 @@ $(function() {
 	
 	// fullcalender 시작
 	$('#calendar').fullCalendar({
+		
 		// 한국어 변환
 	 	locale: initialLocaleCode,
 	 	   
@@ -321,5 +351,10 @@ function initMap() {
 google.maps.event.addDomListener(window, 'load', initMap);
 </script>
 
-
+<!-- 홀 추가 -->
+<script>
+function addhall(){
+	location.href="Hallwrite.do?whseq="+${wd.whseq};
+}
+</script>
 

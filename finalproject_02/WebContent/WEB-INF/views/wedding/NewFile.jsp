@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
-<!-- fullcalender -->
-<link rel='stylesheet' href='../assets/js/fullCalendar/fullcalendar.css' />
-<link rel='stylesheet' media="print" href='../assets/js/fullCalendar/fullcalendar.print.min.css' />
-<script src='../assets/js/fullCalendar/lib/jquery.min.js'></script>
-<script src='../assets/js/fullCalendar/lib/moment.min.js'></script>
-<script src='../assets/js/fullCalendar/lib/jquery-ui.min.js'></script>
-<script src='../assets/js/fullCalendar/fullcalendar.min.js'></script>
-<script src='../assets/js/fullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
+
+<link rel='stylesheet' href='FullCalendar/fullcalendar.css' />
+<link rel='stylesheet' media="print" href='FullCalendar/fullcalendar.print.min.css' />
+<script src='FullCalendar/lib/jquery.min.js'></script>
+<script src='FullCalendar/lib/moment.min.js'></script>
+<script src='FullCalendar/lib/jquery-ui.min.js'></script>
+<script src='FullCalendar/fullcalendar.min.js'></script>
+<script src='FullCalendar/locale-all.js'></script>
 
 
 <!-- <script type='text/javascript' src='js/gcal.js'></script> -->
@@ -99,28 +96,5 @@ $(function() {
 });
 	  
 </script>
-</head>
-<body>
-<div id='calendar'></div>
-</body>
-</html>
 
-
-
-<!-- 
-//google에서 캘린더 가져오기 
-googleCalendarApiKey: 'AIzaSyAhct_ePS8HebgLD25jCCg7EtVTjZSxppw',
-events: {
-	 googleCalendarId: 'i7f62vb8t32498qn0i6foauifc@group.calendar.google.com',
-   	 className: 'gcal-event' // an option!
-}
- -->
-<!-- 
-캘린더 인증 key
-AIzaSyAhct_ePS8HebgLD25jCCg7EtVTjZSxppw 
--->
-
-<!-- 
-캘린더 id
-i7f62vb8t32498qn0i6foauifc@group.calendar.google.com
- -->
+<div id='calendar'>캘린더</div>
