@@ -174,7 +174,7 @@ public class CardController {
 				dto.setPicture(filename);
 				cardService.ccupdate(dto);				
 			}else{
-				System.out.println("¼öÁ¤½ÇÆÐ");
+				System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			}	
 	}
 		
@@ -225,8 +225,8 @@ public class CardController {
 		
 		
 		String fupload = req.getServletContext().getRealPath("/upload");
-		logger.info("¾÷·Îµå°æ·Î:" + fupload);
-		System.out.println("¾÷·Îµå°æ·Î:" + fupload);
+		logger.info("ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½:" + fupload);
+		System.out.println("ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½:" + fupload);
 		String f = dto.getPicture();
 		
 		String newFile = FUpUtil.getNewFile(f);

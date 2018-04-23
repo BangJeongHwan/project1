@@ -104,5 +104,4 @@ public class WeddingHallCtrl {
 		return "hallView.tiles";
 	}
 	
-		
 }

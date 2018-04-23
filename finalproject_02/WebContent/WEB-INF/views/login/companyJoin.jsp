@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<fmt:requestEncoding value="utf-8"/>
 
+<fmt:requestEncoding value="utf-8"/>  
+ 
 <style type="text/css">
 table {
 	border: 1px solid #EBEBEB;
@@ -166,6 +167,7 @@ td:nth-child(even) {
    </div>
 </div>
 
+
 <script type="text/javascript">
 
 var pwdFlag1 = false;
@@ -326,7 +328,7 @@ $(document).ready(function () {
    });
 }); 
 
-사업자 등록증 비교 하는 함수 및 저장
+//사업자 등록증 비교 하는 함수 및 저장
 function licenseCheck1() {   
    var license1 = $("#_license1").val();
    if(license1=="" || license1.length!=3 || !isTrue(license1)){
