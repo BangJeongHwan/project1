@@ -1,4 +1,5 @@
-/*DROP TABLE WD_COMPANY CASCADE CONSTRAINTS;
+/*
+DROP TABLE WD_COMPANY CASCADE CONSTRAINTS;
 CREATE TABLE WD_COMPANY(
     CID VARCHAR2(50) PRIMARY KEY,
     PWD VARCHAR2(50) NOT NULL,
@@ -26,10 +27,6 @@ public class CompanyDto implements Serializable {
 	private String auth;
 	private int grade;
 	
-	// 사업자 등록증 나누기 위해
-	private int license1;
-	private int license2;
-	private int license3;
 	
 	public CompanyDto() {}
 
@@ -135,30 +132,6 @@ public class CompanyDto implements Serializable {
 	}
 	
 	
-
-	public int getLicense1() {
-		return license1;
-	}
-
-	public void setLicense1(int license1) {
-		this.license1 = license1;
-	}
-
-	public int getLicense2() {
-		return license2;
-	}
-
-	public void setLicense2(int license2) {
-		this.license2 = license2;
-	}
-
-	public int getLicense3() {
-		return license3;
-	}
-
-	public void setLicense3(int license3) {
-		this.license3 = license3;
-	}
 
 	@Override
 	public String toString() {

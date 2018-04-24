@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,8 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
 import kh.com.a.model2.WdParam;
@@ -99,13 +103,18 @@ public class WeddingHallCtrl {
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
+		List<WHallPictureDto> hallPicList = weddingHallServ.getHallPicList(whseq);
 		
-		model.addAttribute("wd", wd);
-		model.addAttribute("hallList", hallList);
+		
+		model.addAttribute("wd", wd);	// 웨딩 업체 1개
+		model.addAttribute("hallList", hallList);	// 홀 list
+		model.addAttribute("hallPicList", hallPicList); // 홀 사진 list
 		
 		return "hallView.tiles";
 	}
 	
+	
+	// 홀 추가
 	@RequestMapping(value="Hallwrite.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String Hallwrite(Model model, int whseq) {
 		logger.info("WeddingHallCtrl Hallwrite" + new Date());
@@ -115,6 +124,24 @@ public class WeddingHallCtrl {
 		return "hallwrite.tiles";
 	}
 	
+	// 홀 이름 체크
+	@ResponseBody
+	@RequestMapping(value="checkhallname.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> checkhallname(String hallname) throws Exception {
+		logger.info("WeddingHallCtrl checkhallname" + new Date());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if (weddingHallServ.checkHallName(hallname)) {
+			map.put("message", "true");
+		} else {
+			map.put("message", "false");
+		}
+		return map;
+	}
+	
+	
+	// 홀 추가 저장
 	@RequestMapping(value="hallwriteAf.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String hallwriteAf(Model model, WdParam wd, HttpServletRequest req) {
 		logger.info("WeddingHallCtrl hallwriteAf" + new Date());
@@ -129,7 +156,7 @@ public class WeddingHallCtrl {
 		
 		
 		// 파일 이름만 저장할 공간
-		List<String> FileNameList = new ArrayList<>();
+		List<String> FileNameList = new ArrayList<String>();
 		
 		// 파일 업로드
 		for (int i = 0; i < upFileList.size(); i++) {
@@ -140,7 +167,7 @@ public class WeddingHallCtrl {
 				String newFileName = FUpUtil.getNewFile(oriFileName);
 				// TODO
 				FileNameList.add(newFileName);
-				System.out.println("--------> newFileName : " + FileNameList.get(i));
+				//System.out.println("--------> newFileName : " + FileNameList.get(i));
 				
 				// 파일 업로드
 				try {
@@ -152,12 +179,25 @@ public class WeddingHallCtrl {
 			}
 		}
 		
-		// 나머지 세부 정보 기입
-		WeddingHallDto whPd = wd.getHallPd();
-		System.out.println("---------------> " + whPd.toString());
+		System.out.println("------------>"+FileNameList.size());
 		
+		// 나머지 세부 정보 기입
+		WeddingHallDto hallPd = wd.getHallPd();
+		System.out.println(hallPd.toString());
+		boolean b = weddingHallServ.addHall(hallPd);
+		if(b) {
+			System.out.println("hall 추가성공");
+		}else {
+			System.out.println("hall 추가실패");
+		}
+		
+		// 홀 사진 넣기
+		weddingHallServ.addHallPicture(hallPd.getWhseq(), hallPd.getHallname(), FileNameList);
+		model.addAttribute("whseq", hallPd.getWhseq());
 		return "redirect:/hallView.do";
 	}
+	
+	
 	
 	
 	/*테스트*/

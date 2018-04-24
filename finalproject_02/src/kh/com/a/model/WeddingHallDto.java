@@ -7,19 +7,19 @@ DROP TABLE WD_WHALL CASCADE CONSTRAINTS;
 CREATE TABLE WD_WHALL(
     PDSEQ NUMBER(8) PRIMARY KEY,        -- 예식장별 상품 갯수
     WHSEQ NUMBER(8) NOT NULL,           -- 예식장 업체
-    HALLNAME VARCHAR2(50) NOT NULL,      -- 홀 이름
-    FLOOR VARCHAR2(5) NOT NULL,         -- 층
+    HALLNAME VARCHAR2(100) NOT NULL,      -- 홀 이름
+    FLOOR VARCHAR2(10) NOT NULL,         -- 층
     MINCOOK NUMBER(10) NOT NULL,          -- 최소가격(식대)
     MAXCOOK NUMBER(10) NOT NULL,          -- 최대가격(식대)
-    FORMAT VARCHAR2(5) NOT NULL,        -- 분리, 동시(식사와 같이 가능 여부)
-    FACILITY VARCHAR2(50) NOT NULL,     -- 시설 구분
+    FORMAT VARCHAR2(10) NOT NULL,        -- 분리, 동시(식사와 같이 가능 여부)
+    FACILITY VARCHAR2(500) NOT NULL,     -- 시설 구분
     MINPEOPLE NUMBER(10) NOT NULL,        -- 최대 인원수
     MAXPEOPLE NUMBER(10) NOT NULL,        -- 최소 인원수
-    SETPEOPLE VARCHAR2(10) NOT NULL,        -- 착석 인원수
+    SETPEOPLE NUMBER(10) NOT NULL,        -- 착석 인원수
     WSTEP VARCHAR2(10) NOT NULL,          -- 웨딩시간 간격
-    PAY VARCHAR2(10) NOT NULL,              -- 사용료
-    MENUTYPE VARCHAR2(50) NOT NULL,         -- 식사
-    DRINK VARCHAR2(5) NOT NULL,             -- 포함, 미포함
+    PAY VARCHAR2(500) NOT NULL,              -- 사용료
+    MENUTYPE VARCHAR2(100) NOT NULL,         -- 식사
+    DRINK VARCHAR2(10) NOT NULL,             -- 포함, 미포함
     OPENTIME VARCHAR2(500) NOT NULL,		    -- 오픈시간
 	CLOSETIME VARCHAR2(500) NOT NULL       -- 마감시간
 );
@@ -32,7 +32,7 @@ ALTER TABLE WD_WHALL
 ADD CONSTRAINT FK_WHALL_WHSEQ FOREIGN KEY(WHSEQ)
 REFERENCES WD_WEDDING(WHSEQ);
 */
-import java.util.Date;
+
 public class WeddingHallDto implements Serializable {
 	private int pdseq;
 	private int whseq;
@@ -44,7 +44,7 @@ public class WeddingHallDto implements Serializable {
 	private String facility;
 	private int minpeople;
 	private int maxpeople;
-	private String setpeople;
+	private int setpeople;
 	private String wstep;
 	private String pay;
 	private String menutype;
@@ -55,7 +55,7 @@ public class WeddingHallDto implements Serializable {
 	public WeddingHallDto() {}
 
 	public WeddingHallDto(int pdseq, int whseq, String hallname, String floor, int mincook, int maxcook, String format,
-			String facility, int minpeople, int maxpeople, String setpeople, String wstep, String pay, String menutype,
+			String facility, int minpeople, int maxpeople, int setpeople, String wstep, String pay, String menutype,
 			String drink, String opentime, String closetime) {
 		super();
 		this.pdseq = pdseq;
@@ -75,32 +75,6 @@ public class WeddingHallDto implements Serializable {
 		this.drink = drink;
 		this.opentime = opentime;
 		this.closetime = closetime;
-	}
-
-	
-
-	public String getOpentime() {
-		return opentime;
-	}
-
-	public void setOpentime(String opentime) {
-		this.opentime = opentime;
-	}
-
-	public String getClosetime() {
-		return closetime;
-	}
-
-	public void setClosetime(String closetime) {
-		this.closetime = closetime;
-	}
-
-	public String getSetpeople() {
-		return setpeople;
-	}
-
-	public void setSetpeople(String setpeople) {
-		this.setpeople = setpeople;
 	}
 
 	public int getPdseq() {
@@ -183,6 +157,14 @@ public class WeddingHallDto implements Serializable {
 		this.maxpeople = maxpeople;
 	}
 
+	public int getSetpeople() {
+		return setpeople;
+	}
+
+	public void setSetpeople(int setpeople) {
+		this.setpeople = setpeople;
+	}
+
 	public String getWstep() {
 		return wstep;
 	}
@@ -215,6 +197,22 @@ public class WeddingHallDto implements Serializable {
 		this.drink = drink;
 	}
 
+	public String getOpentime() {
+		return opentime;
+	}
+
+	public void setOpentime(String opentime) {
+		this.opentime = opentime;
+	}
+
+	public String getClosetime() {
+		return closetime;
+	}
+
+	public void setClosetime(String closetime) {
+		this.closetime = closetime;
+	}
+
 	@Override
 	public String toString() {
 		return "WeddingHallDto [pdseq=" + pdseq + ", whseq=" + whseq + ", hallname=" + hallname + ", floor=" + floor
@@ -223,6 +221,8 @@ public class WeddingHallDto implements Serializable {
 				+ wstep + ", pay=" + pay + ", menutype=" + menutype + ", drink=" + drink + ", opentime=" + opentime
 				+ ", closetime=" + closetime + "]";
 	}
+
+	
 
 	
 }

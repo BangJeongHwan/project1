@@ -59,13 +59,13 @@ td:nth-child(even) {
 				<tr>
 					<th>홀 이름</th>
 					<td>	
-						<input type="text" name="hallPd.hallname" id="_hallname" size="20">
+						<input type="text" name="hallPd.hallname" id="_hallname" size="20">&nbsp;&nbsp;&nbsp;&nbsp;<font id="_hnameCheckFld"></font>
 					</td>
 				</tr>
 				<tr>
-					<th>층</th>
+					<th>층 수</th>
 					<td>
-						<input type="text" name="hallPd.floor" id="_floor" size="20">
+						<input type="text" name="hallPd.floor" id="_floor" size="10">층
 					</td>
 				</tr>
 				
@@ -124,7 +124,7 @@ td:nth-child(even) {
 				<tr>
 					<th>착석 인원</th>
 					<td>
-						<input type="text" name="hallPd.setpeople" id="_setpeople" size="10">
+						<input type="text" name="hallPd.setpeople" id="_setpeople" size="10">명
 					 </td>
 				</tr>
 				 
@@ -154,7 +154,7 @@ td:nth-child(even) {
 						</div>
 						<div>
 							<!-- 사진 뿌려주기 -->
-							<img src="" >
+							<img id="_imgshow">
 						</div>
 					</td>
 				</tr>
@@ -197,7 +197,8 @@ td:nth-child(even) {
 				<tr>
 					<th>사용료</th>
 					<td>
-						 <input type="text" name="hallPd.pay" id="_pay" size="10">
+						 <input type="text" name="hallPd.pay" id="_pay" size="10">만원&nbsp;&nbsp;&nbsp;&nbsp;
+						 <font>※ 단위는 '만원' 입니다.</font>
 					</td>
 				</tr>
 				
@@ -225,6 +226,41 @@ td:nth-child(even) {
 		</div>
 	</div>
 </div>
+
+<!-- 홀 이름 체크 -->
+<script type="text/javascript">
+$(function () {
+	$("#_hallname").blur(function () {
+		var hallname="";
+		var hallnameArr = $("#_hallname").val().split(' ');
+		for(i=0;i<hallnameArr.length;i++){
+			hallname += hallnameArr[i];
+		}
+		
+		$.ajax({
+			url:"checkhallname.do",
+	        data:"hallname="+hallname,      // parameter 타입으로 이동
+	        success:function(msg){
+	        	if(hallname==""){
+	        		$("#_hnameCheckFld").text("※ 홀 이름을 입력해주세요!");
+	                $("#_hnameCheckFld").css("color","#ff0000");
+	        	}else if(msg.message=="true"){
+	        		$("#_hnameCheckFld").text("※ 해당되는 이름이 있습니다.");
+	                $("#_hnameCheckFld").css("color","#ff0000");
+	                $("#_hallname").val("");
+	        	}else{
+	        		$("#_hnameCheckFld").text("※ 사용가능합니다.");
+	                $("#_hnameCheckFld").css("color","#0000ff");
+	                $("#_hallname").val(hallname);
+	        	}
+	        },
+	        error:function(reqest, status, error){
+	            alert("실패");
+	        }
+		});
+	});
+});
+</script>
 
 
 <!-- 파일 업로드 -->
@@ -274,6 +310,7 @@ function fileSelect(selectFileIndex) {
 	}
 	
 	drawFileNameDiv();
+	//changeimg(fileName);
 }
 
 //파일 삭제 버튼 클릭
@@ -303,6 +340,13 @@ function drawFileNameDiv() {
 	
 	$("#_fileNameDiv").html(tagStr);
 }
+
+/* 
+function changeimg(fileName) {
+	fileName = "/uploadFile/"+fileName;
+	$("#_imgshow").attr("src","fileName");
+} 
+*/
 </script>
 
 
@@ -313,12 +357,11 @@ function drawFileNameDiv() {
 $(function () {
 	// 글쓰기 버튼 누를 시 실행
 	$("#_btnLogin").click(function () {
-		alert($("#_opentime option:selected").text());
 		
 		// checkbox check 된 값 받아오기(facility)
 		var facility="";
 		$("input[name=faci]:checked").each(function () {
-			facility += $(this).val();
+			facility += $(this).val().trim();
 			facility += " ";
 		});	
 		// 끝 문자열 자르기
@@ -337,7 +380,7 @@ $(function () {
 		// checkbox check 된 값 받아오기(menutype)
 		var menutype="";
 		$("input[name=menu]:checked").each(function () {
-			menutype += $(this).val();
+			menutype += $(this).val().trim();
 			menutype += " ";
 		});	
 		// 끝 문자열 자르기
@@ -354,15 +397,19 @@ $(function () {
 		
 		
 		// 숫자 판별하기(식대 가격, 수용 인원)
-		var mincook = $("#_mincook").val();
-		var maxcook = $("#_maxcook").val();
-		var minpeople = $("#_minpeople").val();
-		var maxpeople = $("#_maxpeople").val();
+		var mincook = $("#_mincook").val().trim();
+		var maxcook = $("#_maxcook").val().trim();
+		var minpeople = $("#_minpeople").val().trim();
+		var maxpeople = $("#_maxpeople").val().trim();
+		var floor = $("#_floor").val().trim();
+		var pay = $("#_pay").val().trim();
 		
-		if($("#_hallname").val()==""){
+		if($("#_hallname").val().trim()==""){
 			 alert("홀 이름을 입력해주세요!");
-		}else if($("#_floor").val()==""){
-			alert("층을 입력해주세요!");
+		}else if(floor=="" || !isNum(floor)){
+			$("#_floor").val("");
+			alert("층 수를 확인해주세요!");
+			$("#_floor").focus();
 		}else if(!faciTrue){	
 			alert("시설을 선택해주세요!");
 		}else if(!menuTrue){
@@ -389,20 +436,26 @@ $(function () {
             $("#_peopleCheckFld").css("color","#ff0000");
             $("#_maxpeople").val("");
 			$("#_maxpeople").focus();
-		}else if($("#_setpeople").val()=="" ){
-			alert("착석 인원수를 입력해주세요!");
+		}else if($("#_setpeople").val().trim()=="" || !isNum($("#_setpeople").val().trim())){
+			alert("착석 인원수를 확인해주세요!");
+			$("#_setpeople").val("");
 			$("#_setpeople").focus();
 		}else if($("#_opentime option:selected").text()=="" || $("#_closetime option:selected").text()==""){
 			alert("이용시간을 입력해주세요!");
-		}else if($("#_pay").val()==""){
-			alert("사용료를 입력해주세요!")
+		}else if(pay=="" || !isNum(pay)){
+			alert("사용료를 확인해주세요!");
+			$("#_pay").val("");
+			$("#_pay").focus();
 		}else if($("#_drink option:selected").text()==""){
 			alert("음주류 선택 여부를 선택해주세요!");
 		}else{
+			$("#_floor").val(floor+"층");
+			$("#_pay").val(pay+"만원");
 			$("#_frmForm").attr({"target":"_self", "action":"hallwriteAf.do"}).submit();
 		}
 	});	
 });
+
 // 숫자 판별(숫자면 true)
 function isNum(num){
 	for( var i = 0; i <= num.length -1 ; i++ ) {

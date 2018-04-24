@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
 import kh.com.a.service.WeddingHallServ;
@@ -40,5 +41,29 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public List<WeddingHallDto> getHallList(int whseq) {
 		return weddingHallDao.getHallList(whseq);
 	}
+	
+	// 홀 이름 체크
+	@Override
+	public boolean checkHallName(String hallname) {
+		return weddingHallDao.checkHallName(hallname);
+	}
+	
+	// hall 추가
+	@Override
+	public boolean addHall(WeddingHallDto wdPd) {
+		return weddingHallDao.addHall(wdPd);
+	}
+
+	// 홋 사진 넣기
+	@Override
+	public void addHallPicture(int whseq, String hallname, List<String> FileNameList) {
+		weddingHallDao.addHallPicture(whseq, hallname, FileNameList);
+	}
+
+	@Override
+	public List<WHallPictureDto> getHallPicList(int whseq) {
+		return weddingHallDao.getHallPicList(whseq);
+	}
+
 	
 }

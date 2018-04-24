@@ -119,8 +119,8 @@
 				<col width="15%"> <!-- 형태/시설구분 -->	
 				<col width="15%"> <!-- 인원 -->
 				<col width="10%"> <!-- 간격 -->
-				<col width="15%"> <!-- 사용료 -->
-				<col width="5%"> <!-- 메뉴 -->
+				<col width="10%"> <!-- 사용료 -->
+				<col width="10%"> <!-- 메뉴 -->
 				<col width="15%"> <!-- 식대 -->
 				<col width="15%"> <!-- 음주류 -->
 			</colgroup>
@@ -128,19 +128,21 @@
 			<tr>
 				<th>요일</th><th>형태/시설구분</th><th>인원</th><th>간격</th><th>사용료</th><th>메뉴</th><th>식대</th><th>음주류</th>
 			
-			<tr>
-				<td colspan="8" style="background-color: #F5F5F5;">홀명/층수</td>
-			</tr>
-			<tr>
-				<td>월~일</td>
-				<td>형태<br>/<br>시설구분</td>
-				<td>최소 : 300명<br>착석 : 300명<br>최대 : 300명</td>
-				<td>간격</td>
-				<td>사용료<br>최소요금<br>최대요금</td>
-				<td>메뉴</td>
-				<td>식대최소<br>식대최대</td>
-				<td>음주류(포함)</td>
-			</tr>
+			<c:forEach var="hall" items="${hallList }">
+				<tr>
+					<td colspan="8" style="background-color: #F5F5F5;">${hall.hallname }/${hall.floor }</td>
+				</tr>
+				<tr>
+					<td>월~일</td>
+					<td>${hall.format }<br>/<br>${hall.facility }</td>
+					<td>최소 : ${hall.minpeople }명<br>착석 : ${hall.setpeople }명<br>최대 : ${hall.maxpeople}명</td>
+					<td>${hall.wstep }</td>
+					<td>${hall.pay }</td>
+					<td>${hall.menutype }</td>
+					<td>${hall.mincook }<br>${hall.maxcook }</td>
+					<td>${hall.drink }</td>
+				</tr>
+			</c:forEach>
 		</table>
 		</div>
 	</div>
@@ -165,17 +167,18 @@
 	
 	<div align="center" style="width: 100%; background-color: #F5F5F5;">	
 		<br><br>
+		
+		<c:forEach var="hpic" items="${hallPicList }">
+			
+		</c:forEach>
+		
 		<!-- 여러 이미지 추가 -->
 		<img alt="이미지 없음" src="assets/images/wedding/63img1_s.jpg" onclick="imgChange(1)" id="simg1">
-		<img alt="이미지 없음" src="assets/images/wedding/63img2_s.jpg" onclick="imgChange(2)" id="simg2">
-		<img alt="이미지 없음" src="assets/images/wedding/63img3_s.jpg" onclick="imgChange(3)" id="simg3">
-		<img alt="이미지 없음" src="assets/images/wedding/63img4_s.jpg" onclick="imgChange(4)" id="simg4">
-		<img alt="이미지 없음" src="assets/images/wedding/63img5_s.jpg" onclick="imgChange(5)" id="simg5">
-		<img alt="이미지 없음" src="assets/images/wedding/63img6_s.jpg" onclick="imgChange(6)" id="simg6">
 		<br><br>
 		<!-- 메인 이미지 -->
-		<img src="assets/images/wedding/63img1_b.jpg" style="width: 70%; height: 50%">
+		<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
 	</div>
+	
 </div>	
 
 
