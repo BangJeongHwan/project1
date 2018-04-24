@@ -20,11 +20,18 @@ tr{
 }
 td{
 	 background-color:#F8F8F8;
-	 align-content: center;
+}
+th{
+	 background-color:#F8F8F8;
+	text-align:center;
 }
 td:nth-child(even) {
     background-color:white;
 }
+
+.btn_both{overflow:hidden;clear:both;width:100%;padding-top: 0px;} 
+.btn_both .fl{float:left} 
+
 </style>
 
 <div class="container">
@@ -38,33 +45,34 @@ td:nth-child(even) {
 	<div class="sectionContent">
 		<div class="row" align="center">
 		
-			<!-- action = "weddingwriteAf.do" -->
+			<!-- action = "hallwriteAf.do" -->
 			<form name="frmForm" id="_frmForm" action="#none" method="post" 
 			enctype="multipart/form-data">
-					
-			<input type="hidden" name="whseq" value="${wd.whseq }">		
+			
+			<!-- 글 번호 -->
+			<input type="hidden" name="hallPd.whseq" value="${wd.whseq }">		
 			
 			<table class="list_table" style="width:85%;">
 				<colgroup>
 					<col width="20%"><col width="30%">
 				</colgroup>
 				<tr>
-					<td>홀 이름</td>
-					<td>
-						<input type="text" name="hallname" id="_hallname" size="20"><font id="_hallnameCheckFld"></font>
+					<th>홀 이름</th>
+					<td>	
+						<input type="text" name="hallPd.hallname" id="_hallname" size="20">
 					</td>
 				</tr>
 				<tr>
-					<td>층</td>
+					<th>층</th>
 					<td>
-						<input type="text" name="cname" id="_cname" size="20">
+						<input type="text" name="hallPd.floor" id="_floor" size="20">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>시설 구분</td>
+					<th>시설 구분</th>
 					<td>
-						<input type="hidden" name="facility" id="_facility">
+						<input type="hidden" name="hallPd.facility" id="_facility">
 						<input type="checkbox" name="faci" value=컨벤션>컨벤션&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="호텔">호텔&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="채플">채플&nbsp;&nbsp;
@@ -76,25 +84,9 @@ td:nth-child(even) {
 				</tr>
 				
 				<tr>
-					<td>이용시간</td>
+					<th>음식 종류</th>
 					<td>
-						<select id="_regtime" name="regtime">
-							<%-- <c:forEach ></c:forEach> --%>
-							<option value="50분" selected="selected">50분</option>
-							<option value="60분">60분</option>
-							<option value="70분">70분</option>
-							<option value="80분">80분</option>
-							<option value="90분">90분</option>
-							<option value="100분">100분</option>
-							<option value="110분">110분</option>
-						</select>
-					</td>
-				</tr>
-				
-				<tr>
-					<td>음식 종류</td>
-					<td>
-						<input type="hidden" name="menutype" id="_menutype">
+						<input type="hidden" name="hallPd.menutype" id="_menutype">
 						<input type="checkbox" name="menu" value="뷔페">뷔페&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="양식">양식&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="한식">한식&nbsp;&nbsp;
@@ -105,17 +97,17 @@ td:nth-child(even) {
 				</tr>
 				
 				<tr>
-					<td>식대 가격대</td>
-					<td><input type="text" name="mincook" id="_mincook" size="10" value="${wd.mincook }">원
-					 ~ <input type="text" name="maxcook" id="_maxcook" size="10" value="${wd.maxcook }">원
+					<th>식대 가격대</th>
+					<td><input type="text" name="hallPd.mincook" id="_mincook" size="10" value="${wd.mincook }">원
+					 ~ <input type="text" name="hallPd.maxcook" id="_maxcook" size="10" value="${wd.maxcook }">원
 					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_cookCheckFld">※ 최소 가격 ~ 최대 가격 순으로 입력해주세요!</font>
 					 </td>
 				</tr>
 				
 				<tr>
-					<td>식사 동시 가능 여부</td>
+					<th>식사 동시 가능 여부</th>
 					<td>
-						<select id="_format" name="format">
+						<select id="_format" name="hallPd.format">
 							<option value="분리" selected="selected">분리</option>
 							<option value="동시">동시</option>
 						</select>
@@ -123,45 +115,96 @@ td:nth-child(even) {
 				</tr>
 				
 				<tr>
-					<td>수용 인원 범위</td>
-					<td><input type="text" name="minpeople" id="_minpeople" size="10" value="${wd.minpeople }">명
-					 ~ <input type="text" name="maxpeople" id="_maxpeople" size="10" value="${wd.maxpeople }">명
+					<th>수용 인원 범위</th>
+					<td><input type="text" name="hallPd.minpeople" id="_minpeople" size="10" value="${wd.minpeople }">명
+					 ~ <input type="text" name="hallPd.maxpeople" id="_maxpeople" size="10" value="${wd.maxpeople }">명
 					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_peopleCheckFld">※ 최소 인원 ~ 최대인원 순으로 입력해주세요!</font>
 					 </td>
 				</tr>
 				<tr>
-					<td>수용 인원 범위, 착석 인원</td>
+					<th>착석 인원</th>
 					<td>
-						<input type="text" name="setpeople" id="_setpeople" size="10">
+						<input type="text" name="hallPd.setpeople" id="_setpeople" size="10">
 					 </td>
 				</tr>
 				 
 				<tr style="height: 500px">
-					<td>사진 업로드</td>
-					<td style="text-align: left">
-						<!-- 사진 추가를 누를 때 추가 할 수 있도록 할 예정 -->
-						<!-- <button type="button" id="_fileBtn">사진 추가</button> -->
-						<input type="file" name="fileload" id="_fileload" style=" width : 400px;">
+					<th>사진 업로드</th>
+					<td style="text-align: left" class="btn_both">
+						<div class="fl">
+							<button type="button" id="_fileBtn" onclick="fileBtn()">사진 선택</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<font>※  최대 15개까지 가능합니다.</font>
+							<!--  style="display:none;" -->
+							<input type="file" name="fileList[0]" id="_fileList0" onchange="fileSelect(0)" style="display:none;">
+							<input type="file" name="fileList[1]" id="_fileList1" onchange="fileSelect(1)" style="display:none;">
+							<input type="file" name="fileList[2]" id="_fileList2" onchange="fileSelect(2)" style="display:none;">
+							<input type="file" name="fileList[3]" id="_fileList3" onchange="fileSelect(3)" style="display:none;">
+							<input type="file" name="fileList[4]" id="_fileList4" onchange="fileSelect(4)" style="display:none;">
+							<input type="file" name="fileList[5]" id="_fileList5" onchange="fileSelect(5)" style="display:none;">
+							<input type="file" name="fileList[6]" id="_fileList6" onchange="fileSelect(6)" style="display:none;">
+							<input type="file" name="fileList[7]" id="_fileList7" onchange="fileSelect(7)" style="display:none;">
+							<input type="file" name="fileList[8]" id="_fileList8" onchange="fileSelect(8)" style="display:none;">
+							<input type="file" name="fileList[9]" id="_fileList9" onchange="fileSelect(9)" style="display:none;">
+							<input type="file" name="fileList[10]" id="_fileList10" onchange="fileSelect(10)" style="display:none;">
+							<input type="file" name="fileList[11]" id="_fileList11" onchange="fileSelect(11)" style="display:none;">
+							<input type="file" name="fileList[12]" id="_fileList12" onchange="fileSelect(12)" style="display:none;">
+							<input type="file" name="fileList[13]" id="_fileList13" onchange="fileSelect(13)" style="display:none;">
+							<input type="file" name="fileList[14]" id="_fileList14" onchange="fileSelect(14)" style="display:none;">
+							<div id="_fileNameDiv" style="padding:10px; border:1px solic black;"></div>
+						</div>
+						<div>
+							<!-- 사진 뿌려주기 -->
+							<img src="" >
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>웨딩 간격</td>
+					<th>오픈, 마감 시간</th>
 					<td>
-						 <input type="text" name="wstep" id="_wstep" size="10">
+						<select id="_opentime" name="hallPd.opentime">
+							<c:forEach var="i" begin="1" end="23" step="1">
+								<c:if test="${i==9 }">
+									<option value="${i }" selected="selected">${i }시</option>
+								</c:if>
+								<c:if test="${i!=9 }">
+									<option value="${i }">${i }시</option>
+								</c:if>
+							</c:forEach>
+						</select>
+						~
+						<select id="_closetime" name="hallPd.closetime">
+							<c:forEach var="i" begin="1" end="23" step="1">
+								<c:if test="${i==20 }">
+									<option value="${i }" selected="selected">${i }시</option>
+								</c:if>
+								<c:if test="${i!=20 }">
+									<option value="${i }">${i }시</option>
+								</c:if>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>이용 시간</th>
+					<td>
+						<select id="_wstep" name="hallPd.wstep">
+							<c:forEach var="i" begin="40" end="200" step="10">
+								<option value="${i }분">${i }분</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>				
+				<tr>
+					<th>사용료</th>
+					<td>
+						 <input type="text" name="hallPd.pay" id="_pay" size="10">
 					</td>
 				</tr>
 				
 				<tr>
-					<td>사용료</td>
+					<th>음주류 포함 여부</th>
 					<td>
-						 <input type="text" name="wstep" id="_wstep" size="10">
-					</td>
-				</tr>
-				
-				<tr>
-					<td>음주류 포함 여부</td>
-					<td>
-						<select id="_drink" name="drink">
+						<select id="_drink" name="hallPd.drink">
 							<option value="포함" selected="selected">포함</option>
 							<option value="미포함">미포함</option>
 						</select>
@@ -183,17 +226,119 @@ td:nth-child(even) {
 	</div>
 </div>
 
+
+<!-- 파일 업로드 -->
+<script type="text/javascript">
+
+var fileSize = 0;
+var fileNameArray = new Array("", "", "", "", "", "", "", "", "", "","","","","","");
+
+//파일 선택버튼 클릭시
+function fileBtn() {
+	for (var i = 0; i < fileNameArray.length; i++) {
+		if (fileNameArray[i] == "") {
+			var inputFileId = "#_fileList" + i;
+			$(inputFileId).click();
+			break;
+		}
+	}
+}
+
+//파일선택시
+function fileSelect(selectFileIndex) {
+	if (fileNameArray[selectFileIndex] == "") {
+		fileSize++;
+	}
+	var inputFileId = "#_fileList" + selectFileIndex;
+	var path = $(inputFileId).val();
+	var idx = path.lastIndexOf("\\");
+	if (idx == -1) {
+		idx = path.lastIndexOf("/");
+	}
+	var fileName = path.substring(idx + 1);
+	
+	// 본래 있던 파일이 삭제되면
+	if (fileName.trim() == "" && fileNameArray[selectFileIndex] != "") {
+		alert("delete");
+		fileSize--;
+		fileNameArray[selectFileIndex] = "";
+	} else {
+		fileNameArray[selectFileIndex] = fileName;
+	}
+	
+	//파일사이즈 10이면 버튼 비활성화
+	if (fileSize >= 15) {
+		$("#_fileBtn").attr("disabled", "disabled");
+	} else {
+		$("#_fileBtn").removeAttr("disabled");
+	}
+	
+	drawFileNameDiv();
+}
+
+//파일 삭제 버튼 클릭
+function delfile(i){
+	var inputFileId = "#_fileList" + i;
+	$(inputFileId).remove();
+	fileNameArray[i] = "";
+	fileSize--;
+	$("#_fileBtn").removeAttr("disabled");
+	
+	var inputFileTagStr = "<input type='file' name='fileList[" + i +"]' id='_fileList"+ i +"' onchange='fileSelect("+ i +")' style='display:none;'>";
+	$(inputFileTagStr).insertBefore($("#_fileNameDiv"));
+
+	drawFileNameDiv();
+}
+
+//_fileNameDiv 생성
+function drawFileNameDiv() {
+	var tagStr = "";
+	for (var i = 0; i < 15; i++) {
+		if (fileNameArray[i] != "") {
+			tagStr += "<button type='button' onclick='delfile(" + i +")'>삭제</button>&nbsp;&nbsp;";
+			tagStr += fileNameArray[i];
+			tagStr += "<br>";
+		}
+	}
+	
+	$("#_fileNameDiv").html(tagStr);
+}
+</script>
+
+
+
+
+<!-- 공백 체크 -->
 <script>
 $(function () {
 	// 글쓰기 버튼 누를 시 실행
 	$("#_btnLogin").click(function () {
+		alert($("#_opentime option:selected").text());
 		
+		// checkbox check 된 값 받아오기(facility)
+		var facility="";
+		$("input[name=faci]:checked").each(function () {
+			facility += $(this).val();
+			facility += " ";
+		});	
+		// 끝 문자열 자르기
+		var len = facility.length;
+		facility=facility.substr(0,len-1);
 		
-		// checkbox check 된 값 받아오기
+		// menutype에 값 넣기
+		var faciTrue=true;
+		if(menutype==""){
+			faciTrue=false;
+		}else{
+			$("#_facility").val(facility);
+		}
+				
+		
+		// checkbox check 된 값 받아오기(menutype)
 		var menutype="";
 		$("input[name=menu]:checked").each(function () {
 			menutype += $(this).val();
-			menutype += "/";
+			menutype += " ";
 		});	
 		// 끝 문자열 자르기
 		var len = menutype.length;
@@ -214,125 +359,50 @@ $(function () {
 		var minpeople = $("#_minpeople").val();
 		var maxpeople = $("#_maxpeople").val();
 		
-		if($("#_cid").val()==""||$("#_cname").val()==""||$("#_address").val()==""){
-			 $("#_cidCheckFld").text("※ 아이디를 입력해주세요!");
-             $("#_cidCheckFld").css("color","#ff0000");
-             $("#_cid").focus();
+		if($("#_hallname").val()==""){
+			 alert("홀 이름을 입력해주세요!");
+		}else if($("#_floor").val()==""){
+			alert("층을 입력해주세요!");
+		}else if(!faciTrue){	
+			alert("시설을 선택해주세요!");
 		}else if(!menuTrue){
-			alert("음식 종류를 체크해주세요");
-		}else if(mincook=="" && !isNum(mincook)){
+			alert("메뉴를 선택해주세요!");		
+		}else if($("#_format option:selected").text()==""){
+			alert("식사 동시 가능 여부를 선택해주세요!");
+		}else if(mincook=="" || !isNum(mincook)){
 			$("#_cookCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_cookCheckFld").css("color","#ff0000");
 			$("#_mincook").val("");
 			$("#_mincook").focus();
-		}else if(maxcook=="" && !isNum(maxcook)){
+		}else if(maxcook=="" || !isNum(maxcook)){
 			$("#_cookCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_cookCheckFld").css("color","#ff0000");
             $("#_maxcook").val("");
 			$("#_maxcook").focus();
-		}else if(minpeople=="" && !isNum(minpeople)){
+		}else if(minpeople=="" || !isNum(minpeople)){
 			$("#_peopleCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_peopleCheckFld").css("color","#ff0000");
             $("#_minpeople").val("");
 			$("#_minpeople").focus();
-		}else if(maxpeople=="" && !isNum(maxpeople)){
+		}else if(maxpeople=="" || !isNum(maxpeople)){
 			$("#_peopleCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_peopleCheckFld").css("color","#ff0000");
             $("#_maxpeople").val("");
 			$("#_maxpeople").focus();
-		}else if($("#_fileload").val()=="" || $("#_fileload").val()==null){	// 사진 미 추가시
-			alert("사진을 추가해주세요!");
-		}else if($("#_content").val()==""){	// 소개 내용 미입력시
-			alert("소개 내용을 입력해주세요!");
-			$("#_content").focus();
+		}else if($("#_setpeople").val()=="" ){
+			alert("착석 인원수를 입력해주세요!");
+			$("#_setpeople").focus();
+		}else if($("#_opentime option:selected").text()=="" || $("#_closetime option:selected").text()==""){
+			alert("이용시간을 입력해주세요!");
+		}else if($("#_pay").val()==""){
+			alert("사용료를 입력해주세요!")
+		}else if($("#_drink option:selected").text()==""){
+			alert("음주류 선택 여부를 선택해주세요!");
 		}else{
-			alert("위도 : "+$("#_latitude").val());
-			alert("경도 : "+$("#_longitude").val());
-			$("#_frmForm").attr({"target":"_self", "action":"weddingwriteAf.do"}).submit();
+			$("#_frmForm").attr({"target":"_self", "action":"hallwriteAf.do"}).submit();
 		}
-			
-		
-	
-	});
-	
-	// 회사id 체크해 회사명과 주소 넣기
-	$("#_cid").blur(function () {
-		cidcheck($("#_cid").val());
-	});
-	
-	// 등급올리기
-	$("#_upGradeBtn").click(function () {
-		$.ajax({
-	        type:"get",
-	        url:"upCompanyGrade.do",
-	        data:"cid="+$("#_cid").val(),      // parameter 타입으로 이동
-	        success:function(){
-	        	cidcheck($("#_cid").val());
-	        },
-	        error:function(reqest, status, error){
-	           alert("실패");
-	        }
-	   });
-	});
-	
+	});	
 });
-// 실제로 위도 경도 받는 부분
-function getLatLong(addr){
-	$.ajax({
-		url:"http://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&address="+addr,
-		type:"get",
-		dataType:"json",
-		success:function(e){
-			if(e.status=="OK"){
-				var geo = e.results[0].geometry.location;
-				//alert("위도1 : "+geo.lat+" 경도1 : "+geo.lng);
-				$("#_latitude").val(geo.lat);
-				$("#_longitude").val(geo.lng);
-			}else{
-				alert("위치 정보가 없습니다.");
-			}
-		},
-		error:function(reqest, status, error){
-           alert("위치를 찾을 수 없습니다.");
-        }
-	});
-}
-
-// 실제 id 체크해주는 부분
-function cidcheck(cid){
-	$.ajax({
-        type:"get",
-        url:"checkCompanyGrade.do",
-        data:"cid="+cid,      // parameter 타입으로 이동
-        success:function(msg){
-           if(msg.message=="null"){
-              $("#_cidCheckFld").text("※ 해당되는 아이디가 없습니다.");
-              $("#_cidCheckFld").css("color","#ff0000");
-              $("#_cid").val("");
-              $("#_cname").val("");
-              $("#_address").val("");
-              $("#_upGradeBtn").attr("style","display: none");
-           }else if(msg.message=="false"){
-           	$("#_cidCheckFld").text("※ 회사 등급이 낮습니다.");
-           	$("#_cidCheckFld").css("color","#ff0000");
-           	$("#_upGradeBtn").removeAttr("style");
-           	$("#_cname").val("");
-            $("#_address").val("");
-           }else{
-           	$("#_cidCheckFld").text("일치하는 ID를 찾았습니다.");
-           	$("#_cidCheckFld").css("color","#0000ff");
-           	$("#_cname").val(msg.message.cname);
-           	$("#_address").val(msg.message.address);
-           	$("#_upGradeBtn").attr("style","display: none");
-           	getLatLong(msg.message.address);
-           }
-        },
-        error:function(reqest, status, error){
-           alert("실패");
-        }
-   });
-}
-
 // 숫자 판별(숫자면 true)
 function isNum(num){
 	for( var i = 0; i <= num.length -1 ; i++ ) {

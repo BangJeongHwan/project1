@@ -2,6 +2,7 @@ package kh.com.a.model;
 
 import java.io.Serializable;
 /*
+-- 예식장 웨딩홀 --
 DROP TABLE WD_WHALL CASCADE CONSTRAINTS;
 CREATE TABLE WD_WHALL(
     PDSEQ NUMBER(8) PRIMARY KEY,        -- 예식장별 상품 갯수
@@ -19,13 +20,13 @@ CREATE TABLE WD_WHALL(
     PAY VARCHAR2(10) NOT NULL,              -- 사용료
     MENUTYPE VARCHAR2(50) NOT NULL,         -- 식사
     DRINK VARCHAR2(5) NOT NULL,             -- 포함, 미포함
-    REGTIME VARCHAR2(50) NOT NULL,           -- 이용시간
-    RDATE DATE NOT NULL                   -- 등록일
+    OPENTIME VARCHAR2(500) NOT NULL,		    -- 오픈시간
+	CLOSETIME VARCHAR2(500) NOT NULL       -- 마감시간
 );
 
 DROP SEQUENCE SEQ_WH_PDSEQ;
 CREATE SEQUENCE SEQ_WH_PDSEQ
-START WITH 1000 INCREMENT BY 1;
+START WITH 1000 MAXVALUE 1999 INCREMENT BY 1;
 
 ALTER TABLE WD_WHALL
 ADD CONSTRAINT FK_WHALL_WHSEQ FOREIGN KEY(WHSEQ)
@@ -43,18 +44,19 @@ public class WeddingHallDto implements Serializable {
 	private String facility;
 	private int minpeople;
 	private int maxpeople;
+	private String setpeople;
 	private String wstep;
 	private String pay;
 	private String menutype;
 	private String drink;
-	private String regtime;
-	private Date rdate;
+	private String opentime;
+	private String closetime;
 	
 	public WeddingHallDto() {}
 
 	public WeddingHallDto(int pdseq, int whseq, String hallname, String floor, int mincook, int maxcook, String format,
-			String facility, int minpeople, int maxpeople, String wstep, String pay, String menutype,
-			String drink, String regtime, Date rdate) {
+			String facility, int minpeople, int maxpeople, String setpeople, String wstep, String pay, String menutype,
+			String drink, String opentime, String closetime) {
 		super();
 		this.pdseq = pdseq;
 		this.whseq = whseq;
@@ -66,12 +68,39 @@ public class WeddingHallDto implements Serializable {
 		this.facility = facility;
 		this.minpeople = minpeople;
 		this.maxpeople = maxpeople;
+		this.setpeople = setpeople;
 		this.wstep = wstep;
 		this.pay = pay;
 		this.menutype = menutype;
 		this.drink = drink;
-		this.regtime = regtime;
-		this.rdate = rdate;
+		this.opentime = opentime;
+		this.closetime = closetime;
+	}
+
+	
+
+	public String getOpentime() {
+		return opentime;
+	}
+
+	public void setOpentime(String opentime) {
+		this.opentime = opentime;
+	}
+
+	public String getClosetime() {
+		return closetime;
+	}
+
+	public void setClosetime(String closetime) {
+		this.closetime = closetime;
+	}
+
+	public String getSetpeople() {
+		return setpeople;
+	}
+
+	public void setSetpeople(String setpeople) {
+		this.setpeople = setpeople;
 	}
 
 	public int getPdseq() {
@@ -186,27 +215,14 @@ public class WeddingHallDto implements Serializable {
 		this.drink = drink;
 	}
 
-	public String getRegtime() {
-		return regtime;
-	}
-
-	public void setRegtime(String regtime) {
-		this.regtime = regtime;
-	}
-
-	public Date getRdate() {
-		return rdate;
-	}
-
-	public void setRdate(Date rdate) {
-		this.rdate = rdate;
-	}
-
 	@Override
 	public String toString() {
 		return "WeddingHallDto [pdseq=" + pdseq + ", whseq=" + whseq + ", hallname=" + hallname + ", floor=" + floor
 				+ ", mincook=" + mincook + ", maxcook=" + maxcook + ", format=" + format + ", facility=" + facility
-				+ ", minpeople=" + minpeople + ", maxpeople=" + maxpeople + ", wstep=" + wstep + ", pay=" + pay
-				+ ", menutype=" + menutype + ", drink=" + drink + ", regtime=" + regtime + ", rdate=" + rdate + "]";
+				+ ", minpeople=" + minpeople + ", maxpeople=" + maxpeople + ", setpeople=" + setpeople + ", wstep="
+				+ wstep + ", pay=" + pay + ", menutype=" + menutype + ", drink=" + drink + ", opentime=" + opentime
+				+ ", closetime=" + closetime + "]";
 	}
+
+	
 }

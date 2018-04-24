@@ -189,22 +189,22 @@ $(function () {
              $("#_cid").focus();
 		}else if(!menuTrue){
 			alert("음식 종류를 체크해주세요");
-		}else if(mincook=="" && !isNum(mincook)){
+		}else if(mincook=="" || !isNum(mincook)){
 			$("#_cookCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_cookCheckFld").css("color","#ff0000");
 			$("#_mincook").val("");
 			$("#_mincook").focus();
-		}else if(maxcook=="" && !isNum(maxcook)){
+		}else if(maxcook=="" || !isNum(maxcook)){
 			$("#_cookCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_cookCheckFld").css("color","#ff0000");
             $("#_maxcook").val("");
 			$("#_maxcook").focus();
-		}else if(minpeople=="" && !isNum(minpeople)){
+		}else if(minpeople=="" || !isNum(minpeople)){
 			$("#_peopleCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_peopleCheckFld").css("color","#ff0000");
             $("#_minpeople").val("");
 			$("#_minpeople").focus();
-		}else if(maxpeople=="" && !isNum(maxpeople)){
+		}else if(maxpeople=="" || !isNum(maxpeople)){
 			$("#_peopleCheckFld").text("※ 숫자를 입력해주세요!");
             $("#_peopleCheckFld").css("color","#ff0000");
             $("#_maxpeople").val("");

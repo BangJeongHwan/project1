@@ -2,6 +2,7 @@ package kh.com.a.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.WdParam;
 import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.FUpUtil;
 
@@ -112,6 +114,51 @@ public class WeddingHallCtrl {
 		model.addAttribute("wd", wd);
 		return "hallwrite.tiles";
 	}
+	
+	@RequestMapping(value="hallwriteAf.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String hallwriteAf(Model model, WdParam wd, HttpServletRequest req) {
+		logger.info("WeddingHallCtrl hallwriteAf" + new Date());
+		
+		// 전달받은 파일 리스트(size 고정) 중 value가 null인 것을 제외한 리스트 생성
+		List<MultipartFile> upFileList = new ArrayList<>();
+		for (int i = 0; i < wd.getFileList().size(); i++) {
+			if (wd.getFileList().get(i).getSize() != 0) {
+				upFileList.add(wd.getFileList().get(i));
+			}
+		}
+		
+		
+		// 파일 이름만 저장할 공간
+		List<String> FileNameList = new ArrayList<>();
+		
+		// 파일 업로드
+		for (int i = 0; i < upFileList.size(); i++) {
+			MultipartFile fileload = upFileList.get(i);
+			String oriFileName = fileload.getOriginalFilename();
+			if (oriFileName != null && !oriFileName.trim().equals("")) {
+				String fupload = req.getServletContext().getRealPath("/upload");	// tomcat
+				String newFileName = FUpUtil.getNewFile(oriFileName);
+				// TODO
+				FileNameList.add(newFileName);
+				System.out.println("--------> newFileName : " + FileNameList.get(i));
+				
+				// 파일 업로드
+				try {
+					File file = new File(fupload + "/" + newFileName);
+					FileUtils.writeByteArrayToFile(file, fileload.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// 나머지 세부 정보 기입
+		WeddingHallDto whPd = wd.getHallPd();
+		System.out.println("---------------> " + whPd.toString());
+		
+		return "redirect:/hallView.do";
+	}
+	
 	
 	/*테스트*/
 	/*

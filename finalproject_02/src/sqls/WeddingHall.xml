@@ -29,13 +29,13 @@
 	<!-- hall list -->
 	<insert id="addHall" parameterType="kh.com.a.model.WeddingHallDto">
 		INSERT INTO WD_WHALL(PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 
-			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, REGTIME, RDATE)
+			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, OPENTIME, CLOSETIME)
 		VALUES(SEQ_WH_PDSEQ.NEXTVAL, #{whseq}, #{hallname}, #{floor}, #{mincook}, #{maxcook}, #{format}, #{facility}, 
-			#{minpeople}, #{maxpeople}, #{wstep}, #{pay}, #{menutype}, #{drink}, #{regtime}, SYSDATE)
+			#{minpeople}, #{maxpeople}, #{wstep}, #{pay}, #{menutype}, #{drink}, #{opentime}, #{closetime})
 	</insert>
 	<select id="getHallList" resultType="kh.com.a.model.WeddingHallDto">
 		SELECT PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 
-			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, REGTIME, RDATE
+			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, OPENTIME, CLOSETIME
 		FROM WD_WHALL
 		ORDER BY PDSEQ DESC
 	</select>

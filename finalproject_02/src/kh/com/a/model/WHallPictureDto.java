@@ -14,14 +14,14 @@ ALTER TABLE WD_HALL_PICTURE
 ADD CONSTRAINT FK_HALLPICTURE_WHSEQ FOREIGN KEY(WHSEQ)
 REFERENCES WD_WEDDING(WHSEQ);
 */
-public class HallPictureDto implements Serializable {
+public class WHallPictureDto implements Serializable {
 	private int whseq;
 	private String hallname;
 	private String picture;
 	
-	public HallPictureDto() {}
+	public WHallPictureDto() {}
 
-	public HallPictureDto(int whseq, String hallname, String picture) {
+	public WHallPictureDto(int whseq, String hallname, String picture) {
 		super();
 		this.whseq = whseq;
 		this.hallname = hallname;
