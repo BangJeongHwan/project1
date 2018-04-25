@@ -12,6 +12,7 @@ import kh.com.a.dao.WeddingHallDao;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.WHallPicSumVO;
 
 @Repository
 public class WeddingHallDaoImpl implements WeddingHallDao {
@@ -69,18 +70,32 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList) {
 		WHallPictureDto hallpic;
 		for(int i=0;i<FileNameList.size();i++) {
-			hallpic = new WHallPictureDto(whseq, hallname, FileNameList.get(i));
+			hallpic = new WHallPictureDto(0, whseq, hallname, FileNameList.get(i));
 			System.out.println(hallpic.toString());
 			sqlSession.insert(ns+"addHallPicture", hallpic);
 		}
 		
 	}
 	
-	// 사진 List 출력
+	// 홀이름과 사진수
 	@Override
-	public List<WHallPictureDto> getHallPicList(int whseq) {
-		return sqlSession.selectList(ns+"getHallPicList", whseq);
+	public List<WHallPicSumVO> getHallSumList(int whseq) {
+		return sqlSession.selectList(ns+"getHallSumList", whseq);
+	}
+	
+	// 모든 홀 사진 출력
+	public List<WHallPictureDto> getAllHallPicList(int whseq){
+		return sqlSession.selectList(ns+"getAllHallPicList", whseq);
 	}
 
+	// 해당되는 홀 사진만 출력
+	@Override
+	public List<WHallPictureDto> getHallPicList(String hallname,int whseq) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("hallname", hallname);
+		map.put("whseq", whseq);
+		
+		return sqlSession.selectList(ns+"getHallPicList", map);
+	}
 	
 }

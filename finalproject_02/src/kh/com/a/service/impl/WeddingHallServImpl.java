@@ -9,6 +9,7 @@ import kh.com.a.dao.WeddingHallDao;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.service.WeddingHallServ;
 
 @Service
@@ -59,10 +60,23 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList) {
 		weddingHallDao.addHallPicture(whseq, hallname, FileNameList);
 	}
-
+	
+	// 홀이름과 사진수
 	@Override
-	public List<WHallPictureDto> getHallPicList(int whseq) {
-		return weddingHallDao.getHallPicList(whseq);
+	public List<WHallPicSumVO> getHallSumList(int whseq) {
+		return weddingHallDao.getHallSumList(whseq);
+	}
+
+	// 모든 홀 사진 출력
+	@Override
+	public List<WHallPictureDto> getAllHallPicList(int whseq) {
+		return weddingHallDao.getAllHallPicList(whseq);
+	}
+
+	// 해당되는 홀 사진만 출력
+	@Override
+	public List<WHallPictureDto> getHallPicList(String hallname, int whseq) {
+		return weddingHallDao.getHallPicList(hallname, whseq);
 	}
 
 	

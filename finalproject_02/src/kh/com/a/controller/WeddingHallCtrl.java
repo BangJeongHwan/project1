@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
 import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.FUpUtil;
@@ -103,13 +104,15 @@ public class WeddingHallCtrl {
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
-		List<WHallPictureDto> hallPicList = weddingHallServ.getHallPicList(whseq);
-		
+		List<WHallPicSumVO> hallSumList = weddingHallServ.getHallSumList(whseq);
+		List<WHallPictureDto> piclist = weddingHallServ.getAllHallPicList(whseq);
 		
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
-		model.addAttribute("hallPicList", hallPicList); // 홀 사진 list
+		model.addAttribute("hallSumList", hallSumList); // 홀이름과 사진수
+		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
 		
+		//System.out.println("----------->"+hallSumList.get(0).getSumpic());
 		return "hallView.tiles";
 	}
 	
@@ -179,7 +182,7 @@ public class WeddingHallCtrl {
 			}
 		}
 		
-		System.out.println("------------>"+FileNameList.size());
+		//System.out.println("------------>"+FileNameList.size());
 		
 		// 나머지 세부 정보 기입
 		WeddingHallDto hallPd = wd.getHallPd();
@@ -197,6 +200,24 @@ public class WeddingHallCtrl {
 		return "redirect:/hallView.do";
 	}
 	
+	// 홀 name에 따라 사진 정보 불러오기
+	@ResponseBody
+	@RequestMapping(value="hallPicList.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> hallPicList(Model model,String hallname, int whseq) throws Exception {
+		logger.info("WeddingHallCtrl hallPicList " + new Date());
+		
+		List<WHallPictureDto> list = new ArrayList<WHallPictureDto>();
+		if(hallname.equals("all")) {
+			list = weddingHallServ.getAllHallPicList(whseq);
+		}else {
+			list = weddingHallServ.getHallPicList(hallname, whseq);
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		
+		return map;
+	}
 	
 	
 	

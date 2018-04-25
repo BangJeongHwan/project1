@@ -4,25 +4,41 @@ import java.io.Serializable;
 /*
 DROP TABLE WD_HALL_PICTURE CASCADE CONSTRAINTS;
 CREATE TABLE WD_HALL_PICTURE(
+    PICSEQ NUMBER(8) PRIMARY KEY,           -- 사진 글 갯수
     WHSEQ NUMBER(8) NOT NULL,               -- 업체 갯수
     HALLNAME VARCHAR2(100) NOT NULL,          -- 홀 이름
-    PICTURE VARCHAR2(100) NOT NULL,          -- 사진
+    PICTURE VARCHAR2(100) NOT NULL          -- 사진
 );
+DROP SEQUENCE SEQ_WHPIC;
+CREATE SEQUENCE SEQ_WHPIC
+START WITH 1 INCREMENT BY 1;
 */
 public class WHallPictureDto implements Serializable {
+	private int picseq;
 	private int whseq;
 	private String hallname;
 	private String picture;
 	
-	public WHallPictureDto() {}
+	public WHallPictureDto() {}	
+	
 
-	public WHallPictureDto(int whseq, String hallname, String picture) {
+	public WHallPictureDto(int picseq, int whseq, String hallname, String picture) {
 		super();
+		this.picseq = picseq;
 		this.whseq = whseq;
 		this.hallname = hallname;
 		this.picture = picture;
 	}
 
+
+	public int getPicseq() {
+		return picseq;
+	}
+
+	public void setPicseq(int picseq) {
+		this.picseq = picseq;
+	}
+	
 	public int getWhseq() {
 		return whseq;
 	}
@@ -47,8 +63,4 @@ public class WHallPictureDto implements Serializable {
 		this.picture = picture;
 	}
 
-	@Override
-	public String toString() {
-		return "HallPictureDto [whseq=" + whseq + ", hallname=" + hallname + ", picture=" + picture + "]";
-	}
 }

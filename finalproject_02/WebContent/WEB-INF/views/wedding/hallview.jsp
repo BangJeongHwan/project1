@@ -23,6 +23,18 @@
 .tb2 th,td{
 	align-content: center;
 }
+
+ul li{
+	display:inline;                         /*  세로나열을 가로나열로 변경 */
+    border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+    font:bold 15px;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨( Dotum)로 표시 */
+    padding:0 10px; 
+}
+
+li.line:hover{
+   text-decoration: underline; /* 언더라인(아래줄) 스타일 부여 */
+   cursor: pointer;			/* 손 모양 */
+}
 </style>
 
  <!-- 
@@ -96,7 +108,7 @@
 	<div class="selectTB">
 	<table style="width: 100%; border: 1px solid black;">
 		<tr style="height:20px;">
-			<th><a href="#hallstory"><font style="color: red">홀 설명</font></a></th>
+			<th><a href="#hallstory"><font color="#ff0000">홀 설명</font></a></th>
 			<th><a href="#hallpic">홀 사진</a></th>
 			<th><a href="#halllocation">홀 위치</a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
@@ -155,7 +167,7 @@
 	<table style="width: 100%; border: 1px solid black;">
 		<tr style="height:20px;">
 			<th><a href="#hallstory">홀 설명</a></th>
-			<th><a href="#hallpic"><font style="color: red">홀 사진</font></a></th>
+			<th><a href="#hallpic"><font color="#ff0000">홀 사진</font></a></th>
 			<th><a href="#halllocation">홀 위치</a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
 			<th><a href="#hallregi">홀 예약</a></th>
@@ -168,17 +180,28 @@
 	<div align="center" style="width: 100%; background-color: #F5F5F5;">	
 		<br><br>
 		
-		<c:forEach var="hpic" items="${hallPicList }">
-			
-		</c:forEach>
+		
+		<ul>
+			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${piclist.size() })</font></li>
+			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
+					<li class="line" onclick="hpicChange('${hsum.hallname }')" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
+			</c:forEach>
+		</ul>
+		
+		<br><br>
 		
 		<!-- 여러 이미지 추가 -->
-		<img alt="이미지 없음" src="assets/images/wedding/63img1_s.jpg" onclick="imgChange(1)" id="simg1">
-		<br><br>
-		<!-- 메인 이미지 -->
-		<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
-	</div>
-	
+		<div>
+			<c:forEach var="hallpic" items="${piclist }">
+				<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
+			</c:forEach>
+			
+			<br><br>
+			<!-- 메인 이미지 -->
+			<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
+		</div>
+		
+	</div>	
 </div>	
 
 
@@ -190,7 +213,7 @@
 		<tr style="height:20px;">
 			<th><a href="#hallstory">홀 설명</a></th>
 			<th><a href="#hallpic">홀 사진</a></th>
-			<th><a href="#halllocation"><font style="color: red">홀 위치</font></a></th>
+			<th><a href="#halllocation"><font color="#ff0000">홀 위치</font></a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
 			<th><a href="#hallregi">홀 예약</a></th>
 		</tr>		
@@ -223,7 +246,7 @@
 			<th><a href="#hallstory">홀 설명</a></th>
 			<th><a href="#hallpic">홀 사진</a></th>
 			<th><a href="#halllocation">홀 위치</a></th>
-			<th><a href="#hallreview"><font style="color: red">홀 리뷰</font></a></th>
+			<th><a href="#hallreview"><font color="#ff0000">홀 리뷰</font></a></th>
 			<th><a href="#hallregi">홀 예약</a></th>
 		</tr>
 	</table>
@@ -242,7 +265,7 @@
 			<th><a href="#hallpic">홀 사진</a></th>
 			<th><a href="#halllocation">홀 위치</a></th>
 			<th><a href="#hallreview">홀 리뷰</a></th>
-			<th><a href="#hallregi"><font style="color: red">홀 예약</font></a></th>
+			<th><a href="#hallregi"><font color="#ff0000">홀 예약</font></a></th>
 		</tr>
 	</table>
 	</div>	
@@ -251,12 +274,27 @@
 	</div>
 </div>
 
-<script>
-function cal(){
-	location.href="calendarView.do";
+<!-- 홀별 사진 변경 -->
+<script type="text/javascript">
+function hpicChange(hallname){
+	alert(hallname);
+	var data = {
+		"hallname":hallname,
+		"whseq":${wd.whseq}
+	}
+	
+	$.ajax({
+		url:"hallPicList.do",
+        data:data,      // parameter 타입으로 이동
+        success:function(res){
+        	
+        },
+        error:function(reqest, status, error){
+            alert("실패");
+        }
+	});
 }
 </script>
-
 
 <!-- fullcalendar에 대한 스크립트 -->
 <script type="text/javascript">
@@ -270,7 +308,7 @@ $(function() {
 	var m = date.getMonth()+1;
 	var y = date.getFullYear();
 	var rdate = y+"-0"+m+"-"+d;	
-	alert(rdate);
+	//alert(rdate);
 	
 	// fullcalender 시작
 	$('#calendar').fullCalendar({

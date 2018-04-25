@@ -5,6 +5,7 @@ import java.util.List;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.WHallPicSumVO;
 
 public interface WeddingHallDao {
 	public boolean addWedding(WeddingDto wd);
@@ -15,5 +16,7 @@ public interface WeddingHallDao {
 	public boolean checkHallName(String hallname);
 	public boolean addHall(WeddingHallDto wdPd);
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList);
-	public List<WHallPictureDto> getHallPicList(int whseq);
+	public List<WHallPicSumVO> getHallSumList(int whseq);
+	public List<WHallPictureDto> getAllHallPicList(int whseq);
+	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
 }
