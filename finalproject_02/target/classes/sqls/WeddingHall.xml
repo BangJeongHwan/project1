@@ -63,9 +63,16 @@
 		WHERE WHSEQ = #{whseq}
 		ORDER BY PICSEQ
 	</select>
+	<select id="picTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT SUM(WHSEQ)
+		FROM WD_HALL_PICTURE
+		WHERE WHSEQ = #{whseq}
+		GROUP BY WHSEQ
+	</select>
 	<select id="getHallPicList" parameterType="hashmap" resultType="kh.com.a.model.WHallPictureDto">
 		SELECT PICSEQ, WHSEQ, HALLNAME, PICTURE
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq} AND HALLNAME=#{hallname}
 	</select>
+	
 </mapper>

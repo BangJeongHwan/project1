@@ -87,7 +87,13 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	public List<WHallPictureDto> getAllHallPicList(int whseq){
 		return sqlSession.selectList(ns+"getAllHallPicList", whseq);
 	}
-
+	
+	// 사진 총계 출력
+	@Override
+	public int picTotal(int whseq) {
+		return sqlSession.selectOne(ns+"picTotal",whseq);
+	}
+	
 	// 해당되는 홀 사진만 출력
 	@Override
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq) {
@@ -97,5 +103,7 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		
 		return sqlSession.selectList(ns+"getHallPicList", map);
 	}
+
+	
 	
 }

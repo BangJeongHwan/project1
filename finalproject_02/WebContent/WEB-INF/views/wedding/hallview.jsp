@@ -182,9 +182,9 @@ li.line:hover{
 		
 		
 		<ul>
-			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${piclist.size() })</font></li>
+			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${picTotal })</font></li>
 			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
-					<li class="line" onclick="hpicChange('${hsum.hallname }')" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
+				<li class="line" onclick="hpicChange('${hsum.hallname }')" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
 			</c:forEach>
 		</ul>
 		
@@ -192,7 +192,10 @@ li.line:hover{
 		
 		<!-- 여러 이미지 추가 -->
 		<div>
-			<c:forEach var="hallpic" items="${piclist }">
+			<c:forEach var="hallpic" items="${piclist }" varStatus="i" begin="0">
+				<c:if test="${i<=5 }">
+					<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
+				</c:if>
 				<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
 			</c:forEach>
 			

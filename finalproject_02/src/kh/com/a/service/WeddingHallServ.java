@@ -19,5 +19,6 @@ public interface WeddingHallServ {
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList);
 	public List<WHallPicSumVO> getHallSumList(int whseq);
 	public List<WHallPictureDto> getAllHallPicList(int whseq);
+	public int picTotal(int whseq);
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
 }
