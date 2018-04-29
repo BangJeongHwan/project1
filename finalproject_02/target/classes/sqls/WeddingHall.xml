@@ -63,8 +63,8 @@
 		WHERE WHSEQ = #{whseq}
 		ORDER BY PICSEQ
 	</select>
-	<select id="picTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		SELECT SUM(WHSEQ)
+	<select id="picTotal" parameterType="java.lang.Integer" resultType="kh.com.a.model.WHallPictureDto">
+		SELECT SUM(WHSEQ) AS PICTOTAL
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq}
 		GROUP BY WHSEQ

@@ -91,7 +91,12 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	// 사진 총계 출력
 	@Override
 	public int picTotal(int whseq) {
-		return sqlSession.selectOne(ns+"picTotal",whseq);
+		WHallPictureDto dto = sqlSession.selectOne(ns+"picTotal",whseq);
+		int pictotal = 0;
+		if(dto != null) {
+			pictotal = dto.getPictotal();
+		}
+		return pictotal;
 	}
 	
 	// 해당되는 홀 사진만 출력

@@ -37,6 +37,15 @@ li.line:hover{
 }
 </style>
 
+<style type="text/css">
+.imgScroll td{
+	width: 10%; 
+	height: 5%;
+	align-content: center;
+	text-align: center;
+}
+</style>
+
  <!-- 
  <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
   -->
@@ -182,7 +191,7 @@ li.line:hover{
 		
 		
 		<ul>
-			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${picTotal })</font></li>
+			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${piclist.size() })</font></li>
 			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
 				<li class="line" onclick="hpicChange('${hsum.hallname }')" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
 			</c:forEach>
@@ -192,16 +201,49 @@ li.line:hover{
 		
 		<!-- 여러 이미지 추가 -->
 		<div>
+			<%-- 
 			<c:forEach var="hallpic" items="${piclist }" varStatus="i" begin="0">
 				<c:if test="${i<=5 }">
 					<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
 				</c:if>
 				<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
 			</c:forEach>
-			
+			 --%>
+			 <%-- 
+			 <table>
+			 
+				<tr id="_PicSel" class="imgScroll">
+					<td style='width:50px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>
+					<c:forEach varStatus="i" begin="i-2" end="i+2" step="1">
+						<c:if test="${i }"></c:if>
+					</c:forEach>
+					       	for(var i = (picIndex - 2); i <= (picIndex+2); i++) {
+        		if (i == picIndex) {
+        			tagStr += "<td style='border:4px solid #ef8bc5'>";
+        		} else {
+        			tagStr += "<td>";
+        		}
+        		if (i >= 0 && i < picMaxSize) {
+        			//var onclickStr = "func()";
+        			var onclickStr = "imgChange(" + i +")";
+        			tagStr += "<img src='upload/"+ picArr[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
+        		}
+        		tagStr += "</td>";
+        	}
+        	tagStr += "<td style='width:50px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
+				</tr>
+				
+			</table>
+			 --%>
 			<br><br>
 			<!-- 메인 이미지 -->
-			<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
+			<c:if test="${ empty piclist || piclist.size() eq 0}">
+				<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
+			</c:if>
+			<c:if test="${ not empty piclist && piclist.size() ne 0}">
+				<img src="upload/${ pic1 }" alt="" id="bigimg" style="width: 70%; height: 50%"/>
+			</c:if>
+			
 		</div>
 		
 	</div>	
@@ -277,9 +319,27 @@ li.line:hover{
 	</div>
 </div>
 
+
+<!-- 이미지 스크롤을 위한  setting -->
+<%-- 
+<script type="text/javascript">
+var picMaxSize = 0;
+var picArr = new Array(${piclist.size()});
+</script>
+<!-- picName setting  -->
+<c:forEach items="${ piclist.pic }" var="pic" varStatus="i">
+	<c:if test="${ not empty muDto.pic[i.index] && muDto.pic[i.index] != '' }">
+		<script type="text/javascript">
+			picArr[picMaxSize] = "${muDto.pic[i.index]}";
+			picMaxSize++;
+		</script>
+	</c:if>
+</c:forEach>
+ --%>
+ 
 <!-- 홀별 사진 변경 -->
 <script type="text/javascript">
-function hpicChange(hallname){
+function imgScroll(hallname){
 	alert(hallname);
 	var data = {
 		"hallname":hallname,
@@ -290,7 +350,24 @@ function hpicChange(hallname){
 		url:"hallPicList.do",
         data:data,      // parameter 타입으로 이동
         success:function(res){
+        	var tagStr = "<td style='width:50px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
+        	for(var i = (picIndex - 2); i <= (picIndex+2); i++) {
+        		if (i == picIndex) {
+        			tagStr += "<td style='border:4px solid #ef8bc5'>";
+        		} else {
+        			tagStr += "<td>";
+        		}
+        		if (i >= 0 && i < picMaxSize) {
+        			//var onclickStr = "func()";
+        			var onclickStr = "imgChange(" + i +")";
+        			tagStr += "<img src='upload/"+ picArr[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
+        		}
+        		tagStr += "</td>";
+        	}
+        	tagStr += "<td style='width:50px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
         	
+        	$("#_PicSel").empty();
+        	$("#_PicSel").append(tagStr);        	
         },
         error:function(reqest, status, error){
             alert("실패");

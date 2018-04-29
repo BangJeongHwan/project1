@@ -106,13 +106,17 @@ public class WeddingHallCtrl {
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
 		List<WHallPicSumVO> hallSumList = weddingHallServ.getHallSumList(whseq);
 		List<WHallPictureDto> piclist = weddingHallServ.getAllHallPicList(whseq);
-		int picTotal = weddingHallServ.picTotal(whseq);
+		String pic1 = piclist.get(0).getPicture();
+		
+		//int picTotal = weddingHallServ.picTotal(whseq);
 		
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
 		model.addAttribute("hallSumList", hallSumList); // 홀이름과 사진수
 		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
-		model.addAttribute("picTotal", picTotal);
+		model.addAttribute("pic1", pic1);	// 첫번째 사진
+		
+		//model.addAttribute("picTotal", picTotal);
 		
 		//System.out.println("----------->"+hallSumList.get(0).getSumpic());
 		return "hallView.tiles";
