@@ -213,7 +213,7 @@ alert(picMaxSize);
 		<ul>
 			<li class="line" onclick="hnameChange('all',0)" id="_hsum0">전체<font color="#ff0000">(${piclist.size() })</font></li>
 			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
-				<li class="line" onclick="hnameChange('${hsum.hallname }',${i })" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
+				<li class="line" onclick="hnameChange('${hsum.hallname }',${i.index+1 })" id="_hsum${i.index+1 }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
 			</c:forEach>
 				
 				<%-- 
@@ -323,7 +323,7 @@ var hallname = 'all';
 function hnameChange(name,i) {
 	alert(name);
 	alert(i);
-	hallname = $("#_hsum" + i).val();	
+	hallname = $("#_hsum" + i).val();
 }
 
 	
