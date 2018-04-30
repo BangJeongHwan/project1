@@ -100,13 +100,20 @@ public class WeddingHallCtrl {
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String hallDetailView(Model model, int whseq) {
-		logger.info("WeddingHallCtrl hallDetailView" + new Date());
+		logger.info("WeddingHallCtrl hallView" + new Date());
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
 		List<WHallPicSumVO> hallSumList = weddingHallServ.getHallSumList(whseq);
 		List<WHallPictureDto> piclist = weddingHallServ.getAllHallPicList(whseq);
-		String pic1 = piclist.get(0).getPicture();
+		
+		String pic1 ="";
+		System.out.println(piclist.size());
+		if(piclist.size()!=0) {
+			pic1 = piclist.get(0).getPicture();
+			model.addAttribute("pic1", pic1);	// 첫번째 사진
+		}
+		
 		
 		//int picTotal = weddingHallServ.picTotal(whseq);
 		
@@ -114,7 +121,7 @@ public class WeddingHallCtrl {
 		model.addAttribute("hallList", hallList);	// 홀 list
 		model.addAttribute("hallSumList", hallSumList); // 홀이름과 사진수
 		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
-		model.addAttribute("pic1", pic1);	// 첫번째 사진
+		
 		
 		//model.addAttribute("picTotal", picTotal);
 		

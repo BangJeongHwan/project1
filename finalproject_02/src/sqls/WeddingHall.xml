@@ -52,7 +52,7 @@
 		VALUES(SEQ_WHPIC.NEXTVAL, #{whseq}, #{hallname}, #{picture})
 	</insert>
 	<select id="getHallSumList" parameterType="java.lang.Integer" resultType="kh.com.a.model2.WHallPicSumVO">
-		SELECT HALLNAME, SUM(WHSEQ) AS SUMPIC
+		SELECT HALLNAME, COUNT(WHSEQ) AS SUMPIC
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq}
 		GROUP BY HALLNAME

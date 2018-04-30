@@ -1,3 +1,7 @@
+<%@page import="kh.com.a.model.WHallPictureDto"%>
+<%@page import="java.util.List"%>
+<%@page import="java.sql.Array"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -46,9 +50,26 @@ li.line:hover{
 }
 </style>
 
- <!-- 
- <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
-  -->
+     
+<c:if test="${not empty piclist && piclist.size() ne 0}">
+	<script type="text/javascript">
+		var picMaxSize = 0;
+		var picIndex=0;
+		var picArr = new Array(${piclist.size()});
+	</script>
+	<c:forEach items="${ piclist }" var="pic">
+		<script type="text/javascript">
+			picArr[picMaxSize] = "${pic.picture}";
+			picMaxSize++;
+		</script>
+	</c:forEach>
+</c:if>
+
+<script type="text/javascript">
+alert(picArr.length);
+alert(picMaxSize);
+</script>
+
 <div class="container" style="padding-top: 10px">
 	<h2 class="nino-sectionHeading">
 	<!-- <span class="nino-subHeading"></span> -->
@@ -189,53 +210,28 @@ li.line:hover{
 	<div align="center" style="width: 100%; background-color: #F5F5F5;">	
 		<br><br>
 		
-		
 		<ul>
-			<li class="line" onclick="hpicChange('all')" id="_hsum">전체<font color="#ff0000">(${piclist.size() })</font></li>
+			<li class="line" onclick="hnameChange('all',0)" id="_hsum0">전체<font color="#ff0000">(${piclist.size() })</font></li>
 			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
-				<li class="line" onclick="hpicChange('${hsum.hallname }')" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
+				<li class="line" onclick="hnameChange('${hsum.hallname }',${i })" id="_hsum${i }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
 			</c:forEach>
+				
+				<%-- 
+				<c:if test="${not empty hallSumList && hallSumList.size() ne 0}">
+			</c:if>
+			 --%>
 		</ul>
 		
 		<br><br>
 		
 		<!-- 여러 이미지 추가 -->
 		<div>
-			<%-- 
-			<c:forEach var="hallpic" items="${piclist }" varStatus="i" begin="0">
-				<c:if test="${i<=5 }">
-					<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
-				</c:if>
-				<img src="upload/${ hallpic.picture }" style="width: 10%; height: 5%">
-			</c:forEach>
-			 --%>
-			 <%-- 
-			 <table>
-			 
-				<tr id="_PicSel" class="imgScroll">
-					<td style='width:50px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>
-					<c:forEach varStatus="i" begin="i-2" end="i+2" step="1">
-						<c:if test="${i }"></c:if>
-					</c:forEach>
-					       	for(var i = (picIndex - 2); i <= (picIndex+2); i++) {
-        		if (i == picIndex) {
-        			tagStr += "<td style='border:4px solid #ef8bc5'>";
-        		} else {
-        			tagStr += "<td>";
-        		}
-        		if (i >= 0 && i < picMaxSize) {
-        			//var onclickStr = "func()";
-        			var onclickStr = "imgChange(" + i +")";
-        			tagStr += "<img src='upload/"+ picArr[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
-        		}
-        		tagStr += "</td>";
-        	}
-        	tagStr += "<td style='width:50px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
-				</tr>
-				
+			<table>
+				<tr id="_PicSel" class="imgScroll"></tr>
 			</table>
-			 --%>
+				
 			<br><br>
+			
 			<!-- 메인 이미지 -->
 			<c:if test="${ empty piclist || piclist.size() eq 0}">
 				<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
@@ -319,27 +315,19 @@ li.line:hover{
 	</div>
 </div>
 
-
-<!-- 이미지 스크롤을 위한  setting -->
-<%-- 
-<script type="text/javascript">
-var picMaxSize = 0;
-var picArr = new Array(${piclist.size()});
-</script>
-<!-- picName setting  -->
-<c:forEach items="${ piclist.pic }" var="pic" varStatus="i">
-	<c:if test="${ not empty muDto.pic[i.index] && muDto.pic[i.index] != '' }">
-		<script type="text/javascript">
-			picArr[picMaxSize] = "${muDto.pic[i.index]}";
-			picMaxSize++;
-		</script>
-	</c:if>
-</c:forEach>
- --%>
  
 <!-- 홀별 사진 변경 -->
 <script type="text/javascript">
-function imgScroll(hallname){
+var hallname = 'all';
+
+function hnameChange(name,i) {
+	alert(name);
+	alert(i);
+	hallname = $("#_hsum" + i).val();	
+}
+
+	
+function imgScroll(){
 	alert(hallname);
 	var data = {
 		"hallname":hallname,
@@ -373,6 +361,27 @@ function imgScroll(hallname){
             alert("실패");
         }
 	});
+}
+
+function scrMoveLeft() {
+	picIndex -= 5;
+	if (picIndex < 0) picIndex = 0;
+	imgChange(picIndex);
+}
+function scrMoveRight() {
+	picIndex += 5;
+	if (picIndex >= picMaxSize) picIndex = (picMaxSize - 1);
+	imgChange(picIndex);
+}
+function imgChange(index) {
+	var src = "upload/" + picArr[index];
+	$("#bigimg").attr("src", src);
+	var selectedId = "#simg" + picIndex;
+	var newId = "#simg" + index;
+	$(selectedId).removeAttr("class");
+	$(newId).attr("class", "select_img");
+	picIndex = index;
+	imgScroll();
 }
 </script>
 
