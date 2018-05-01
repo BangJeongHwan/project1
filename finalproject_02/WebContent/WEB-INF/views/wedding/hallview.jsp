@@ -48,14 +48,18 @@ li.line:hover{
 	align-content: center;
 	text-align: center;
 }
-</style>
 
-     
+.clickimg{
+	border:4px solid #ef8bc5;
+}
+</style>
+<%-- 
+
 <c:if test="${not empty piclist && piclist.size() ne 0}">
 	<script type="text/javascript">
 		var picMaxSize = 0;
 		var picIndex=0;
-		var picArr = new Array(${piclist.size()});
+		var picArr = new Array();
 	</script>
 	<c:forEach items="${ piclist }" var="pic">
 		<script type="text/javascript">
@@ -64,11 +68,8 @@ li.line:hover{
 		</script>
 	</c:forEach>
 </c:if>
+ --%>
 
-<script type="text/javascript">
-alert(picArr.length);
-alert(picMaxSize);
-</script>
 
 <div class="container" style="padding-top: 10px">
 	<h2 class="nino-sectionHeading">
@@ -211,15 +212,12 @@ alert(picMaxSize);
 		<br><br>
 		
 		<ul>
-			<li class="line" onclick="hnameChange('all',0)" id="_hsum0">전체<font color="#ff0000">(${piclist.size() })</font></li>
-			<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
-				<li class="line" onclick="hnameChange('${hsum.hallname }',${i.index+1 })" id="_hsum${i.index+1 }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
-			</c:forEach>
-				
-				<%-- 
-				<c:if test="${not empty hallSumList && hallSumList.size() ne 0}">
+			<li class="line" onclick="hnameChange('all')" id="_hsum0">전체<font color="#ff0000">(${piclist.size() })</font></li>
+			<c:if test="${not empty hallSumList && hallSumList.size() ne 0}">
+				<c:forEach var="hsum" items="${hallSumList }" varStatus="i" begin="0">
+					<li class="line" onclick="hnameChange('${hsum.hallname }')" id="_hsum${i.index+1 }">${hsum.hallname }<font color="#ff0000">(${hsum.sumpic })</font></li>
+				</c:forEach>
 			</c:if>
-			 --%>
 		</ul>
 		
 		<br><br>
@@ -227,17 +225,19 @@ alert(picMaxSize);
 		<!-- 여러 이미지 추가 -->
 		<div>
 			<table>
-				<tr id="_PicSel" class="imgScroll"></tr>
+				<tr id="_PicSel" class="imgScroll">
+					
+				</tr>
 			</table>
 				
 			<br><br>
 			
 			<!-- 메인 이미지 -->
 			<c:if test="${ empty piclist || piclist.size() eq 0}">
-				<img src="upload/${ wd.picture }" style="width: 70%; height: 50%">
+				<img src="upload/${ wd.picture }" id="bigimg" style="width: 70%; height: 50%">
 			</c:if>
 			<c:if test="${ not empty piclist && piclist.size() ne 0}">
-				<img src="upload/${ pic1 }" alt="" id="bigimg" style="width: 70%; height: 50%"/>
+				<img src="upload/${ pic1 }" id="bigimg" style="width: 70%; height: 50%"/>
 			</c:if>
 			
 		</div>
@@ -319,16 +319,24 @@ alert(picMaxSize);
 <!-- 홀별 사진 변경 -->
 <script type="text/javascript">
 var hallname = 'all';
+var picMaxSize = 0;
+var picIndex = 0;
+var selIndex = 0;
+var initIndex = 0;
+var picArray = new Array();
 
-function hnameChange(name,i) {
-	alert(name);
-	alert(i);
-	hallname = $("#_hsum" + i).val();
+imgScroll();
+
+function hnameChange(name) {
+	//alert(name);
+	hallname = name;
+	imgScroll();
 }
 
-	
+
 function imgScroll(){
-	alert(hallname);
+	//alert(hallname);
+	//alert(${wd.whseq});
 	var data = {
 		"hallname":hallname,
 		"whseq":${wd.whseq}
@@ -338,21 +346,33 @@ function imgScroll(){
 		url:"hallPicList.do",
         data:data,      // parameter 타입으로 이동
         success:function(res){
-        	var tagStr = "<td style='width:50px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
-        	for(var i = (picIndex - 2); i <= (picIndex+2); i++) {
-        		if (i == picIndex) {
-        			tagStr += "<td style='border:4px solid #ef8bc5'>";
+        	
+        	//alert(res.picArr.length);
+        	selIndex = 0;
+        	picIndex = 0;
+        	chgIndex = 0
+        	
+        	picMaxSize = res.picArr.length;
+        	picArray = new Array(picMaxSize);
+        	for(var i=0;i<picMaxSize;i++){
+        		picArray[i] = res.picArr[i];
+        	}
+        	
+        	
+        	var tagStr = "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
+        	for(var i = picIndex; i <= (picIndex+4); i++) {
+        		if (i == selIndex) {
+        			tagStr += "<td class='clickimg' id='_simg"+i+"'>";
         		} else {
-        			tagStr += "<td>";
+        			tagStr += "<td id='_simg"+i+"'>";
         		}
         		if (i >= 0 && i < picMaxSize) {
-        			//var onclickStr = "func()";
         			var onclickStr = "imgChange(" + i +")";
-        			tagStr += "<img src='upload/"+ picArr[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
+        			tagStr += "<img src='upload/"+ picArray[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
         		}
         		tagStr += "</td>";
         	}
-        	tagStr += "<td style='width:50px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
+        	tagStr += "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
         	
         	$("#_PicSel").empty();
         	$("#_PicSel").append(tagStr);        	
@@ -364,23 +384,33 @@ function imgScroll(){
 }
 
 function scrMoveLeft() {
-	picIndex -= 5;
-	if (picIndex < 0) picIndex = 0;
-	imgChange(picIndex);
+	initIndex = selIndex; 
+	selIndex--;
+	if (chgIndex < 0) selIndex = 0;
+	if(selIndex%5==0){
+		picIndex = selIndex;
+	}
+	imgChange(chgIndex);
 }
 function scrMoveRight() {
-	picIndex += 5;
-	if (picIndex >= picMaxSize) picIndex = (picMaxSize - 1);
-	imgChange(picIndex);
+	initIndex = selIndex; 
+	selIndex++;
+	if (selIndex == picMaxSize){
+		selIndex = (picMaxSize - 1);
+	}
+	if(selIndex%5==0){
+		picIndex = selIndex-5;
+	}
+	imgChange(chgIndex);
 }
 function imgChange(index) {
-	var src = "upload/" + picArr[index];
+	var src = "upload/" + picArray[index];
 	$("#bigimg").attr("src", src);
-	var selectedId = "#simg" + picIndex;
-	var newId = "#simg" + index;
+	var selectedId = "#_simg" + selIndex;
+	var newId = "#_simg" + index;
 	$(selectedId).removeAttr("class");
-	$(newId).attr("class", "select_img");
-	picIndex = index;
+	$(newId).attr("class", "clickimg");
+	selIndex = index;
 	imgScroll();
 }
 </script>
