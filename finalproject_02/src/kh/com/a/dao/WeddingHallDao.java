@@ -2,6 +2,7 @@ package kh.com.a.dao;
 
 import java.util.List;
 
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
@@ -20,4 +21,6 @@ public interface WeddingHallDao {
 	public List<WHallPictureDto> getAllHallPicList(int whseq);
 	public int picTotal(int whseq);
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
+	
+	public List<ReservationDto> getWdRegList(ReservationDto fcal);
 }

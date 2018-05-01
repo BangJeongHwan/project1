@@ -22,13 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
 import kh.com.a.service.WeddingHallServ;
+import kh.com.a.util.CalendarUtil;
 import kh.com.a.util.FUpUtil;
+import kh.com.a.util.myCal;
 
 @Controller
 public class WeddingHallCtrl {
@@ -99,8 +102,10 @@ public class WeddingHallCtrl {
 	//////////////////////////////////////////////////////////////////////////////
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String hallDetailView(Model model, int whseq) {
+	public String hallDetailView(Model model, int whseq, myCal jcal) {
 		logger.info("WeddingHallCtrl hallView" + new Date());
+		
+		
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
@@ -114,8 +119,13 @@ public class WeddingHallCtrl {
 			model.addAttribute("pic1", pic1);	// 첫번째 사진
 		}
 		
-		
-		//int picTotal = weddingHallServ.picTotal(whseq);
+		// 예약 캘린더
+		jcal.calculate();
+		String yyyyMM = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());
+		ReservationDto fcal = new ReservationDto();
+		fcal.setPdseq(whseq);
+		fcal.setRedate(yyyyMM);
+		List<ReservationDto> flist = weddingHallServ.getWdRegList(fcal);
 		
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
@@ -123,6 +133,9 @@ public class WeddingHallCtrl {
 		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
 		
 		
+		model.addAttribute("jcal", jcal);
+		model.addAttribute("flist", flist);
+		//int picTotal = weddingHallServ.picTotal(whseq);
 		//model.addAttribute("picTotal", picTotal);
 		
 		//System.out.println("----------->"+hallSumList.get(0).getSumpic());

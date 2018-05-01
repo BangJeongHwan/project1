@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
@@ -86,7 +87,10 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.getHallPicList(hallname, whseq);
 	}
 
-	
-
+	// 웨딩홀 예약된 것들 모두 불러오기
+	@Override
+	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+		return weddingHallDao.getWdRegList(fcal);
+	}
 	
 }

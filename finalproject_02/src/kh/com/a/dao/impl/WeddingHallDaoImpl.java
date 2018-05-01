@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
@@ -107,6 +108,12 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		map.put("whseq", whseq);
 		
 		return sqlSession.selectList(ns+"getHallPicList", map);
+	}
+
+	// 웨딩홀 예약된 것들 모두 불러오기
+	@Override
+	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
 
 	

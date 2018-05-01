@@ -1,3 +1,5 @@
+<%@page import="kh.com.a.util.myCal"%>
+<%@page import="kh.com.a.model.ReservationDto"%>
 <%@page import="kh.com.a.model.WHallPictureDto"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.Array"%>
@@ -16,6 +18,7 @@
 <script src='FullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
 
 
+<!-- 테이블 및 홀이름 갯수 css -->
 <style>
 .tb2 table{
 	width: 100%;	
@@ -41,6 +44,7 @@ li.line:hover{
 }
 </style>
 
+<!-- 이미지 css -->
 <style type="text/css">
 .imgScroll td{
 	width: 10%; 
@@ -53,22 +57,198 @@ li.line:hover{
 	border:4px solid #ef8bc5;
 }
 </style>
-<%-- 
 
-<c:if test="${not empty piclist && piclist.size() ne 0}">
-	<script type="text/javascript">
-		var picMaxSize = 0;
-		var picIndex=0;
-		var picArr = new Array();
-	</script>
-	<c:forEach items="${ piclist }" var="pic">
-		<script type="text/javascript">
-			picArr[picMaxSize] = "${pic.picture}";
-			picMaxSize++;
-		</script>
-	</c:forEach>
+<!-- 그냥 캘린더 -->
+<style>
+table, td, th {
+    border: 1px solid black;
+}
+.sunday{
+color: red; 
+text-align: left;
+vertical-align: top;
+/* background-color: #ccccff; */
+}
+.satday{
+color: blue; 
+text-align: left;
+vertical-align: top;
+/* background-color: #ccccff; */
+}
+.otherday{
+color: black; 
+text-align: left;
+vertical-align: top;
+}
+.days2{
+font-size:20px;
+color: #4D6BB3; 
+text-align: center;
+vertical-align: middle;
+}
+.days3{
+font-size:20px;
+color: #4D6BB3; 
+text-align: center;
+vertical-align: middle;
+background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
+}
+
+.innerTable {
+    border: 0px ;
+}
+</style>
+
+
+<!-- 달력 -->
+<script>
+// day 누를시 
+public var calwrite(int year,int month, int day){	
+	String s="";
+	s+=String.format("<a href='%s?year=%d&month=%d&day=%d'>", 
+			"callist.do",year,month,day);
+	if(day < 10)s+="&nbsp;";
+	s+=String.format("%d",day); //2자리
+	s+="</a>";
+	return s;
+}
+
+//1자라면 0을 붙여 두자로 만들기 1->01
+public var two(String msg){
+	return msg.trim().length()<2?"0"+msg:msg.trim();
+}
+
+public String dot3(String msg){
+	String s="";
+	if(msg.length()>=15){
+		s=msg.substring(0,15);
+		s+="...";
+	}else{
+		s=msg.trim();
+	}
+	return s;
+}
+
+public var makeTable(int year,int month, int day,
+		List<ReservationDto> lcdtos){
+	String s="";
+	String dates=(year + "") + two(month + "") + two(day + "");//년월일 8글자 만드는거
+		
+	s="<table class='innerTable'>";
+	s+="<col width='100px'/>";
+	for(ReservationDto lcd:lcdtos){ //향상된 for
+		if(lcd.getRedate().substring(0,8).equals(dates)){
+			s+="<tr bgcolor='#4D6BB3'>";
+			s+="<td>";			
+			s+="<a href='caldetail.do?seq="+lcd.getRvseq()+"'>";
+			s+="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔
+			s+=dot3(lcd.getRetime()+lcd.getMid());
+			s+="</font>";
+			s+="</a>";
+			s+="</td>";
+			s+="</tr>";
+		}
+	}
+	s+="</table>";
+	return s;
+}
+</script>
+
+<%! //데클러레이션 : 메소드 선언
+public String callist(int year,int month, int day){	
+	String s="";
+	s+=String.format("<a href='%s?year=%d&month=%d&day=%d'>", 
+			"callist.do",year,month,day);
+	if(day < 10)s+="&nbsp;";
+	s+=String.format("%d",day); //2자리
+	s+="</a>";
+	return s;
+}
+
+
+
+//
+//pen이미지를 선택하면 일정을 작성할수 있다.
+/* 
+public String showPen(int year,int month, int day){	
+	String s="";
+	String url="calwrite.do";
+	String image="<img src='image/pen.gif'/>";
+	s=String.format("<a href='%s?year=%d&month=%d&day=%d'>%s</a>",
+			url,year,month,day,image);
+	return s;
+}
+ */
+//1자라면 0을 붙여 두자로 만들기 1->01
+public String two(String msg){
+	return msg.trim().length()<2?"0"+msg:msg.trim();
+}//
+//15자 이상되면 ... 를 이용하여 줄임표시
+public String dot3(String msg){
+	String s="";
+	if(msg.length()>=15){
+		s=msg.substring(0,15);
+		s+="...";
+	}else{
+		s=msg.trim();
+	}
+	return s;
+}
+public String makeTable(int year,int month, int day,
+		List<ReservationDto> lcdtos){
+	String s="";
+	String dates=(year + "") + two(month + "") + two(day + "");//년월일 8글자 만드는거
+		
+	s="<table class='innerTable'>";
+	s+="<col width='100px'/>";
+	for(ReservationDto lcd:lcdtos){ //향상된 for
+		if(lcd.getRedate().substring(0,8).equals(dates)){
+			s+="<tr bgcolor='#4D6BB3'>";
+			s+="<td>";			
+			s+="<a href='caldetail.do?seq="+lcd.getRvseq()+"'>";
+			s+="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔
+			s+=dot3(lcd.getRetime()+lcd.getMid());
+			s+="</font>";
+			s+="</a>";
+			s+="</td>";
+			s+="</tr>";
+		}
+	}
+	s+="</table>";
+	return s;
+}
+%>
+
+<script>
+var dayOfWeek = ${jcal.dayOfWeek};
+var lastDayOfMonth = ${jcal.lastDay};
+var year = ${jcal.year};
+var month = ${jcal.month};
+//alert(dayOfWeek);
+//alert(lastDayOfMonth);
+//alert(year);
+//alert(month);
+</script>
+
+<c:if test="${not empty flist}">
+
 </c:if>
- --%>
+<%
+List<ReservationDto> list=new ArrayList<ReservationDto>();
+Object Oflist=request.getAttribute("flist");
+if(Oflist!=null){
+	list=(List<ReservationDto>)Oflist;
+}
+
+myCal jcal=(myCal)request.getAttribute("jcal");
+
+int dayOfWeek=jcal.getDayOfWeek();//1일 요일1~7
+int lastDayOfMonth=jcal.getLastDay();
+
+int year=jcal.getYear();
+int month=jcal.getMonth();
+%>
+
 
 
 <div class="container" style="padding-top: 10px">
@@ -223,13 +403,14 @@ li.line:hover{
 		<br><br>
 		
 		<!-- 여러 이미지 추가 -->
+		
 		<div>
+			<c:if test="${not empty hallSumList && hallSumList.size() ne 0}">
 			<table>
-				<tr id="_PicSel" class="imgScroll">
-					
-				</tr>
+				<tr id="_PicSel" class="imgScroll"></tr>
 			</table>
-				
+			</c:if>
+			
 			<br><br>
 			
 			<!-- 메인 이미지 -->
@@ -241,6 +422,7 @@ li.line:hover{
 			</c:if>
 			
 		</div>
+		
 		
 	</div>	
 </div>	
@@ -296,7 +478,17 @@ li.line:hover{
 
 
 <!-- 홀 예약 -->
+<!-- 
+table {
+    border-collapse: collapse;    
+}
 
+table, td, th {
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+}
+ -->
 <div class="container" id="hallregi">
 	<br><br>
 	<div class="selectTB">
@@ -309,11 +501,117 @@ li.line:hover{
 			<th><a href="#hallregi"><font color="#ff0000">홀 예약</font></a></th>
 		</tr>
 	</table>
-	</div>	
+	</div>
+	
+	<!-- 달력 -->
+	<div align="center">
+		<%-- 
+		<div style="text-align: left"><a href='<%=url%>'><%=year+"년 "+month+"월 " %>일정보기</a></div>
+		 --%>
+		<div class="box_border" style="margin-top:5px; margin-bottom: 10px;">
+		<table style="width:85%;" class="calender">
+		<col width="100px"/>
+		<col width="100px"/>
+		<col width="100px"/>
+		<col width="100px"/>
+		<col width="100px"/>
+		<col width="100px"/>
+		<col width="100px"/>
+		
+		
+		<thead>
+		<tr height="50px">
+			<td class="days2" colspan="7">
+				<input type="text" value="<이전달" style="border: 1px solid black;cursor:pointer" size="4" readonly>&nbsp;
+				<font color="black" style="font-size: 24"><input type="text" value="${jcal.year}" size="2" readonly>&nbsp;&nbsp;
+					<input type="text" value="${jcal.month }월" size="1" readonly>
+				</font>&nbsp;<input type="text" value="다음달>" style="border: 1px solid black;cursor:pointer" size="4" readonly></td>
+		</tr>
+		
+		<tr height="40px">
+			<th class="days3">일</th><th class="days3">월</th>
+			<th class="days3">화</th><th class="days3">수</th><th class="days3">목</th>
+			<th class="days3">금</th><th class="days3">토</th>
+		</tr>
+		
+		</thead>
+			<tr height="100px">
+			<c:forEach varStatus="i" begin="1" end="${jcal.dayOfWeek - 1 }">
+				<td>&nbsp;</td>
+			</c:forEach>
+			<c:forEach varStatus="i" begin="1" end="${jcal.lastDayOfMonth}">
+				<c:if test="${(i.index+jcal.dayOfWeek)%7==0}">
+					<td class="satday" onmouseover="mouse(${i.index})" id="_day${i.index }"></td>
+				</c:if>
+			</c:forEach>
+			<%
+			for(int i=1; i<dayOfWeek; i++){
+				out.println("<td>&nbsp;</td>");
+			}
+			for(int i=1; i<=lastDayOfMonth; i++){				
+				if((i+dayOfWeek-1)%7==0){
+					%>
+					<td class="satday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=callist(year,month,i)%>&nbsp;
+					<%=makeTable(year,month,i,list)%>
+					</td>
+					<%
+				}else if((i+dayOfWeek-1)%7==1){
+					%>
+					<td class="sunday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=i %>&nbsp;
+					<%=makeTable(year,month,i,list)%>
+					</td>
+					<%
+				}else{
+					%>
+					<td class="otherday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=callist(year,month,i)%>&nbsp;
+					<%=makeTable(year,month,i,list)%>
+					</td>
+					<%
+				}
+				
+				if((i+dayOfWeek-1)%7==0 && i != lastDayOfMonth){
+					%>
+					</tr><tr height="100px">
+					<%
+				}
+			}
+			for(int i=0; i<(7-(dayOfWeek+lastDayOfMonth-1)%7)%7; i++){
+				out.println("<td>&nbsp;</td>");
+			}
+			%>
+			</tr>
+		</table>
+		
+		</div>
+	</div>
+		
+	<!-- 
 	<div align="center">
 		<div id='calendar' style="width:90%; height: 895px; margin-top:20px;" ></div>
 	</div>
+	 -->
 </div>
+
+<script>
+function mouse(num){
+	for(var i=1;i<=lastDayOfMonth;i++){
+		
+		if(i==num){
+			$("#_day"+i).css("background-color","#FFFAF0");
+			/* 
+			$("#_day"+i).empty();
+			$("#_day"+i).append(tagStr);
+			 */
+		}else{
+			$("#_day"+i).css("background-color","");
+			/* 
+			$("#_day"+i).empty();
+			$("#_day"+i).append(tagStr);
+			 */
+		}
+	}
+}
+</script>
 
  
 <!-- 홀별 사진 변경 -->
@@ -322,13 +620,15 @@ var hallname = 'all';
 var picMaxSize = 0;
 var picIndex = 0;
 var selIndex = 0;
-var initIndex = 0;
+var initIndex =0;
 var picArray = new Array();
 
 imgScroll();
 
 function hnameChange(name) {
 	//alert(name);
+	selIndex = 0;
+    picIndex = 0;
 	hallname = name;
 	imgScroll();
 }
@@ -346,13 +646,8 @@ function imgScroll(){
 		url:"hallPicList.do",
         data:data,      // parameter 타입으로 이동
         success:function(res){
-        	
-        	//alert(res.picArr.length);
-        	selIndex = 0;
-        	picIndex = 0;
-        	chgIndex = 0
-        	
         	picMaxSize = res.picArr.length;
+        	
         	picArray = new Array(picMaxSize);
         	for(var i=0;i<picMaxSize;i++){
         		picArray[i] = res.picArr[i];
@@ -362,13 +657,14 @@ function imgScroll(){
         	var tagStr = "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
         	for(var i = picIndex; i <= (picIndex+4); i++) {
         		if (i == selIndex) {
+        			selIndex = i;
         			tagStr += "<td class='clickimg' id='_simg"+i+"'>";
         		} else {
         			tagStr += "<td id='_simg"+i+"'>";
         		}
         		if (i >= 0 && i < picMaxSize) {
         			var onclickStr = "imgChange(" + i +")";
-        			tagStr += "<img src='upload/"+ picArray[i] +"' onclick='"+ onclickStr +"' style='width:90px;height:59px;cursor:pointer'>";
+        			tagStr += "<img src='upload/"+ picArray[i] +"' onclick='"+ onclickStr +"' style='width:100px;height:70px;cursor:pointer'>";
         		}
         		tagStr += "</td>";
         	}
@@ -385,23 +681,23 @@ function imgScroll(){
 
 function scrMoveLeft() {
 	initIndex = selIndex; 
-	selIndex--;
-	if (chgIndex < 0) selIndex = 0;
-	if(selIndex%5==0){
-		picIndex = selIndex;
+	initIndex--;
+	if (initIndex < 0) initIndex = 0;
+	if((initIndex+1)%5==0){
+		picIndex = initIndex-4;
 	}
-	imgChange(chgIndex);
+	imgChange(initIndex);
 }
 function scrMoveRight() {
 	initIndex = selIndex; 
-	selIndex++;
-	if (selIndex == picMaxSize){
-		selIndex = (picMaxSize - 1);
+	initIndex++;
+	if (initIndex == picMaxSize){
+		initIndex = (picMaxSize - 1);
 	}
-	if(selIndex%5==0){
-		picIndex = selIndex-5;
+	if(initIndex%5==0){
+		picIndex = initIndex;
 	}
-	imgChange(chgIndex);
+	imgChange(initIndex);
 }
 function imgChange(index) {
 	var src = "upload/" + picArray[index];
