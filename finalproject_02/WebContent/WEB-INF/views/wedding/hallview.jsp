@@ -99,61 +99,18 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 }
 </style>
 
+<style>
+#mask{
+  position:absolute;  
+  left:0;
+  top:0;
+  z-index:9000;  
+  background-color:#000;  
+  display:none;  
+}
+</style>
 
 <!-- 달력 -->
-<script>
-// day 누를시 
-public var calwrite(int year,int month, int day){	
-	String s="";
-	s+=String.format("<a href='%s?year=%d&month=%d&day=%d'>", 
-			"callist.do",year,month,day);
-	if(day < 10)s+="&nbsp;";
-	s+=String.format("%d",day); //2자리
-	s+="</a>";
-	return s;
-}
-
-//1자라면 0을 붙여 두자로 만들기 1->01
-public var two(String msg){
-	return msg.trim().length()<2?"0"+msg:msg.trim();
-}
-
-public String dot3(String msg){
-	String s="";
-	if(msg.length()>=15){
-		s=msg.substring(0,15);
-		s+="...";
-	}else{
-		s=msg.trim();
-	}
-	return s;
-}
-
-public var makeTable(int year,int month, int day,
-		List<ReservationDto> lcdtos){
-	String s="";
-	String dates=(year + "") + two(month + "") + two(day + "");//년월일 8글자 만드는거
-		
-	s="<table class='innerTable'>";
-	s+="<col width='100px'/>";
-	for(ReservationDto lcd:lcdtos){ //향상된 for
-		if(lcd.getRedate().substring(0,8).equals(dates)){
-			s+="<tr bgcolor='#4D6BB3'>";
-			s+="<td>";			
-			s+="<a href='caldetail.do?seq="+lcd.getRvseq()+"'>";
-			s+="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔
-			s+=dot3(lcd.getRetime()+lcd.getMid());
-			s+="</font>";
-			s+="</a>";
-			s+="</td>";
-			s+="</tr>";
-		}
-	}
-	s+="</table>";
-	return s;
-}
-</script>
-
 <%! //데클러레이션 : 메소드 선언
 public String callist(int year,int month, int day){	
 	String s="";
@@ -230,24 +187,7 @@ var month = ${jcal.month};
 //alert(month);
 </script>
 
-<c:if test="${not empty flist}">
 
-</c:if>
-<%
-List<ReservationDto> list=new ArrayList<ReservationDto>();
-Object Oflist=request.getAttribute("flist");
-if(Oflist!=null){
-	list=(List<ReservationDto>)Oflist;
-}
-
-myCal jcal=(myCal)request.getAttribute("jcal");
-
-int dayOfWeek=jcal.getDayOfWeek();//1일 요일1~7
-int lastDayOfMonth=jcal.getLastDay();
-
-int year=jcal.getYear();
-int month=jcal.getMonth();
-%>
 
 
 
@@ -350,7 +290,7 @@ int month=jcal.getMonth();
 			
 			<tr>
 				<th>요일</th><th>형태/시설구분</th><th>인원</th><th>간격</th><th>사용료</th><th>메뉴</th><th>식대</th><th>음주류</th>
-			
+			</tr>
 			<c:forEach var="hall" items="${hallList }">
 				<tr>
 					<td colspan="8" style="background-color: #F5F5F5;">${hall.hallname }/${hall.floor }</td>
@@ -405,11 +345,9 @@ int month=jcal.getMonth();
 		<!-- 여러 이미지 추가 -->
 		
 		<div>
-			<c:if test="${not empty hallSumList && hallSumList.size() ne 0}">
 			<table>
 				<tr id="_PicSel" class="imgScroll"></tr>
 			</table>
-			</c:if>
 			
 			<br><br>
 			
@@ -539,52 +477,48 @@ table, td, th {
 			<c:forEach varStatus="i" begin="1" end="${jcal.dayOfWeek - 1 }">
 				<td>&nbsp;</td>
 			</c:forEach>
-			<c:forEach varStatus="i" begin="1" end="${jcal.lastDayOfMonth}">
-				<c:if test="${(i.index+jcal.dayOfWeek)%7==0}">
-					<td class="satday" onmouseover="mouse(${i.index})" id="_day${i.index }"></td>
+			<c:forEach varStatus="i" begin="1" end="${jcal.lastDay}">
+				<c:if test="${(i.index+jcal.dayOfWeek-1)%7==0}">
+					<td class="satday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+							<a href="#" onclick="request(${i.index})">
+								<img alt="예약하기" src="assets/images/others/resv.jpg">
+							</a>
+						</div>
+					</td>
+				</c:if>
+				<c:if test="${(i.index+jcal.dayOfWeek-1)%7==1}">
+					<td class="sunday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+							<a href="#" onclick="request(${i.index})">
+								<img alt="예약하기" src="assets/images/others/resv.jpg">
+							</a>
+						</div>
+					</td>
+				</c:if>
+				<c:if test="${(i.index+jcal.dayOfWeek-1)%7!=0 && (i.index+jcal.dayOfWeek-1)%7!=1}">
+					<td class="otherday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+							<a href="#" onclick="request(${i.index})">
+								<img alt="예약하기" src="assets/images/others/resv.jpg">
+							</a>
+						</div>
+					</td>
+				</c:if>
+				<c:if test="${((i.index+jcal.dayOfWeek-1)%7==0 && i.index != jcal.lastDay) }">
+					</tr><tr height="100px">
 				</c:if>
 			</c:forEach>
-			<%
-			for(int i=1; i<dayOfWeek; i++){
-				out.println("<td>&nbsp;</td>");
-			}
-			for(int i=1; i<=lastDayOfMonth; i++){				
-				if((i+dayOfWeek-1)%7==0){
-					%>
-					<td class="satday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=callist(year,month,i)%>&nbsp;
-					<%=makeTable(year,month,i,list)%>
-					</td>
-					<%
-				}else if((i+dayOfWeek-1)%7==1){
-					%>
-					<td class="sunday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=i %>&nbsp;
-					<%=makeTable(year,month,i,list)%>
-					</td>
-					<%
-				}else{
-					%>
-					<td class="otherday" onmouseover="mouse(<%=i%>)" id="_day<%=i%>"><%=callist(year,month,i)%>&nbsp;
-					<%=makeTable(year,month,i,list)%>
-					</td>
-					<%
-				}
-				
-				if((i+dayOfWeek-1)%7==0 && i != lastDayOfMonth){
-					%>
-					</tr><tr height="100px">
-					<%
-				}
-			}
-			for(int i=0; i<(7-(dayOfWeek+lastDayOfMonth-1)%7)%7; i++){
-				out.println("<td>&nbsp;</td>");
-			}
-			%>
+			<c:forEach varStatus="i" begin="0" end="${(7-(jcal.dayOfWeek+jcal.lastDay-1)%7)%7-1 }">
+				<td>&nbsp;</td>
+			</c:forEach>
 			</tr>
 		</table>
-		
 		</div>
-	</div>
-		
+	</div>		
 	<!-- 
 	<div align="center">
 		<div id='calendar' style="width:90%; height: 895px; margin-top:20px;" ></div>
@@ -592,25 +526,74 @@ table, td, th {
 	 -->
 </div>
 
+
+<!-- 뒤에 컴하게하기 -->
+
+<div id="mask"></div>
+<!--  -->
+
 <script>
+var winopen="";
+
 function mouse(num){
+	var tagStr = "";
 	for(var i=1;i<=lastDayOfMonth;i++){
-		
 		if(i==num){
 			$("#_day"+i).css("background-color","#FFFAF0");
-			/* 
-			$("#_day"+i).empty();
-			$("#_day"+i).append(tagStr);
-			 */
+			$("#_daytext"+i).css("color","#D5D5D5");
+			$("#_resv"+i).css("display","");
+			//tagStr += "<button onclick='regidate("+i+")' style='background-color: red;'><font color='white'>예약하기</font></button>";
+			//$("#_day"+i).empty();
+			//$("#_day"+i).append(tagStr);
+			
 		}else{
 			$("#_day"+i).css("background-color","");
-			/* 
-			$("#_day"+i).empty();
-			$("#_day"+i).append(tagStr);
-			 */
+			$("#_daytext"+i).css("color","");
+			$("#_resv"+i).css("display","none");
+			//$("#_day"+i).empty();
+			//$("#_day"+i).append(tagStr);
 		}
 	}
 }
+
+function request(day){
+	
+	alert(year+" "+month+" "+day);
+	
+	var url = 'resv.do?year='+year+'&month='+month+'&day='+day+'&whseq='+${wd.whseq};
+	
+	var width=550, height=800;
+	var left = (screen.availWidth - width)/2;
+	var top = (screen.availHeight - height)/2;
+	var specs = "width=" + width;
+	specs += ",height=" + height;
+	specs += ",left=" + left;
+	specs += ",top=" + top;
+	
+	//var specs = "channelmode=yes,left=500,top=250,width=600,height=500";
+	// 화면의 높이와 너비를 구한다.
+	var maskHeight = $(document).height();
+	var maskWidth = $(window).width();
+	
+	// 마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+	$('#mask').css({'width':maskWidth, 'height':maskHeight});
+	
+	// 애니메이션 효과
+	//$('#mask').fadeIn(1000); 1초 동안 검정화면
+	$('#mask').fadeTo('slow',0.8);	// 80% 어둡기로 고정
+	
+	winopen = window.open(url,'팝업',specs);
+	
+	
+}
+
+	
+$('#mask').click(function () {
+	$(this).hide();
+	$('.window').hide();
+	winopen.close();
+});
+
 </script>
 
  

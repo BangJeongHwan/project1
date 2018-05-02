@@ -26,6 +26,7 @@ import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
 import kh.com.a.service.WeddingHallServ;
@@ -255,8 +256,25 @@ public class WeddingHallCtrl {
 		return map;
 	}
 	
-	
-	
+	@RequestMapping(value="resv.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String resv(Model model,int year, int month, int day, int whseq,HttpServletRequest req) throws Exception {
+		logger.info("WeddingHallCtrl resv " + new Date());
+		
+		//System.out.println("------------------>"+year);
+		//System.out.println("------------------>"+month);
+		//System.out.println("------------------>"+day);
+		//System.out.println("------------------>"+whseq);
+		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");	// 로그인 정보
+		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
+		String date = year+"-"+
+		
+		model.addAttribute("login", login);
+		model.addAttribute("hallList", hallList);
+		
+		
+		return "resv.tiles";
+	}
 	/*테스트*/
 	/*
 	@RequestMapping(value="calendarView.do", method={RequestMethod.GET,RequestMethod.POST})

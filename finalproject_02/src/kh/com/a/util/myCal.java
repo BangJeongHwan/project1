@@ -7,8 +7,8 @@ public class myCal implements Serializable {
 	private int year = -100;
 	private int month = -100;
 	private int day = -100;
-	private int lastDay;
-	private int dayOfWeek;	
+	private int lastDay=0;
+	private int dayOfWeek=0;	
 	
 	private int hour = 0;
 	private int min = 0;
@@ -38,7 +38,7 @@ public class myCal implements Serializable {
 
 	
 	
-	public myCal(int year, int month, int day, int lastDay, int hour, int min) {
+	public myCal(int year, int month, int day, int lastDay, int hour, int min, int dayOfWeek) {
 		super();
 		this.year = year;
 		this.month = month;
@@ -46,6 +46,7 @@ public class myCal implements Serializable {
 		this.lastDay = lastDay;
 		this.hour = hour;
 		this.min = min;
+		this.dayOfWeek = dayOfWeek;
 	}
 
 	public int getYear() {
