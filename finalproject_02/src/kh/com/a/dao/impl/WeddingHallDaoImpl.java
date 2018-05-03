@@ -116,6 +116,15 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
 
+	// 홀 1개의 정보
+	@Override
+	public WeddingHallDto hallInfo(String hallname, int whseq) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("hallname", hallname);
+		map.put("whseq", whseq);
+		return sqlSession.selectOne(ns+"hallInfo", map);
+	}
+
 	
 	
 }

@@ -269,22 +269,39 @@ public class WeddingHallCtrl {
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");	// 로그인 정보
 		
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
+		/*
 		String hallArr[] = new String[hallList.size()];
 		for(int i=0;i<hallList.size();i++) {
 			hallArr[i] = hallList.get(i).getHallname();
-		}
-		  
-		
+		}  
+		*/
 		String rdate = year+"-"+month+"-"+day;
-		
 		
 		model.addAttribute("wd", wd);
 		model.addAttribute("login", login);
-		model.addAttribute("hallArr", hallArr);
+		model.addAttribute("hallList", hallList);
+		//model.addAttribute("hallArr", hallArr);
 		model.addAttribute("rdate", rdate);
 		
 		
 		return "resv.tiles";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="hallInfo.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> hallInfo(Model model,String hallname, int whseq) throws Exception {
+		logger.info("WeddingHallCtrl hallInfo " + new Date());
+		
+		WeddingHallDto hall = weddingHallServ.hallInfo(hallname, whseq);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(hall==null) {
+			System.out.println("홀 정보가 없습니다.");
+			map.put("hall", "홀없음");
+		}else {
+			map.put("hall", hall);
+		}
+		
+		return map;
 	}
 	/*테스트*/
 	/*

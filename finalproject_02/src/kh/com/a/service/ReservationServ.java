@@ -22,4 +22,7 @@ public interface ReservationServ {
 	public boolean addMuReservation(ReservationDto reserv) throws Exception;
 	public ReservationDto getReservByRvseq(int rvseq) throws Exception;
 	public boolean checkMuBskByMidReserv(ReservationDto reserv) throws Exception;
+	
+	//정환
+	public void wdHallResv(ReservationDto rDto);
 }

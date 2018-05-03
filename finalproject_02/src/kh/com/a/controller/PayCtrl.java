@@ -78,6 +78,7 @@ public class PayCtrl {
 		return "redirect:/dressDetail.do?dsseq="+rDto.getPdseq();
 	}
 	
+	
 	@ResponseBody
 	@RequestMapping(value="getDSReservListByPdseqRedate.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public Map<String, Object> getDSReservListByPdseqRedate(ReservationDto reserv) throws Exception {
@@ -189,6 +190,17 @@ public class PayCtrl {
 		model.addAttribute("museq", reserv.getPdseq());
 		return "redirect:/muDetailView.do";
 	}
+	
+	// weddingHall 예약(정환)
+	@RequestMapping(value="reservationWd.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String reservationWd(Model model, ReservationDto rDto) throws Exception {
+		logger.info("PayCtrl reservationWd " + new Date());
+		System.out.println(rDto.toString());
+		reservServ.wdHallResv(rDto);		
+		
+		return "redirect:/hallView.do?whseq="+rDto.getPdseq();
+	}
+		
 }
 
 

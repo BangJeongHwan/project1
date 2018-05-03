@@ -67,4 +67,11 @@ public class ReservationDaoImpl implements ReservationDao {
 		int cnt = sqlSession.selectOne(ns+"checkMuBskByMidReserv", reserv);
 		return cnt>0?true:false;
 	}
+
+	// 정환 추가
+	// 홀 일정 추가
+	@Override
+	public void wdHallResv(ReservationDto rDto) {
+		sqlSession.insert(ns+"wdHallResv", rDto);
+	}
 }

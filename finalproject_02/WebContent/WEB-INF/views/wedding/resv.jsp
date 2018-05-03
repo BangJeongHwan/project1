@@ -82,42 +82,48 @@ td:nth-child(even) {
 	</table>
 	<br><br>
 	<h4>상담정보</h4>
-	<table style="width:100%;">
-		<colgroup>
-			<col width="10%"><col width="30%">
-		</colgroup>
-		<tr>
-			<th>홀이름</th>
-			<td>	
-				<input type="text" name="name" id="_name" size="20" value="${wd.cname }" readonly>
-			</td>
-		</tr>
-		<tr>
-			<th>희망홀</th>
-			<td>
-				<select id="_hallname" name="hallname" style="width: 50%">
-					<c:forEach varStatus="i" begin="0" step="1" end="${hallArr.length-1 }">
-						<option value="${hallArr[i.index]}">${hallArr[i.index]}
-					</c:forEach>
-				</select>
-			</td>
-		</tr>
-		
-		<tr>
-			<th>예약일</th>
-			<td>
-				<input type="text" id="_redate" name="redate" size="10" style="border: none; cursor:default" value="${rdate}" readonly>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<select name="retime" id="_retime">
-					<%-- 
-					<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
-						<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
-					</c:forEach>
-					 --%>
-				</select>
-			</td>
-		</tr>
-	</table>
+	<form action="#" method="post" id="_resv" onsubmit="return checkSubmit()">
+		<input type="hidden" value="${login.id }" name="mid">
+		<input type="hidden" value="${wd.whseq }" name="pdseq">
+		<table style="width:100%;">
+			<colgroup>
+				<col width="10%"><col width="30%">
+			</colgroup>
+			<tr>
+				<th>홀이름</th>
+				<td>	
+					<input type="text" name="name" id="_name" size="20" value="${wd.cname }" readonly>
+				</td>
+			</tr>
+			<tr>
+				<th>희망홀</th>
+				<td>
+					
+					<select id="_hallname" name="content" style="width: 50%">
+						<c:if test="${not empty hallList}">
+							<c:forEach items="${hallList }" var="list">
+								<option value="${list.hallname}">${list.hallname}
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty hallList}">
+							<option value="홀없음">홀 없음
+						</c:if>
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>예약일</th>
+				<td>
+					<input type="text" id="_redate" name="redate" size="10" style="border: none; cursor:default" value="${rdate}" readonly>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<select name="retime" id="_retime">
+						
+					</select>
+				</td>
+			</tr>
+		</table>
+	</form>
 	<br><br>
 	
 	<h4>상담정보</h4>
@@ -198,10 +204,15 @@ td:nth-child(even) {
 귀하께서는 회사의 서비스를 이용하시며 발생하는 모든 개인정보보호 관련 민원을 개인정보관리책임자 혹은 담당부서로 신고하실 수 있습니다.
 회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다.
 	</textarea>
-	<input type="checkbox">개인정보 수집에 동의합니다.
+	
+	<br><input type="checkbox" id="_checkB">개인정보 수집에 동의합니다.
 	<br><br>
 	<div align="center">
-		<img src="assets/images/others/order.jpg">&nbsp;&nbsp;<img src="assets/images/others/cancel1.jpg">
+		<c:if test="${login.auth eq 'member'}">
+			<img alt="전송" src="assets/images/others/order.jpg" onclick="ordersummit()" style="cursor:pointer;">&nbsp;&nbsp;
+		</c:if>
+		<img alt="취소" src="assets/images/others/cancel1.jpg">
+		<button onclick="closer()">닫기</button>
 	</div>
 </div>
 
@@ -257,16 +268,49 @@ $("#_redate").datepicker(   // inputbox 의 id 가 startDate
 	, showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	, minDate : 0         // 오늘부터 시작
 	, onSelect: function (date) {
-		selectDate(date);
+		hallinfo(date);
 	}
 });
 $('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
 
-halltime();
-function halltime(){
+//초기값
+var date = $("#_redate").val();
+//alert(date);
+hallinfo(date);
+
+function hallinfo(date){
 	var hallname = $("#_hallname option:selected").val();
+	//alert(hallname);
 	var data = {
 			hallname:hallname,
+			whseq:${wd.whseq}
+	};
+	$.ajax({
+		url:"hallInfo.do",
+		type:"get",
+		data:data,
+		success:function(msg){
+			if(msg.hall!='홀없음'){
+				schedule(msg.hall, date);
+			}else{
+				alert("홀 정보가 없습니다.");
+				return;
+			}
+		},
+		error:function(r,s,e){
+			alert("실패");
+		}
+	});
+}
+
+var time = new Array(); // 시간처리
+var hour = new Array();	// 시
+var min = new Array();	// 분
+
+function schedule(hall, rdate){
+	//alert(hall.opentime);
+	var data = {
+			redate:rdate,
 			pdseq:${wd.whseq}
 	};
 	$.ajax({
@@ -276,13 +320,36 @@ function halltime(){
 		success:function(msg){
 			$("#_retime").empty();
 			
+			// 시간 처리
+			var open = Number(hall.opentime);
+			var close = Number(hall.closetime);
+			var stepArr = hall.wstep.split('분');
+			var step = Number(stepArr[0]);
 			/* 
-			for (var i = ${openHour}; i < ${closeHour - 1}; i++) {
-				var retimeStr = i + ":" + ${openMin} + "~" + (i + 1) + ":" + ${openMin};
-				var tagStr = "<option value="+ retimeStr +">" + retimeStr + "</option>";
-				$("#_retime").append(tagStr);
-			}
+			alert(open);
+			alert(close);
+			alert(step);
 			 */
+			timePro(open, close, step);	// 시간 처리			
+			
+			// 기존 시간 출력
+			for (var i=0;i<hour.length; i++) {
+				if(hour[i+1]!=null && min[i+1]!=null){
+					var retimeStr = hour[i] + ":" + min[i] + "~" + hour[i+1] + ":" + min[i+1];
+					var tagStr = "<option value="+ retimeStr +">" + retimeStr + "</option>";
+					$("#_retime").append(tagStr);
+				}
+			}
+			
+			// 예약된 시간 삭제
+			if(msg.reservList != null){
+				for(var i = 0; i < msg.reservList.length; i++) {
+					var retime = msg.reservList[i].retime;
+					var optionId = "#_retime option[value='" + retime + "']";
+					$(optionId).remove();
+				}
+			}
+			
 		},
 		error:function(r,s,e){
 			alert("실패");
@@ -290,6 +357,54 @@ function halltime(){
 	});
 }
 
+function timePro(open,close,step){
+	
+	time[0] = open*60;
+	var count = 1;
+	for (var i = open; i < close; i++) {
+		
+		time[count] = i*60 + step;	
+		
+		if(time[count]>(close*60)){
+			return;
+		}
+		count++;
+	}	
+	
+	for(var i=0;i<time.length;i++){
+		hour[i] = parseInt(time[i]/60);
+		min[i] = time[i]%60;
+		if(min[i]==0){
+			min[i]="00";
+		}
+	}
+}
+
+// 예약 버튼
+function ordersummit(){
+	opener.top.location.href="SelectRegi.do";	// 부모
+	self.close();	// 자식 처리
+	
+	$("#_resv").attr({"target":"_self", "action":"reservationWd.do" }).submit();
+}
+
+function checkSubmit() {
+	
+	if ($("#_redate").val().trim() == "") {
+		alert("날짜를 선택해주세요.");
+	}else if(!$("#_checkB").is(":checked")){
+		alert("개인정보 수집에 동의에 체크해주세요!");
+	}else{
+		return true;
+	}
+	return false;
+}
+
+// 닫기 동작
+function closer(){
+	opener.document.find('#mask').hide();
+	this.close();
+}
 </script>
 
 

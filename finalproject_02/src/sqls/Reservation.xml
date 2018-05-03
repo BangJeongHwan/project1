@@ -59,4 +59,10 @@
 			AND R.MID=#{mid} AND R.PDSEQ=#{pdseq}<!--  AND R.REDATE=#{redate} AND R.RETIME=#{retime} -->
 	</select>
 	
+	<!-- 정환 -->
+	<insert id="wdHallResv" parameterType="kh.com.a.model.ReservationDto">
+		INSERT INTO WD_RESERVATION(RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT)
+		VALUES(RV_SEQ.NEXTVAL, #{mid}, #{redate}, #{retime}, #{pdseq}, '승인중', #{content})
+	</insert>
+	
 </mapper>

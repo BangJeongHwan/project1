@@ -92,5 +92,11 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
 		return weddingHallDao.getWdRegList(fcal);
 	}
+
+	// 홀 1개의 정보
+	@Override
+	public WeddingHallDto hallInfo(String hallname, int whseq) {
+		return weddingHallDao.hallInfo(hallname, whseq);
+	}
 	
 }

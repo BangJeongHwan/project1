@@ -591,11 +591,14 @@ function request(day){
 	
 	winopen = window.open(url,'팝업',specs);
 }
-
-	
+/* 
+$('#mask').mouseover(function () {
+	$(this).hide();
+});
+	 */
 $('#mask').click(function () {
 	$(this).hide();
-	$('.window').hide();
+	//$('.window').hide();
 	winopen.close();
 });
 
@@ -641,25 +644,26 @@ function imgScroll(){
         		picArray[i] = res.picArr[i];
         	}
         	
-        	
-        	var tagStr = "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
-        	for(var i = picIndex; i <= (picIndex+4); i++) {
+        	if(picMaxSize!=0){
+	        var tagStr = "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveLeft()'>◀</td>";
+	        for(var i = picIndex; i <= (picIndex+4); i++) {
         		if (i == selIndex) {
-        			selIndex = i;
-        			tagStr += "<td class='clickimg' id='_simg"+i+"'>";
-        		} else {
-        			tagStr += "<td id='_simg"+i+"'>";
-        		}
-        		if (i >= 0 && i < picMaxSize) {
-        			var onclickStr = "imgChange(" + i +")";
-        			tagStr += "<img src='upload/"+ picArray[i] +"' onclick='"+ onclickStr +"' style='width:100px;height:70px;cursor:pointer'>";
-        		}
-        		tagStr += "</td>";
+	        			selIndex = i;
+	        			tagStr += "<td class='clickimg' id='_simg"+i+"'>";
+	        		} else {
+	        			tagStr += "<td id='_simg"+i+"'>";
+	        		}
+	        		if (i >= 0 && i < picMaxSize) {
+	        			var onclickStr = "imgChange(" + i +")";
+	        			tagStr += "<img src='upload/"+ picArray[i] +"' onclick='"+ onclickStr +"' style='width:100px;height:70px;cursor:pointer'>";
+	        		}
+	        		tagStr += "</td>";
+	        	}
+	        	tagStr += "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
+	        	
+	        	$("#_PicSel").empty();
+	        	$("#_PicSel").append(tagStr);
         	}
-        	tagStr += "<td style='width:50px;height:59px;cursor:pointer' onclick='scrMoveRight()'>▶</td>";
-        	
-        	$("#_PicSel").empty();
-        	$("#_PicSel").append(tagStr);        	
         },
         error:function(reqest, status, error){
             alert("실패");

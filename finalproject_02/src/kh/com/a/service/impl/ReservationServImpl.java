@@ -67,4 +67,9 @@ public class ReservationServImpl implements ReservationServ {
 	public boolean checkMuBskByMidReserv(ReservationDto reserv) throws Exception {
 		return reservDao.checkMuBskByMidReserv(reserv);
 	}
+
+	@Override
+	public void wdHallResv(ReservationDto rDto) {
+		reservDao.wdHallResv(rDto);
+	}
 }

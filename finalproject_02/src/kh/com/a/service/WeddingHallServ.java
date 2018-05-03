@@ -24,4 +24,5 @@ public interface WeddingHallServ {
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
 	
 	public List<ReservationDto> getWdRegList(ReservationDto fcal);
+	public WeddingHallDto hallInfo(String hallname, int whseq);
 }
