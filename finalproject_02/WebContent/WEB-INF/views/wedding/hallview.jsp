@@ -181,6 +181,10 @@ var dayOfWeek = ${jcal.dayOfWeek};
 var lastDayOfMonth = ${jcal.lastDay};
 var year = ${jcal.year};
 var month = ${jcal.month};
+
+if(month<10){
+	month = "0" + month;
+}
 //alert(dayOfWeek);
 //alert(lastDayOfMonth);
 //alert(year);
@@ -557,18 +561,21 @@ function mouse(num){
 }
 
 function request(day){
-	
+	if(day<10){
+		day = "0" + day;
+	}
 	alert(year+" "+month+" "+day);
 	
 	var url = 'resv.do?year='+year+'&month='+month+'&day='+day+'&whseq='+${wd.whseq};
 	
-	var width=550, height=800;
+	var width=550, height=910;
 	var left = (screen.availWidth - width)/2;
 	var top = (screen.availHeight - height)/2;
 	var specs = "width=" + width;
 	specs += ",height=" + height;
 	specs += ",left=" + left;
 	specs += ",top=" + top;
+	specs += ",scrollbars=no";
 	
 	//var specs = "channelmode=yes,left=500,top=250,width=600,height=500";
 	// 화면의 높이와 너비를 구한다.
@@ -583,8 +590,6 @@ function request(day){
 	$('#mask').fadeTo('slow',0.8);	// 80% 어둡기로 고정
 	
 	winopen = window.open(url,'팝업',specs);
-	
-	
 }
 
 	
@@ -695,6 +700,7 @@ function imgChange(index) {
 </script>
 
 <!-- fullcalendar에 대한 스크립트 -->
+<!-- 
 <script type="text/javascript">
 $(function() {
 	// 한국어 변환
@@ -764,8 +770,8 @@ $(function() {
   	});
 });
 </script>
-
-<!--  구글맵에 대한 스크립트 -->
+ -->
+ 구글맵에 대한 스크립트
 <script type="text/javascript">
 function initMap() {
 	var x = ${wd.latitude};

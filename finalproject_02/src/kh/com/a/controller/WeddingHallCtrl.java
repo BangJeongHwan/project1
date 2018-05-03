@@ -257,7 +257,7 @@ public class WeddingHallCtrl {
 	}
 	
 	@RequestMapping(value="resv.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String resv(Model model,int year, int month, int day, int whseq,HttpServletRequest req) throws Exception {
+	public String resv(Model model,String year,String month, String day, int whseq,HttpServletRequest req) throws Exception {
 		logger.info("WeddingHallCtrl resv " + new Date());
 		
 		//System.out.println("------------------>"+year);
@@ -265,12 +265,23 @@ public class WeddingHallCtrl {
 		//System.out.println("------------------>"+day);
 		//System.out.println("------------------>"+whseq);
 		
+		WeddingDto wd = weddingHallServ.getWedding(whseq);	// 웨딩홀 1개 업체
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");	// 로그인 정보
-		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
-		String date = year+"-"+
 		
+		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
+		String hallArr[] = new String[hallList.size()];
+		for(int i=0;i<hallList.size();i++) {
+			hallArr[i] = hallList.get(i).getHallname();
+		}
+		  
+		
+		String rdate = year+"-"+month+"-"+day;
+		
+		
+		model.addAttribute("wd", wd);
 		model.addAttribute("login", login);
-		model.addAttribute("hallList", hallList);
+		model.addAttribute("hallArr", hallArr);
+		model.addAttribute("rdate", rdate);
 		
 		
 		return "resv.tiles";
