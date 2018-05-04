@@ -74,4 +74,16 @@ public class ReservationDaoImpl implements ReservationDao {
 	public void wdHallResv(ReservationDto rDto) {
 		sqlSession.insert(ns+"wdHallResv", rDto);
 	}
+
+	@Override
+	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception {
+		return sqlSession.selectList(ns+"getWDResvListByPdseqRedate", reserv);
+	}
+	
+	// 웨딩홀 예약된 것들 모두 불러오기
+	@Override
+	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+		return sqlSession.selectList(ns+"getWdRegList", fcal);
+	}
+	
 }

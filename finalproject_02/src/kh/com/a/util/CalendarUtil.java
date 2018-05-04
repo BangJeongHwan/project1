@@ -10,7 +10,7 @@ public class CalendarUtil {
 		return (tt+"").length()>1?(tt+""):"0"+tt;
 	}
 	public static String yyyymm(int year, int month){
-		return ""+year+two(month);
+		return ""+year+"/"+two(month);
 	}
 	public static String yyyymmdd(int year, int month, int day){
 		return yyyymm(year,month)+two(day);

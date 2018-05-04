@@ -176,24 +176,6 @@ public String makeTable(int year,int month, int day,
 }
 %>
 
-<script>
-var dayOfWeek = ${jcal.dayOfWeek};
-var lastDayOfMonth = ${jcal.lastDay};
-var year = ${jcal.year};
-var month = ${jcal.month};
-
-if(month<10){
-	month = "0" + month;
-}
-//alert(dayOfWeek);
-//alert(lastDayOfMonth);
-//alert(year);
-//alert(month);
-</script>
-
-
-
-
 
 <div class="container" style="padding-top: 10px">
 	<h2 class="nino-sectionHeading">
@@ -462,12 +444,12 @@ table, td, th {
 		
 		
 		<thead>
-		<tr height="50px">
+		<tr height="50px" id="_calendertop">
 			<td class="days2" colspan="7">
-				<input type="text" value="<이전달" style="border: 1px solid black;cursor:pointer" size="4" readonly>&nbsp;
-				<font color="black" style="font-size: 24"><input type="text" value="${jcal.year}" size="2" readonly>&nbsp;&nbsp;
-					<input type="text" value="${jcal.month }월" size="1" readonly>
-				</font>&nbsp;<input type="text" value="다음달>" style="border: 1px solid black;cursor:pointer" size="4" readonly></td>
+			<input type="text" value="<이전달" style="border: 1px solid black;cursor:pointer" size="4" readonly onclick="makeCalender(${jcal.month-1})">&nbsp;
+			<font color="black" style="font-size: 24"><input type="text" value="${jcal.year}" size="2" readonly>&nbsp;&nbsp;
+				<input type="text" value="${jcal.month }월" size="1" readonly>
+			</font>&nbsp;<input type="text" value="다음달>" style="border: 1px solid black;cursor:pointer" size="4" readonly onclick="makeCalender(${jcal.month+1})"></td>
 		</tr>
 		
 		<tr height="40px">
@@ -477,7 +459,8 @@ table, td, th {
 		</tr>
 		
 		</thead>
-			<tr height="100px">
+			<tr height="100px" id="_calender">
+			
 			<c:forEach varStatus="i" begin="1" end="${jcal.dayOfWeek - 1 }">
 				<td>&nbsp;</td>
 			</c:forEach>
@@ -519,6 +502,7 @@ table, td, th {
 			<c:forEach varStatus="i" begin="0" end="${(7-(jcal.dayOfWeek+jcal.lastDay-1)%7)%7-1 }">
 				<td>&nbsp;</td>
 			</c:forEach>
+			
 			</tr>
 		</table>
 		</div>
@@ -531,14 +515,99 @@ table, td, th {
 </div>
 
 
-<!-- 뒤에 컴하게하기 -->
-
+<!-- 뒤에 검하게하기 -->
 <div id="mask"></div>
 <!--  -->
+
+<!-- 달력 처리 -->
+<script>
+var dayOfWeek = ${jcal.dayOfWeek};
+var lastDayOfMonth = ${jcal.lastDay};
+var year = ${jcal.year};
+var month = ${jcal.month};
+
+function makeCalender(month){
+	var data = {
+		year:year,
+		month:month,
+		pdseq:${wd.whseq}
+	}
+	$.ajax({
+		url:"calenderDate.do",
+		data:data,
+		success:function(msg){
+			// 초기화
+			dayOfWeek = msg.jcal.dayOfWeek;
+			lastDayOfMonth = msg.jcal.lastDay;
+			year = msg.jcal.year;
+			month = msg.jcal.month;
+			
+			alert(dayOfWeek);
+			alert(lastDayOfMonth);
+			alert(year);
+			alert(month);
+			
+			$("#_calendertop").empty();
+			var tagStrTop = "<td class='days2' colspan='7'>";
+			tagStrTop += "<input type='text' value='<이전달' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month-1)+")'>&nbsp;"
+			tagStrTop += "<font color='black' style='font-size: 24'><input type='text' value='"+year+"' size='2' readonly>&nbsp;&nbsp;";
+			tagStrTop += 	"<input type='text' value='"+month+"월' size='1' readonly>";
+			tagStrTop += "</font>&nbsp;<input type='text' value='다음달>' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month+1)+")'></td>";
+			$("#_calendertop").append(tagStrTop);
+			
+			$("#_calender").empty();
+			var tagStr = "";
+			for(var i=1;i<dayOfWeek;i++){
+				tagStr += "<td>&nbsp;</td>";
+			}
+			for(var i=1;i<=lastDayOfMonth;i++){
+				if((i+dayOfWeek-1)%7==0){
+					tagStr += "<td class='satday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
+					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
+					tagStr +=		"<a href='#' onclick='request("+i+")'>";
+					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
+					tagStr +=		"</a>";
+					tagStr += "</div>";
+				}else if((i+dayOfWeek-1)%7==1){
+					tagStr += "<td class='sunday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
+					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
+					tagStr +=		"<a href='#' onclick='request("+i+")'>";
+					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
+					tagStr +=		"</a>";
+					tagStr += "</div>";
+				}else{
+					tagStr += "<td class='otherday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
+					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
+					tagStr +=		"<a href='#' onclick='request("+i+")'>";
+					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
+					tagStr +=		"</a>";
+					tagStr += "</div>";
+				}
+				if((i+dayOfWeek-1)%7==0 && i != lastDayOfMonth){
+					tagStr += "</tr><tr height='100px'>";
+				}
+			}
+			for(var i=0;i<(7-(dayOfWeek+lastDayOfMonth-1)%7)%7;i++){
+				tagStr += "<td>&nbsp;</td>";
+			}
+			$("#_calender").append(tagStr);
+		},
+		error:function(reqest, status, error){
+            alert("실패");
+        }
+	});
+	
+}
+</script>
+
 
 <script>
 var winopen="";
 
+// 달력에 마우스 over시
 function mouse(num){
 	var tagStr = "";
 	for(var i=1;i<=lastDayOfMonth;i++){
@@ -560,11 +629,18 @@ function mouse(num){
 	}
 }
 
+// 부모의 window 이름
+window.name = 'parentview';
+
+// 달력을 클릭시
 function request(day){
+	if(month<10){
+		month = "0" + month;
+	}
 	if(day<10){
 		day = "0" + day;
 	}
-	alert(year+" "+month+" "+day);
+	//alert(year+" "+month+" "+day);
 	
 	var url = 'resv.do?year='+year+'&month='+month+'&day='+day+'&whseq='+${wd.whseq};
 	
@@ -775,7 +851,8 @@ $(function() {
 });
 </script>
  -->
- 구글맵에 대한 스크립트
+
+ <!-- 구글맵에 대한 스크립트 -->
 <script type="text/javascript">
 function initMap() {
 	var x = ${wd.latitude};

@@ -87,12 +87,6 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.getHallPicList(hallname, whseq);
 	}
 
-	// 웨딩홀 예약된 것들 모두 불러오기
-	@Override
-	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
-		return weddingHallDao.getWdRegList(fcal);
-	}
-
 	// 홀 1개의 정보
 	@Override
 	public WeddingHallDto hallInfo(String hallname, int whseq) {

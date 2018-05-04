@@ -29,6 +29,7 @@ import kh.com.a.model.WeddingHallDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.CalendarUtil;
 import kh.com.a.util.FUpUtil;
@@ -40,6 +41,10 @@ public class WeddingHallCtrl {
 	
 	@Autowired
 	WeddingHallServ weddingHallServ;
+
+	//예약 때문에
+	@Autowired
+	ReservationServ reservServ;
 	
 	// 웨딩 업체 뷰
 	@RequestMapping(value="weddingHallView.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -126,7 +131,7 @@ public class WeddingHallCtrl {
 		ReservationDto fcal = new ReservationDto();
 		fcal.setPdseq(whseq);
 		fcal.setRedate(yyyyMM);
-		List<ReservationDto> flist = weddingHallServ.getWdRegList(fcal);
+		List<ReservationDto> flist = reservServ.getWdRegList(fcal);
 		
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
@@ -275,7 +280,7 @@ public class WeddingHallCtrl {
 			hallArr[i] = hallList.get(i).getHallname();
 		}  
 		*/
-		String rdate = year+"-"+month+"-"+day;
+		String rdate = year+"/"+month+"/"+day;
 		
 		model.addAttribute("wd", wd);
 		model.addAttribute("login", login);
@@ -287,6 +292,7 @@ public class WeddingHallCtrl {
 		return "resv.tiles";
 	}
 	
+	// 홀 정보
 	@ResponseBody
 	@RequestMapping(value="hallInfo.do", method={RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> hallInfo(Model model,String hallname, int whseq) throws Exception {
@@ -303,6 +309,8 @@ public class WeddingHallCtrl {
 		
 		return map;
 	}
+	
+	
 	/*테스트*/
 	/*
 	@RequestMapping(value="calendarView.do", method={RequestMethod.GET,RequestMethod.POST})

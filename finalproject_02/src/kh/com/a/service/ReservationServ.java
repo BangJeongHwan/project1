@@ -25,4 +25,6 @@ public interface ReservationServ {
 	
 	//정환
 	public void wdHallResv(ReservationDto rDto);
+	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception;
+	public List<ReservationDto> getWdRegList(ReservationDto fcal);
 }

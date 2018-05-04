@@ -82,7 +82,7 @@ td:nth-child(even) {
 	</table>
 	<br><br>
 	<h4>상담정보</h4>
-	<form action="#" method="post" id="_resv" onsubmit="return checkSubmit()">
+	<form action="#" method="post" name="resv" id="_resv" onsubmit="return checkSubmit()">
 		<input type="hidden" value="${login.id }" name="mid">
 		<input type="hidden" value="${wd.whseq }" name="pdseq">
 		<table style="width:100%;">
@@ -211,6 +211,7 @@ td:nth-child(even) {
 		<c:if test="${login.auth eq 'member'}">
 			<img alt="전송" src="assets/images/others/order.jpg" onclick="ordersummit()" style="cursor:pointer;">&nbsp;&nbsp;
 		</c:if>
+		<!-- <input type="reset" value="취소"> -->
 		<img alt="취소" src="assets/images/others/cancel1.jpg">
 		<button onclick="closer()">닫기</button>
 	</div>
@@ -259,7 +260,7 @@ var year = "";
 var month = "";
 var day = "";
 $("#_redate").datepicker(   // inputbox 의 id 가 startDate 
-	{dateFormat:'yy-mm-dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011-04-29' 로표시
+	{dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011-04-29' 로표시
 	, showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
 	, buttonImage: 'assets/images/selectCal.jpg'  // 우측 달력 icon 의 이미지 패스 
 	, buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
@@ -298,7 +299,7 @@ function hallinfo(date){
 			}
 		},
 		error:function(r,s,e){
-			alert("실패");
+			alert("실패1");
 		}
 	});
 }
@@ -308,30 +309,28 @@ var hour = new Array();	// 시
 var min = new Array();	// 분
 
 function schedule(hall, rdate){
-	//alert(hall.opentime);
+	//alert(hall.opentime);2018/08/06
+	alert(rdate.substring(2,10));
+	rdate = rdate.substring(2,10);
 	var data = {
 			redate:rdate,
-			pdseq:${wd.whseq}
+			pdseq:${wd.whseq},
+			content:hall.hallname
 	};
 	$.ajax({
-		url:"getMuReservListByPdseqRedate.do",
+		url:"getWDResvListByPdseqRedate.do",
 		type:"get",
 		data:data,
 		success:function(msg){
 			$("#_retime").empty();
-			
 			// 시간 처리
 			var open = Number(hall.opentime);
 			var close = Number(hall.closetime);
 			var stepArr = hall.wstep.split('분');
 			var step = Number(stepArr[0]);
-			/* 
-			alert(open);
-			alert(close);
-			alert(step);
-			 */
+						 
 			timePro(open, close, step);	// 시간 처리			
-			
+
 			// 기존 시간 출력
 			for (var i=0;i<hour.length; i++) {
 				if(hour[i+1]!=null && min[i+1]!=null){
@@ -341,18 +340,18 @@ function schedule(hall, rdate){
 				}
 			}
 			
+			
 			// 예약된 시간 삭제
-			if(msg.reservList != null){
-				for(var i = 0; i < msg.reservList.length; i++) {
-					var retime = msg.reservList[i].retime;
+			if(msg.WdResvList != null){
+				for(var i = 0; i < msg.WdResvList.length; i++) {
+					var retime = msg.WdResvList[i].retime;
 					var optionId = "#_retime option[value='" + retime + "']";
 					$(optionId).remove();
 				}
 			}
-			
 		},
 		error:function(r,s,e){
-			alert("실패");
+			alert("실패2");
 		}
 	});
 }
@@ -382,10 +381,14 @@ function timePro(open,close,step){
 
 // 예약 버튼
 function ordersummit(){
-	opener.top.location.href="SelectRegi.do";	// 부모
-	self.close();	// 자식 처리
 	
-	$("#_resv").attr({"target":"_self", "action":"reservationWd.do" }).submit();
+ 	// form 값 보내주기
+ 	document.resv.action = 'reservationWd.do';	// controller
+ 	document.resv.target = 'parentview';	// 부모에 window.name 지정
+ 	document.resv.submit();
+ 	
+	$("#mask",opener.document).hide();	// 부모
+	self.close();	// 자식 처리
 }
 
 function checkSubmit() {
@@ -402,9 +405,10 @@ function checkSubmit() {
 
 // 닫기 동작
 function closer(){
-	opener.document.find('#mask').hide();
+	$("#mask",opener.document).hide();
 	this.close();
 }
+
 </script>
 
 

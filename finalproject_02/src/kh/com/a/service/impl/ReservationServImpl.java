@@ -68,8 +68,22 @@ public class ReservationServImpl implements ReservationServ {
 		return reservDao.checkMuBskByMidReserv(reserv);
 	}
 
+	// 정환
+	// 홀 예약
 	@Override
 	public void wdHallResv(ReservationDto rDto) {
 		reservDao.wdHallResv(rDto);
+	}
+
+	// 홀 예약 확인
+	@Override
+	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception {
+		return reservDao.getWDResvListByPdseqRedate(reserv);
+	}
+	
+	// 웨딩홀 예약된 것들 모두 불러오기
+	@Override
+	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+		return reservDao.getWdRegList(fcal);
 	}
 }
