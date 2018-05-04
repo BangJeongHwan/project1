@@ -13,6 +13,8 @@ public class myCal implements Serializable {
 	private int hour = 0;
 	private int min = 0;
 	
+	private String dateStr = "";
+	
 	Calendar cal = Calendar.getInstance();
 	
 	public myCal() {}
@@ -33,12 +35,14 @@ public class myCal implements Serializable {
 		}
 		cal.set(year, month-1, 1);
 		dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-		lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);		
+		lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);	
+		
+		dateStr = CalendarUtil.yymmdd(year, month-1, day);
 	}
 
 	
 	
-	public myCal(int year, int month, int day, int lastDay, int hour, int min, int dayOfWeek) {
+	public myCal(int year, int month, int day, int lastDay, int hour, int min, int dayOfWeek, String dateStr) {
 		super();
 		this.year = year;
 		this.month = month;
@@ -47,6 +51,17 @@ public class myCal implements Serializable {
 		this.hour = hour;
 		this.min = min;
 		this.dayOfWeek = dayOfWeek;
+		this.dateStr = dateStr;
+	}
+	
+	
+
+	public String getDateStr() {
+		return dateStr;
+	}
+
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
 	}
 
 	public int getYear() {

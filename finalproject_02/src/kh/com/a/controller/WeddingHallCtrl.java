@@ -244,7 +244,7 @@ public class WeddingHallCtrl {
 		}else {
 			list = weddingHallServ.getHallPicList(hallname, whseq);
 		}
-		System.out.println("----------->" + list.size());
+		//System.out.println("----------->" + list.size());
 		
 		String picArr[] = new String[list.size()];
 		
@@ -252,7 +252,7 @@ public class WeddingHallCtrl {
 			picArr[i] = list.get(i).getPicture();
 		}
 		
-		System.out.println("----------->" + picArr.length);
+		//System.out.println("----------->" + picArr.length);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		

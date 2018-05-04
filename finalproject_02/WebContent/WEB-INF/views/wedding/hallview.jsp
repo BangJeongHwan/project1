@@ -58,7 +58,7 @@ li.line:hover{
 }
 </style>
 
-<!-- 그냥 캘린더 -->
+<!-- 그냥 캘린더 css -->
 <style>
 table, td, th {
     border: 1px solid black;
@@ -99,6 +99,7 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 }
 </style>
 
+<!-- 화면 흐리게 css -->
 <style>
 #mask{
   position:absolute;  
@@ -111,31 +112,22 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 </style>
 
 <!-- 달력 -->
-<%! //데클러레이션 : 메소드 선언
-public String callist(int year,int month, int day){	
-	String s="";
-	s+=String.format("<a href='%s?year=%d&month=%d&day=%d'>", 
-			"callist.do",year,month,day);
-	if(day < 10)s+="&nbsp;";
-	s+=String.format("%d",day); //2자리
-	s+="</a>";
-	return s;
+<%--
+List<ReservationDto> list= new ArrayList<ReservationDto>();
+Object Oflist=request.getAttribute("flist");
+if(Oflist!=null){
+	list=(List<ReservationDto>)Oflist;
 }
 
+myCal jcal=(myCal)request.getAttribute("jcal");
 
+int dayOfWeek=jcal.getDayOfWeek();//1일 요일1~7
+int lastDayOfMonth=jcal.getLastDay();
 
-//
-//pen이미지를 선택하면 일정을 작성할수 있다.
-/* 
-public String showPen(int year,int month, int day){	
-	String s="";
-	String url="calwrite.do";
-	String image="<img src='image/pen.gif'/>";
-	s=String.format("<a href='%s?year=%d&month=%d&day=%d'>%s</a>",
-			url,year,month,day,image);
-	return s;
-}
- */
+int year=jcal.getYear();
+int month=jcal.getMonth();
+--%>
+<%!
 //1자라면 0을 붙여 두자로 만들기 1->01
 public String two(String msg){
 	return msg.trim().length()<2?"0"+msg:msg.trim();
@@ -443,8 +435,8 @@ table, td, th {
 		<col width="100px"/>
 		
 		
-		<thead>
-		<tr height="50px" id="_calendertop">
+		<thead  id="_calender1">
+		<tr height="50px">
 			<td class="days2" colspan="7">
 			<input type="text" value="<이전달" style="border: 1px solid black;cursor:pointer" size="4" readonly onclick="makeCalender(${jcal.month-1})">&nbsp;
 			<font color="black" style="font-size: 24"><input type="text" value="${jcal.year}" size="2" readonly>&nbsp;&nbsp;
@@ -457,53 +449,90 @@ table, td, th {
 			<th class="days3">화</th><th class="days3">수</th><th class="days3">목</th>
 			<th class="days3">금</th><th class="days3">토</th>
 		</tr>
-		
 		</thead>
-			<tr height="100px" id="_calender">
-			
-			<c:forEach varStatus="i" begin="1" end="${jcal.dayOfWeek - 1 }">
-				<td>&nbsp;</td>
-			</c:forEach>
-			<c:forEach varStatus="i" begin="1" end="${jcal.lastDay}">
-				<c:if test="${(i.index+jcal.dayOfWeek-1)%7==0}">
-					<td class="satday" onmouseover="mouse(${i.index})" id="_day${i.index }">
-						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
-						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
-							<a href="#" onclick="request(${i.index})">
-								<img alt="예약하기" src="assets/images/others/resv.jpg">
-							</a>
-						</div>
-					</td>
-				</c:if>
-				<c:if test="${(i.index+jcal.dayOfWeek-1)%7==1}">
-					<td class="sunday" onmouseover="mouse(${i.index})" id="_day${i.index }">
-						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
-						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
-							<a href="#" onclick="request(${i.index})">
-								<img alt="예약하기" src="assets/images/others/resv.jpg">
-							</a>
-						</div>
-					</td>
-				</c:if>
-				<c:if test="${(i.index+jcal.dayOfWeek-1)%7!=0 && (i.index+jcal.dayOfWeek-1)%7!=1}">
-					<td class="otherday" onmouseover="mouse(${i.index})" id="_day${i.index }">
-						<font id="_daytext${i.index }">${i.index }&nbsp;</font>
-						<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
-							<a href="#" onclick="request(${i.index})">
-								<img alt="예약하기" src="assets/images/others/resv.jpg">
-							</a>
-						</div>
-					</td>
-				</c:if>
-				<c:if test="${((i.index+jcal.dayOfWeek-1)%7==0 && i.index != jcal.lastDay) }">
-					</tr><tr height="100px">
-				</c:if>
-			</c:forEach>
-			<c:forEach varStatus="i" begin="0" end="${(7-(jcal.dayOfWeek+jcal.lastDay-1)%7)%7-1 }">
-				<td>&nbsp;</td>
-			</c:forEach>
-			
-			</tr>
+		
+		<tbody id="_calender">
+		<tr height="100px">	
+		<c:forEach varStatus="i" begin="1" end="${jcal.dayOfWeek - 1 }">
+			<td>&nbsp;</td>
+		</c:forEach>
+		
+		<c:forEach varStatus="i" begin="1" end="${jcal.lastDay}">
+			<input type="hidden" value="${i.index }" id="_tabval${i.index}">
+			<c:if test="${(i.index+jcal.dayOfWeek-1)%7==0}">
+				<td class="satday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+					<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+					
+					<table class='innerTable' id="_intable${i.index }" >
+						<col width='100px'/>
+						<c:forEach items="${flist }" var="list">
+							<c:if test="${list.redate eq jcal.dateStr}">
+								<tr bgcolor='#4D6BB3'>
+									<td>
+										<font style='font-size:8px;color:#090000'>
+										${list.retime }${list.mid }
+							</c:if>
+						</c:forEach>
+					</table>
+					<%-- 
+					s="<table class='innerTable'>";
+					s+="<col width='100px'/>";
+					for(ReservationDto lcd:lcdtos){ //향상된 for
+						if(lcd.getRedate().substring(0,8).equals(dates)){
+							s+="<tr bgcolor='#4D6BB3'>";
+							s+="<td>";			
+							s+="<a href='caldetail.do?seq="+lcd.getRvseq()+"'>";
+							s+="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔
+							s+=dot3(lcd.getRetime()+lcd.getMid());
+							s+="</font>";
+							s+="</a>";
+							s+="</td>";
+							s+="</tr>";
+					 --%>
+					<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+						<a href="#" onclick="request(${i.index})">
+							<img alt="예약하기" src="assets/images/others/resv.jpg">
+						</a>
+					</div>
+				</td>
+			</c:if>
+			<c:if test="${(i.index+jcal.dayOfWeek-1)%7==1}">
+				<td class="sunday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+					<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+					
+					<table id="_intable${i.index }" >
+					</table>
+					
+					<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+						<a href="#" onclick="request(${i.index})">
+							<img alt="예약하기" src="assets/images/others/resv.jpg">
+						</a>
+					</div>
+				</td>
+			</c:if>
+			<c:if test="${(i.index+jcal.dayOfWeek-1)%7!=0 && (i.index+jcal.dayOfWeek-1)%7!=1}">
+				<td class="otherday" onmouseover="mouse(${i.index})" id="_day${i.index }">
+					<font id="_daytext${i.index }">${i.index }&nbsp;</font>
+					
+					<table id="_intable${i.index }" >
+					</table>
+					
+					<div style="z-index: 5; display: none;" id="_resv${i.index }" align="center">
+						<a href="#" onclick="request(${i.index})">
+							<img alt="예약하기" src="assets/images/others/resv.jpg">
+						</a>
+					</div>
+				</td>
+			</c:if>
+			<c:if test="${((i.index+jcal.dayOfWeek-1)%7==0 && i.index != jcal.lastDay) }">
+				</tr><tr height="100px">
+			</c:if>
+		</c:forEach>
+		<c:forEach varStatus="i" begin="0" end="${(7-(jcal.dayOfWeek+jcal.lastDay-1)%7)%7-1 }">
+			<td>&nbsp;</td>
+		</c:forEach>
+		</tr>
+		</tbody>
 		</table>
 		</div>
 	</div>		
@@ -526,6 +555,12 @@ var lastDayOfMonth = ${jcal.lastDay};
 var year = ${jcal.year};
 var month = ${jcal.month};
 
+$(function () {
+	function test1(){
+		alert("test1");
+	}	
+});
+
 function makeCalender(month){
 	var data = {
 		year:year,
@@ -542,28 +577,35 @@ function makeCalender(month){
 			year = msg.jcal.year;
 			month = msg.jcal.month;
 			
-			alert(dayOfWeek);
-			alert(lastDayOfMonth);
-			alert(year);
-			alert(month);
+			// 헤더 부분
+			$("#_calender1").empty()
+			var tagStr1 = "";
+			tagStr1 += "<tr height='50px'>";
+			tagStr1 += 	"<td class='days2' colspan='7'>";
+			tagStr1 += 	"<input type='text' value='<이전달' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month-1)+")'>&nbsp;";
+			tagStr1 += 	"<font color='black' style='font-size: 24'><input type='text' value='"+year+"' size='2' readonly>&nbsp;&nbsp;";
+			tagStr1 += 		"<input type='text' value='"+month+"월' size='1' readonly>";
+			tagStr1 += 	"</font>&nbsp;<input type='text' value='다음달>' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month+1)+")'></td>";
+			tagStr1 += "</tr>";
 			
-			$("#_calendertop").empty();
-			var tagStrTop = "<td class='days2' colspan='7'>";
-			tagStrTop += "<input type='text' value='<이전달' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month-1)+")'>&nbsp;"
-			tagStrTop += "<font color='black' style='font-size: 24'><input type='text' value='"+year+"' size='2' readonly>&nbsp;&nbsp;";
-			tagStrTop += 	"<input type='text' value='"+month+"월' size='1' readonly>";
-			tagStrTop += "</font>&nbsp;<input type='text' value='다음달>' style='border: 1px solid black;cursor:pointer' size='4' readonly onclick='makeCalender("+(month+1)+")'></td>";
-			$("#_calendertop").append(tagStrTop);
+			tagStr1 += "<tr height='40px'>";
+			tagStr1 += 	"<th class='days3'>일</th><th class='days3'>월</th>";
+			tagStr1 += 	"<th class='days3'>화</th><th class='days3'>수</th><th class='days3'>목</th>";
+			tagStr1 += 	"<th class='days3'>금</th><th class='days3'>토</th>";
+			tagStr1 += "</tr>";
 			
-			$("#_calender").empty();
+			// 날짜 부분
+			$("#_calender").empty()
 			var tagStr = "";
+			tagStr += "<tr height='100px'>";
+			
 			for(var i=1;i<dayOfWeek;i++){
 				tagStr += "<td>&nbsp;</td>";
 			}
 			for(var i=1;i<=lastDayOfMonth;i++){
 				if((i+dayOfWeek-1)%7==0){
 					tagStr += "<td class='satday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
-					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<font id='_daytext"+i+"'>"+i+"&nbsp;</font>";
 					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
 					tagStr +=		"<a href='#' onclick='request("+i+")'>";
 					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
@@ -571,7 +613,7 @@ function makeCalender(month){
 					tagStr += "</div>";
 				}else if((i+dayOfWeek-1)%7==1){
 					tagStr += "<td class='sunday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
-					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<font id='_daytext"+i+"'>"+i+"&nbsp;</font>";
 					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
 					tagStr +=		"<a href='#' onclick='request("+i+")'>";
 					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
@@ -579,7 +621,7 @@ function makeCalender(month){
 					tagStr += "</div>";
 				}else{
 					tagStr += "<td class='otherday' onmouseover='mouse("+i+")' id='_day"+i+"'>";
-					tagStr += "<font id='_daytext"+i+">"+i+"&nbsp;</font>";
+					tagStr += "<font id='_daytext"+i+"'>"+i+"&nbsp;</font>";
 					tagStr += "<div style='z-index: 5; display: none;' id='_resv"+i+"' align='center'>";
 					tagStr +=		"<a href='#' onclick='request("+i+")'>";
 					tagStr +=			"<img alt='예약하기' src='assets/images/others/resv.jpg'>";
@@ -593,13 +635,15 @@ function makeCalender(month){
 			for(var i=0;i<(7-(dayOfWeek+lastDayOfMonth-1)%7)%7;i++){
 				tagStr += "<td>&nbsp;</td>";
 			}
+			tagStr += "</tr>";
+			
+			$("#_calender1").append(tagStr1);
 			$("#_calender").append(tagStr);
 		},
 		error:function(reqest, status, error){
             alert("실패");
         }
 	});
-	
 }
 </script>
 

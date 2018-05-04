@@ -9,8 +9,22 @@ public class CalendarUtil {
 		String ss="";
 		return (tt+"").length()>1?(tt+""):"0"+tt;
 	}
+	
+	public static String ytwo(int tt){
+		//yyyy
+		String ss= tt+"";
+		ss = ss.substring(2,4);
+		return ss;
+	}
+	public static String yymm(int year, int month){
+		return ytwo(year)+"/"+two(month);
+	}
+	public static String yymmdd(int year, int month, int day){
+		return ytwo(year)+"/"+two(month)+"/"+two(day);
+	}
+	
 	public static String yyyymm(int year, int month){
-		return ""+year+"/"+two(month);
+		return ""+year+two(month);
 	}
 	public static String yyyymmdd(int year, int month, int day){
 		return yyyymm(year,month)+two(day);

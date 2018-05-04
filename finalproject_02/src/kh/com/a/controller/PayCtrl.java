@@ -227,11 +227,15 @@ public class PayCtrl {
 		logger.info("WeddingHallCtrl calenderDate " + new Date());
 		
 		jcal.calculate();
-		String yyyymm = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());	// yyyy/mm
+		String yymm = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());	// yyyy/mm
 		
 		ReservationDto fcal = new ReservationDto();
 		fcal.setPdseq(pdseq);
-		fcal.setRedate(yyyymm);
+		fcal.setRedate(yymm);
+		
+		
+		System.out.println("----------->"+yymm);
+		System.out.println("----------->"+jcal.getDateStr());
 		
 		List<ReservationDto> flist = reservServ.getWdRegList(fcal);
 		
