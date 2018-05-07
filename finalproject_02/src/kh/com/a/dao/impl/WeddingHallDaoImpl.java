@@ -72,10 +72,27 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		WHallPictureDto hallpic;
 		for(int i=0;i<FileNameList.size();i++) {
 			hallpic = new WHallPictureDto(0, whseq, hallname, FileNameList.get(i));
-			System.out.println(hallpic.toString());
+			//System.out.println(hallpic.toString());
 			sqlSession.insert(ns+"addHallPicture", hallpic);
 		}
+	}
+	// hall 수정
+	@Override
+	public boolean modHall(WeddingHallDto wdPd) {
+		int n = sqlSession.update(ns+"modHall", wdPd);
+		return n>0?true:false;
+	}
+	
+	// 홀 사진 수정
+	@Override
+	public void modHallPicture(int whseq, String hallname, List<WHallPictureDto> orpicList) {
 		
+		WHallPictureDto hallpic;
+		for(int i=0;i<orpicList.size();i++) {
+			hallpic = new WHallPictureDto(orpicList.get(i).getPicseq(), whseq, hallname, orpicList.get(i).getPicture());
+			//System.out.println(FileNameList.get(i));
+			sqlSession.update(ns+"modHallPicture", hallpic);
+		}
 	}
 	
 	// 홀이름과 사진수
@@ -119,6 +136,22 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		map.put("hallname", hallname);
 		map.put("whseq", whseq);
 		return sqlSession.selectOne(ns+"hallInfo", map);
+	}
+
+	// 홀 삭제
+	@Override
+	public void Halldel(int pdseq) {
+		sqlSession.delete(ns+"Halldel", pdseq);		
+	}
+
+	// 홀 사진 삭제
+	@Override
+	public void Hallpicdel(int whseq, String hallname) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("hallname", hallname);
+		map.put("whseq", whseq);
+		
+		sqlSession.delete(ns+"Hallpicdel", map);	
 	}
 
 	

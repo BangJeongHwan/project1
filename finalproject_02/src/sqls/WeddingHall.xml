@@ -33,6 +33,15 @@
 		VALUES(SEQ_WH_PDSEQ.NEXTVAL, #{whseq}, #{hallname}, #{floor}, #{mincook}, #{maxcook}, #{format}, #{facility}, 
 			#{minpeople}, #{maxpeople}, #{setpeople}, #{wstep}, #{pay}, #{menutype}, #{drink}, #{opentime}, #{closetime})
 	</insert>
+	
+	<update id="modHall" parameterType="kh.com.a.model.WeddingHallDto">
+		UPDATE WD_WHALL
+		SET FLOOR=#{floor},MINCOOK=#{mincook},MAXCOOK=#{maxcook}, FORMAT=#{format},FACILITY=#{facility},
+			MINPEOPLE=#{minpeople}, MAXPEOPLE=#{maxpeople}, SETPEOPLE=#{setpeople}, WSTEP=#{wstep},PAY=#{pay},
+			MENUTYPE=#{menutype},DRINK=#{drink}, OPENTIME=#{opentime}, CLOSETIME=#{closetime}
+		WHERE PDSEQ=#{pdseq}
+	</update>
+	
 	<select id="checkHallName" parameterType="java.lang.String" resultType="kh.com.a.model.WeddingHallDto">
 		SELECT *
 		FROM WD_WHALL
@@ -57,6 +66,13 @@
 		INSERT INTO WD_HALL_PICTURE(PICSEQ, WHSEQ, HALLNAME, PICTURE)
 		VALUES(SEQ_WHPIC.NEXTVAL, #{whseq}, #{hallname}, #{picture})
 	</insert>
+	
+	<update id="modHallPicture" parameterType="kh.com.a.model.WHallPictureDto">
+		UPDATE WD_HALL_PICTURE
+		SET PICTURE=#{picture}
+		WHERE PICSEQ=#{picseq} AND WHSEQ=#{whseq} AND HALLNAME=#{hallname}
+	</update>
+	
 	<select id="getHallSumList" parameterType="java.lang.Integer" resultType="kh.com.a.model2.WHallPicSumVO">
 		SELECT HALLNAME, COUNT(WHSEQ) AS SUMPIC
 		FROM WD_HALL_PICTURE
@@ -79,6 +95,13 @@
 		SELECT PICSEQ, WHSEQ, HALLNAME, PICTURE
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq} AND HALLNAME=#{hallname}
+		ORDER BY PICSEQ ASC
 	</select>
 	
+	<delete id="Halldel" parameterType="java.lang.Integer">
+		DELETE FROM WD_WHALL WHERE PDSEQ=#{pdseq}
+	</delete>	
+	<delete id="Hallpicdel" parameterType="hashmap">
+		DELETE FROM WD_HALL_PICTURE WHERE WHSEQ = #{whseq} AND HALLNAME=#{hallname}
+	</delete>
 </mapper>

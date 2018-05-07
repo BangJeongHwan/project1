@@ -3,6 +3,7 @@ package kh.com.a.dao;
 import java.util.List;
 
 import kh.com.a.model.ReservationDto;
+import kh.com.a.model2.ReservationVO;
 
 public interface ReservationDao {
 
@@ -26,5 +27,5 @@ public interface ReservationDao {
 	//정환
 	public void wdHallResv(ReservationDto rDto);
 	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception;
-	public List<ReservationDto> getWdRegList(ReservationDto fcal);
+	public List<ReservationVO> getWdRegList(ReservationDto fcal);
 }

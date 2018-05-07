@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.ReservationDao;
 import kh.com.a.model.ReservationDto;
+import kh.com.a.model2.ReservationVO;
 
 @Repository
 public class ReservationDaoImpl implements ReservationDao {
@@ -82,7 +83,7 @@ public class ReservationDaoImpl implements ReservationDao {
 	
 	// 웨딩홀 예약된 것들 모두 불러오기
 	@Override
-	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+	public List<ReservationVO> getWdRegList(ReservationDto fcal) {
 		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
 	

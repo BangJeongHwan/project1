@@ -62,6 +62,16 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		weddingHallDao.addHallPicture(whseq, hallname, FileNameList);
 	}
 	
+	// hall 수정
+	@Override
+	public boolean modHall(WeddingHallDto wdPd) {
+		return weddingHallDao.modHall(wdPd);
+	}
+	// 홋 사진 수정
+	@Override
+	public void modHallPicture(int whseq, String hallname, List<WHallPictureDto> orpicList) {
+		weddingHallDao.modHallPicture(whseq, hallname, orpicList);
+	}
 	// 홀이름과 사진수
 	@Override
 	public List<WHallPicSumVO> getHallSumList(int whseq) {
@@ -92,5 +102,16 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public WeddingHallDto hallInfo(String hallname, int whseq) {
 		return weddingHallDao.hallInfo(hallname, whseq);
 	}
+
+	@Override
+	public void Halldel(int pdseq) {
+		weddingHallDao.Halldel(pdseq);
+	}
+
+	@Override
+	public void Hallpicdel(int whseq, String hallname) {
+		weddingHallDao.Hallpicdel(whseq, hallname);
+	}
+
 	
 }

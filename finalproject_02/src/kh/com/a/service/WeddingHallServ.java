@@ -18,10 +18,14 @@ public interface WeddingHallServ {
 	public boolean checkHallName(String hallname);
 	public boolean addHall(WeddingHallDto wdPd);
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList);
+	public boolean modHall(WeddingHallDto wdPd);
+	public void modHallPicture(int whseq, String hallname, List<WHallPictureDto> orpicList);
 	public List<WHallPicSumVO> getHallSumList(int whseq);
 	public List<WHallPictureDto> getAllHallPicList(int whseq);
 	public int picTotal(int whseq);
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
 	
 	public WeddingHallDto hallInfo(String hallname, int whseq);
+	public void Halldel(int pdseq);
+	public void Hallpicdel(int whseq, String hallname);
 }
