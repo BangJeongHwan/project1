@@ -113,5 +113,10 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		weddingHallDao.Hallpicdel(whseq, hallname);
 	}
 
+	@Override
+	public void upReadCount(int whseq) {
+		weddingHallDao.upReadCount(whseq);
+	}
+
 	
 }

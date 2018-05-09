@@ -22,6 +22,11 @@
 		FROM WD_WEDDING
 		WHERE WHSEQ=#{whseq}
 	</select>
+	<insert id="Upreadcount" parameterType="java.lang.Integer">
+		UPDATE WD_WEDDING
+		SET READCOUNT=READCOUNT+1
+		WHERE WHSEQ=#{whseq}
+	</insert>
 	
 	
 	<!-- hall -->
@@ -60,6 +65,7 @@
 		FROM WD_WHALL
 		WHERE WHSEQ=#{whseq} AND HALLNAME=#{hallname}
 	</select>
+	
 	
 	<!-- 사진 -->
 	<insert id="addHallPicture" parameterType="kh.com.a.model.WHallPictureDto">

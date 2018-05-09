@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<div style="padding-left: 30px;">
+		<div id="_leftbar" class="w3-bar-block w3-light-white w3-card" style="position:fixed; width:20%; float: left; background-color: write">
+			<jsp:include page="/WEB-INF/views/wedding/wh_left_bar.jsp"/>
+		</div>
+	</div>
 <!-- 웨딩홀 사진
   ================================================== -->
   <section id="nino-uniqueDesign">
@@ -19,11 +24,11 @@
   </section><!--/#nino-uniqueDesign-->
 <section id="nino-latestBlog">
 	<!-- left bar -->
-	<div style="padding-left: 30px">
-		<div class="w3-bar-block w3-light-white w3-card" style="width:15%; padding-left: 10px; float: left; background-color: #ff99cc">
+<%-- 	<div style="padding-left: 30px">
+		<div class="w3-bar-block w3-light-white w3-card" style="position:fixed; width:15%; padding-left: 10px; float: left; background-color: write">
 			<jsp:include page="/WEB-INF/views/wedding/wh_left_bar.jsp"/>
 		</div>
-	</div>
+	</div> --%>
    	<div class="container">   		
    		<h2 class="nino-sectionHeading" onclick="location.href='views/hall/weddinghall.jsp'">
 			<span class="nino-subHeading">Will you marry me?</span>
@@ -78,3 +83,13 @@
 		</div>
    	</div>
 </section>
+
+<script>
+$(window).scroll(function(){
+    if ($(this).scrollTop() > 900) {
+       $('#_leftbar').css("display","block");
+    }else {
+       $('#_leftbar').css("display","none");
+    }
+});
+</script>

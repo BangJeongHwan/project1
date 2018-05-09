@@ -153,6 +153,7 @@
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallview.jsp"/>
 	</definition>
 	
+	
 	<!-- 홀 추가 -->
 	<definition name="hallwrite.tiles" extends="weddinghall.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallwrite.jsp"/>

@@ -27,4 +27,6 @@ public interface WeddingHallDao {
 	public WeddingHallDto hallInfo(String hallname, int whseq);
 	public void Halldel(int pdseq);
 	public void Hallpicdel(int whseq, String hallname);
+	
+	public void upReadCount(int whseq);
 }

@@ -49,8 +49,11 @@ public class WeddingHallCtrl {
 	
 	// 웨딩 업체 뷰
 	@RequestMapping(value="weddingHallView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String weddingHallView(Model model) {
+	public String weddingHallView(Model model, HttpServletRequest req) {
 		logger.info("WeddingHallCtrl weddingHallView" + new Date());
+		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		model.addAttribute("login", login);
 		
 		List<WeddingDto> list = weddingHallServ.getWeddingList();
 		model.addAttribute("list", list);
@@ -113,7 +116,9 @@ public class WeddingHallCtrl {
 		logger.info("WeddingHallCtrl hallView" + new Date());
 		
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
-				
+		
+		// UPreadcount
+		weddingHallServ.upReadCount(whseq);
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);

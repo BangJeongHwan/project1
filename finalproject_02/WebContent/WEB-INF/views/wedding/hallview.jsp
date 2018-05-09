@@ -368,7 +368,7 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 		</div>
 		<br>
 		
-		<div style="margin-left: 60px">
+		<div style="margin-left: 60px" align="left">
 			<b>주소 : ${wd.address }</b><br>
 			<b>교통 : ${wd.transpo }</b>
 			<br><br>

@@ -154,6 +154,11 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		sqlSession.delete(ns+"Hallpicdel", map);	
 	}
 
+	@Override
+	public void upReadCount(int whseq) {
+		sqlSession.insert(ns+"Upreadcount", whseq);
+	}
+
 	
 	
 }
