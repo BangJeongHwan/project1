@@ -27,7 +27,9 @@
 		SET READCOUNT=READCOUNT+1
 		WHERE WHSEQ=#{whseq}
 	</insert>
-	
+	<delete id="Weddingdel" parameterType="java.lang.Integer">
+		DELETE FROM WD_WEDDING WHERE WHSEQ=#{whseq}
+	</delete>
 	
 	<!-- hall -->
 	

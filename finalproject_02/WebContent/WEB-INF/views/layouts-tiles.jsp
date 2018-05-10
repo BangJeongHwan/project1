@@ -57,8 +57,8 @@
 </section>
 
 <!-- footer -->
-<footer id="footer">
-	<div class="container">
+<footer id="footer" style="z-index: 999; position: relative;">
+	<div class="container" >
 		<tiles:insertAttribute name="footer"/>
 	</div>
 </footer>

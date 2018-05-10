@@ -52,6 +52,14 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		return list;
 	}
 	
+
+	// 기업 삭제
+	@Override
+	public void Weddingdel(int whseq) {
+		sqlSession.delete(ns+"Weddingdel", whseq);
+		// 홀 삭제를 추가적으로 해줘야될 수도 있음
+	}
+	
 	// 홀 이름 체크
 	@Override
 	public boolean checkHallName(String hallname) {
@@ -158,6 +166,7 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	public void upReadCount(int whseq) {
 		sqlSession.insert(ns+"Upreadcount", whseq);
 	}
+
 
 	
 	

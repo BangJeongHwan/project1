@@ -13,6 +13,7 @@ public interface WeddingHallServ {
 	public boolean addWedding(WeddingDto wd);
 	public List<WeddingDto> getWeddingList();
 	public WeddingDto getWedding(int whseq);
+	public void Weddingdel(int whseq);
 	
 	public List<WeddingHallDto> getHallList(int whseq);
 	public boolean checkHallName(String hallname);

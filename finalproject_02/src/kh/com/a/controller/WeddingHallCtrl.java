@@ -109,6 +109,16 @@ public class WeddingHallCtrl {
 		return "redirect:/weddingHallView.do";
 	}
 
+	// 웨딩 업체 추가 view
+	@RequestMapping(value="Weddingdel.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String Weddingdel(Model model, int whseq) {
+		logger.info("WeddingHallCtrl Weddingdel" + new Date());
+		
+		weddingHallServ.Weddingdel(whseq);
+
+		return "redirect:/weddingHallView.do";
+	}
+	
 	//////////////////////////////////////////////////////////////////////////////
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})

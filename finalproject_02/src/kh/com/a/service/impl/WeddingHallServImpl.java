@@ -44,6 +44,23 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.getHallList(whseq);
 	}
 	
+	// 기업 삭제
+	@Override
+	public void Weddingdel(int whseq) {
+		List<WeddingHallDto> hallList = weddingHallDao.getHallList(whseq);
+		if(hallList !=null) {
+			for(int i=0;i<hallList.size();i++) {
+				WeddingHallDto dto = hallList.get(i);
+				String hallname = dto.getHallname();
+				int pdseq = dto.getPdseq();
+				
+				weddingHallDao.Hallpicdel(whseq, hallname);
+				weddingHallDao.Halldel(pdseq);
+			}
+		}		
+		weddingHallDao.Weddingdel(whseq);		
+	}
+	
 	// 홀 이름 체크
 	@Override
 	public boolean checkHallName(String hallname) {
@@ -103,20 +120,25 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.hallInfo(hallname, whseq);
 	}
 
+	// 홀 삭제
 	@Override
 	public void Halldel(int pdseq) {
 		weddingHallDao.Halldel(pdseq);
 	}
 
+	// 홀 사진 삭제
 	@Override
 	public void Hallpicdel(int whseq, String hallname) {
 		weddingHallDao.Hallpicdel(whseq, hallname);
 	}
 
+	// 조회수 up
 	@Override
 	public void upReadCount(int whseq) {
 		weddingHallDao.upReadCount(whseq);
 	}
+
+	
 
 	
 }

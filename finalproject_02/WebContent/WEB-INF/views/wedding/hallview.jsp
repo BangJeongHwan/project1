@@ -171,6 +171,7 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 	<!-- 관리자일 경우 -->
 	<c:if test="${login.id=='admin'}">
 		<div align="right">
+			<button onclick="delwedding()" style="background-color: white;">업체 삭제</button>
 			<button onclick="addhall()" style="background-color: white;">홀 추가</button>
 			<button onclick="modhall()" style="background-color: white;">홀 수정</button>
 		</div>
@@ -1051,6 +1052,9 @@ google.maps.event.addDomListener(window, 'load', initMap);
 </script>
 
 <script>
+function delwedding(){
+	location.href="Weddingdel.do?whseq="+${wd.whseq};
+}
 /* 홀 추가 */
 function addhall(){
 	location.href="Hallwrite.do?whseq="+${wd.whseq};

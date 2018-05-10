@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<div style="padding-left: 30px;">
-		<div id="_leftbar" class="w3-bar-block w3-light-white w3-card" style="position:fixed; width:20%; float: left; background-color: write">
+		<div id="_leftbar" class="w3-bar-block w3-light-white w3-card" style="position:fixed; z-index:998; width:20%; float: left; background-color: write">
 			<jsp:include page="/WEB-INF/views/wedding/wh_left_bar.jsp"/>
 		</div>
 	</div>
@@ -10,7 +10,7 @@
   ================================================== -->
   <section id="nino-uniqueDesign">
   	<div class="container">
-  		<h2 class="nino-sectionHeading" >
+  		<h2 class="nino-sectionHeading" onclick="#none">
 		<span class="nino-subHeading" >Will you marry me?</span>
 		wedding-hall
 	</h2>
@@ -30,14 +30,14 @@
 		</div>
 	</div> --%>
    	<div class="container">   		
-   		<h2 class="nino-sectionHeading" onclick="location.href='views/hall/weddinghall.jsp'">
+   		<h2 class="nino-sectionHeading" onclick="#">
 			<span class="nino-subHeading">Will you marry me?</span>
 			WEDDING-HALL
 		</h2>
 				
 		<div id="wrapper" style="padding-left: 1px; width:80%; float: right;">	
 			<div class="sectionContent">
-				<div class="row nino-hoverEffect">		<!-- css추가 : nino-hoverEffect -->
+				<div class="row nino-hoverEffect" id="_list">		<!-- css추가 : nino-hoverEffect -->
 					<c:forEach var="wd" items="${list}">
 						<div class="col-md-4 col-sm-4" style="padding-bottom: 20px">
 							<article>
@@ -56,14 +56,7 @@
 											</c:if>
 											<c:if test="${not empty wd.picture && wd.picture ne ''}">
 												<img src="upload/${ wd.picture }" width="250px" height="200px" />
-											</c:if>
-											
-											<!-- 
-											<div class="date">
-												<span class="number">글올린날짜</span>
-												<span class="text">글올린날짜</span>
-											</div>
-											 -->										
+											</c:if>								
 										</a>
 									</div>
 								</div>
@@ -85,6 +78,26 @@
 </section>
 
 <script>
+function funclist(typename){
+	alert(typename);
+}
+
+var data = "";
+var type = "";
+
+$("input:radio[name=Htype]:checked").val();
+
+$.ajax({
+	url:"",
+	data:,
+	success:function(res){
+     	
+     },
+     error:function(reqest, status, error){
+         alert("실패");
+     }
+});
+
 $(window).scroll(function(){
     if ($(this).scrollTop() > 900) {
        $('#_leftbar').css("display","block");
