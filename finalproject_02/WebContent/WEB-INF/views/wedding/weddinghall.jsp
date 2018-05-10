@@ -30,7 +30,7 @@
 		</div>
 	</div> --%>
    	<div class="container">   		
-   		<h2 class="nino-sectionHeading" onclick="#">
+   		<h2 class="nino-sectionHeading">
 			<span class="nino-subHeading">Will you marry me?</span>
 			WEDDING-HALL
 		</h2>
@@ -51,12 +51,9 @@
 												<p>식사메뉴 : ${wd.menutype }</p>
 												<p>보증인원 : ${wd.minpeople }~${wd.maxpeople }명</p>
 											</span>
-											<c:if test="${empty wd.picture || wd.picture eq ''}">
-												<img src="assets/images/weddinghall/img-1.jpg">
-											</c:if>
-											<c:if test="${not empty wd.picture && wd.picture ne ''}">
-												<img src="upload/${ wd.picture }" width="250px" height="200px" />
-											</c:if>								
+											<%-- <c:if test="${not empty wd.picture && wd.picture ne ''}"> --%>
+												<img alt="이미지 없음" src="upload/${ wd.picture }" width="250px" height="200px" />
+											<%-- </c:if>								 --%>
 										</a>
 									</div>
 								</div>
@@ -78,26 +75,81 @@
 </section>
 
 <script>
-function funclist(typename){
-	alert(typename);
-}
 
 var data = "";
 var type = "";
-
-$("input:radio[name=Htype]:checked").val();
-
-$.ajax({
-	url:"",
-	data:,
-	success:function(res){
-     	
-     },
-     error:function(reqest, status, error){
-         alert("실패");
-     }
+$("input:radio[name=Htype]").on('click',function () {
+	data = $("input:radio[name=Htype]:checked").val();
+	type = "Hall";
+	alert(type);
+	alert(data);
+	resetList(type, data);
+});
+$("input:radio[name=Ctype]").on('click',function () {
+	data = $("input:radio[name=Ctype]:checked").val();
+	type = "Cook";
+	alert(type);
+	alert(data);
+	resetList(type, data);
+});
+$("input:radio[name=Ptype]").on('click',function () {
+	data = $("input:radio[name=Ptype]:checked").val();
+	type = "People";
+	alert(type);
+	alert(data);
+	resetList(type, data);
 });
 
+// List 초기화
+function resetList(type, data){
+	var datas = {
+		type:type,
+		data:data
+	}
+	$.ajax({
+		url:"resetList.do",
+		data:datas,
+		success:function(msg){
+			list = msg.list;
+			if(list!=null){
+				$("#_list").empty();
+				var tagStr = "";
+				for(var i=0;i<list.length;i++){
+					tagStr += "<div class='col-md-4 col-sm-4' style='padding-bottom: 20px'>";
+					tagStr += "	<article>";
+					tagStr += "	<div class='articleThumb'>";
+					tagStr += "		<div class='item'>";
+					tagStr += "			<a class='overlay' href='hallView.do?whseq="+list[i].whseq+"'>";
+					tagStr += "			<span class='content'>";
+					tagStr += "				<i class='fa fa-camera nino-icon '></i>";
+					tagStr += "				<p>홀타입 : "+list[i].htype+"</p>";
+					tagStr += "				<p>식사메뉴 : "+list[i].menutype+"</p>";
+					tagStr += "				<p>보증인원 : "+list[i].minpeople+"~"+list[i].maxpeople+"명</p>";
+					tagStr += "			</span>";
+					tagStr += "			<img alt='이미지 없음' src='upload/"+list[i].picture+"' width='250px' height='200px'/>";
+					tagStr += "			</a>";
+					tagStr += "		</div>";
+					tagStr += "	</div>";
+					tagStr += "	<h3 class='articleTitle'><a href='hallView.do?whseq="+list[i].whseq+"'>"+list[i].cname+"</a></h3>";
+					tagStr += "	<p class='articleDesc'>"+list[i].content+"</p>";
+					tagStr += "	<div class='articleMeta'>";
+					tagStr += "		<a href='#'><i class='mdi mdi-eye nino-icon'></i>"+list[i].readcount+"</a>";
+					tagStr += "		<a href='#'><i class='mdi mdi-comment-multiple-outline nino-icon'></i>"+list[i].commentcount+"</a>";
+					tagStr += "	</div>";
+					tagStr += "	</article>";
+					tagStr += "</div>";
+				}
+				$("#_list").append(tagStr);
+			}
+			alert(msg.list.length);
+	    },
+	    error:function(reqest, status, error){
+	        alert("실패");
+	    }
+	});
+}
+
+// 스크롤에 따라 보이고 안보이고
 $(window).scroll(function(){
     if ($(this).scrollTop() > 900) {
        $('#_leftbar').css("display","block");

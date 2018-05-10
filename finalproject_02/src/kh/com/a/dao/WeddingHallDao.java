@@ -13,7 +13,9 @@ public interface WeddingHallDao {
 	public List<WeddingDto> getWeddingList();
 	public WeddingDto getWedding(int whseq);
 	public void Weddingdel(int whseq);
+	public List<WeddingDto> selWeddingList(String type, String data);
 	
+	////////////////////////////////////////////////////////////
 	public List<WeddingHallDto> getHallList(int whseq);
 	public boolean checkHallName(String hallname);
 	public boolean addHall(WeddingHallDto wdPd);

@@ -1,5 +1,6 @@
 package kh.com.a.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +51,34 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	public List<WeddingHallDto> getHallList(int whseq) {
 		List<WeddingHallDto> list = sqlSession.selectList(ns+"getHallList", whseq);
 		return list;
-	}
-	
-
-	// 기업 삭제
+	}// 기업 삭제
 	@Override
 	public void Weddingdel(int whseq) {
 		sqlSession.delete(ns+"Weddingdel", whseq);
 		// 홀 삭제를 추가적으로 해줘야될 수도 있음
 	}
+	
+	// 체크된 list
+	@Override
+	public List<WeddingDto> selWeddingList(String type, String data) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(type.equals("People")) {
+			map.put("type", type);
+			String pdata[] = data.split("~");
+			map.put("minpeople", pdata[0]);
+			map.put("maxpeople", pdata[1]);		
+		}else {
+			map.put("type", type);
+			if(data.equals("전체")) {
+				data = "";
+			}
+			map.put("data", data);
+		}
+		return sqlSession.selectList(ns+"selWeddingList",map);
+	}
+	
+	
+	//////////////////////////////////////////////////
 	
 	// 홀 이름 체크
 	@Override
@@ -162,10 +182,12 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		sqlSession.delete(ns+"Hallpicdel", map);	
 	}
 
+	// 조회수
 	@Override
 	public void upReadCount(int whseq) {
 		sqlSession.insert(ns+"Upreadcount", whseq);
 	}
+
 
 
 	

@@ -119,6 +119,21 @@ public class WeddingHallCtrl {
 		return "redirect:/weddingHallView.do";
 	}
 	
+	// 홀 별 변경
+	@ResponseBody
+	@RequestMapping(value="resetList.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> resetList(Model model, String type, String data) throws Exception {
+		logger.info("WeddingHallCtrl resetList " + new Date());
+		
+		List<WeddingDto> list = weddingHallServ.selWeddingList(type, data);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		
+		return map;
+	}
+		
+	
 	//////////////////////////////////////////////////////////////////////////////
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -462,4 +477,6 @@ public class WeddingHallCtrl {
 		model.addAttribute("whseq",whseq);
 		return "redirect:/hallView.do";
 	}
+	
+	
 }

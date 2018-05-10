@@ -27,23 +27,21 @@
 		<tr>
 			<th colspan="3">홀 타입</th>
 		</tr>
-		<tbody onchange="funclist(H)">
 		<tr>
-			<td><input type="radio" name="Htype" value="H/전체" checked>전체</td>
-			<td><input type="radio" name="Htype" value="H/컨벤션">컨벤션</td>
-			<td><input type="radio" name="Htype" value="H/호텔">호텔</td>
+			<td><input type="radio" name="Htype" value="전체" checked>전체</td>
+			<td><input type="radio" name="Htype" value="컨벤션">컨벤션</td>
+			<td><input type="radio" name="Htype" value="호텔">호텔</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Htype" value="H/채플">채플</td>
-			<td><input type="radio" name="Htype" value="H/전통">전통</td>
-			<td><input type="radio" name="Htype" value="H/야외">야외</td>
+			<td><input type="radio" name="Htype" value="채플">채플</td>
+			<td><input type="radio" name="Htype" value="전통">전통</td>
+			<td><input type="radio" name="Htype" value="야외">야외</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Htype" value="H/종교">종교</td>
-			<td><input type="radio" name="Htype" value="H/기타">기타</td>
+			<td><input type="radio" name="Htype" value="종교">종교</td>
+			<td><input type="radio" name="Htype" value="기타">기타</td>
 			<td></td>
 		</tr>
-		</tbody>
 	</table>
 	<table class="leftbar">
 		
@@ -56,23 +54,21 @@
 		<tr>
 			<th colspan="3">식사메뉴</th>
 		</tr>
-		<tbody onchange="funclist('C')">
 		<tr>
-			<td><input type="radio" name="Ctype" value="C/전체" checked>전체</td>
-			<td><input type="radio" name="Ctype" value="C/뷔페">뷔페</td>
-			<td><input type="radio" name="Ctype" value="C/양식">양식</td>
+			<td><input type="radio" name="Ctype" value="전체" checked>전체</td>
+			<td><input type="radio" name="Ctype" value="뷔페">뷔페</td>
+			<td><input type="radio" name="Ctype" value="양식">양식</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Ctype" value="C/한식">한식</td>
-			<td><input type="radio" name="Ctype" value="C/중식">중식</td>
-			<td><input type="radio" name="Ctype" value="C/일식">일식</td>
+			<td><input type="radio" name="Ctype" value="한식">한식</td>
+			<td><input type="radio" name="Ctype" value="중식">중식</td>
+			<td><input type="radio" name="Ctype" value="일식">일식</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Ctype" value="C/기타">기타</td>
+			<td><input type="radio" name="Ctype" value="기타">기타</td>
 			<td></td>
 			<td></td>
 		</tr>
-		</tbody>
 	</table>
 	<table class="leftbar">
 		<colgroup>
@@ -107,24 +103,22 @@
 		<tr>
 			<th colspan="3">보증인원</th>
 		</tr>
-		<tbody onchange="funclist(C)">
 		<tr>
-			<td><input type="radio" name="Ptype"  value="P/전체" checked>전체</td>
-			<td><input type="radio" name="Ptype" value="P/50~100">50~100명</td>
+			<td><input type="radio" name="Ptype"  value="전체" checked>전체</td>
+			<td><input type="radio" name="Ptype" value="50~100">50~100명</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Ptype" value="P/100~200">100~200명</td>
-			<td><input type="radio" name="Ptype" value="P/200~250">200~250명</td>
+			<td><input type="radio" name="Ptype" value="100~200">100~200명</td>
+			<td><input type="radio" name="Ptype" value="200~250">200~250명</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Ptype" value="P/250~300">250~300명</td>
-			<td><input type="radio" name="Ptype" value="P/300~400">300~400명</td>
+			<td><input type="radio" name="Ptype" value="250~300">250~300명</td>
+			<td><input type="radio" name="Ptype" value="300~400">300~400명</td>
 		</tr>
 		<tr>
-			<td><input type="radio" name="Ptype" value="P/400~500">400~500명</td>
-			<td><input type="radio" name="Ptype" value="P/500">500이상</td>
+			<td><input type="radio" name="Ptype" value="400~500">400~500명</td>
+			<td><input type="radio" name="Ptype" value="500">500이상</td>
 		</tr>
-		</tbody>
 	</table>
 	
 	<c:if test="${login.id == 'admin' }">

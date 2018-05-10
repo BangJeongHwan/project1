@@ -61,6 +61,14 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		weddingHallDao.Weddingdel(whseq);		
 	}
 	
+	// 체크된 list
+	@Override
+	public List<WeddingDto> selWeddingList(String type, String data) {
+		return weddingHallDao.selWeddingList(type, data);
+	}
+	
+	//////////////////////////////////////////////////////////
+	
 	// 홀 이름 체크
 	@Override
 	public boolean checkHallName(String hallname) {

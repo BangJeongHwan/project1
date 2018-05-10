@@ -31,6 +31,25 @@
 		DELETE FROM WD_WEDDING WHERE WHSEQ=#{whseq}
 	</delete>
 	
+	<select id="selWeddingList" parameterType="hashmap" resultType="kh.com.a.model.WeddingDto">
+		SELECT WHSEQ, CID, CNAME, HTYPE, MINCOOK, MAXCOOK, MENUTYPE, MINPEOPLE, MAXPEOPLE, 
+			CONTENT, ADDRESS, LATITUDE, LONGITUDE, PICTURE, TRANSPO, PARKING, READCOUNT, COMMENTCOUNT
+		FROM WD_WEDDING
+		<if test="type == 'Hall'">
+			<if test="data != ''">
+				WHERE HTYPE=#{data}
+			</if>
+		</if>
+		<if test="type == 'Cook'">
+			WHERE MENUTYPE LIKE '%'||#{data}||'%'
+		</if>
+		<if test="type == 'People'">
+			WHERE MINPEOPLE BETWEEN #{minpeople} AND #{maxpeople}
+		</if>
+		ORDER BY WHSEQ DESC
+	</select>
+	
+	
 	<!-- hall -->
 	
 	<!-- hall list -->
