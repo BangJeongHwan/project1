@@ -59,7 +59,7 @@ if(mem==null){
 					</div>
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="nino-menuItem pull-right">
+			  		<div class="nino-menuItem pull-right">
 						<div class="collapse navbar-collapse pull-left" id="nino-navbar-collapse">
 							<ul class="nav navbar-nav">
 								<li class="active"><a href="#nino-header"><i class="fa fa-home" style="font-size:23px"></i> <span class="sr-only">(current)</span></a></li>
